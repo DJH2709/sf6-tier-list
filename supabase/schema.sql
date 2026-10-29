@@ -1,8 +1,10 @@
--- Community tier lists, one per account per game per patch.
+-- Community tier lists, one per account per game, category and patch.
+-- Category is what's being ranked: characters now, weapons or abilities later.
 create table tier_lists (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users on delete cascade default auth.uid(),
   game text not null,
+  category text not null default 'characters',
   patch text not null,
   claimed_rank text not null,
   -- Top ranks need proof: a profile link with the site's code in it, checked by hand.
@@ -10,19 +12,19 @@ create table tier_lists (
     check (verification in ('none', 'pending', 'approved', 'rejected')),
   proof_url text,
   created_at timestamptz not null default now(),
-  unique (user_id, game, patch)
+  unique (user_id, game, category, patch)
 );
 
 create table tier_placements (
   list_id uuid not null references tier_lists on delete cascade,
-  character_id text not null,
+  item_id text not null,
   score smallint not null check (score between 1 and 5),
-  primary key (list_id, character_id)
+  primary key (list_id, item_id)
 );
 
 -- Keep in step with effectiveBand() in src/lib/sf6.ts.
 create view list_bands as
-select id, game, patch,
+select id, game, category, patch,
   case
     when claimed_rank in ('grand_master', 'ultimate_master', 'legend')
       then case when verification = 'approved' then 'elite' else 'advanced' end
@@ -33,14 +35,15 @@ select id, game, patch,
 from tier_lists;
 
 create view band_results as
-select b.game, b.patch, b.band, p.character_id,
+select b.game, b.category, b.patch, b.band, p.item_id,
   avg(p.score)::float as avg_score,
   count(*)::int as votes,
   (select count(*) from list_bands b2
-     where b2.game = b.game and b2.patch = b.patch and b2.band = b.band)::int as lists
+     where b2.game = b.game and b2.category = b.category
+       and b2.patch = b.patch and b2.band = b.band)::int as lists
 from list_bands b
 join tier_placements p on p.list_id = b.id
-group by b.game, b.patch, b.band, p.character_id;
+group by b.game, b.category, b.patch, b.band, p.item_id;
 
 alter table tier_lists enable row level security;
 alter table tier_placements enable row level security;
