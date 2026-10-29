@@ -1,6 +1,8 @@
 // Street Fighter 6 game data. Check the roster against the latest DLC before launch.
 export const GAME = "sf6";
 export const CURRENT_PATCH = "2026-10";
+// What the tier list ranks. Weapons or abilities tabs would add their own category.
+export const CATEGORY = "characters";
 
 export const CHARACTERS = [
   "Ryu", "Luke", "Jamie", "Chun-Li", "Guile", "Kimberly", "Juri", "Ken",

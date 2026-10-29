@@ -15,8 +15,8 @@ export default function Results({ refreshKey }: { refreshKey: number }) {
 
   const rows = results.filter((r) => r.band === band);
   const lists = rows[0]?.lists ?? 0;
-  const placements = Object.fromEntries(rows.map((r) => [r.character_id, Math.round(r.avg_score)]));
-  const avg = Object.fromEntries(rows.map((r) => [r.character_id, r.avg_score.toFixed(1)]));
+  const placements = Object.fromEntries(rows.map((r) => [r.item_id, Math.round(r.avg_score)]));
+  const avg = Object.fromEntries(rows.map((r) => [r.item_id, r.avg_score.toFixed(1)]));
 
   return (
     <div className="space-y-4">
