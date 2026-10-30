@@ -40,21 +40,29 @@ type Props = {
   selected?: boolean;
   detail?: string;
   onClick?: () => void;
+  // Set by DraggableTile so a draggable tile looks the same as a tappable one.
+  buttonRef?: (el: HTMLButtonElement | null) => void;
+  dragProps?: React.HTMLAttributes<HTMLButtonElement>;
+  dragging?: boolean;
 };
 
-export default function CharacterTile({ id, selected, detail, onClick }: Props) {
+export default function CharacterTile({ id, selected, detail, onClick, buttonRef, dragProps, dragging }: Props) {
   return (
     <button
+      ref={buttonRef}
       type="button"
+      {...dragProps}
       onClick={(e) => {
         if (!onClick) return;
         e.stopPropagation();
         onClick();
       }}
-      disabled={!onClick}
+      disabled={!onClick && !dragProps}
       className={`flex items-center gap-2 rounded-md border bg-neutral-900 py-1 pl-1 pr-2.5 text-sm transition
         ${selected ? "border-emerald-500 ring-2 ring-emerald-500/60" : "border-neutral-700"}
-        ${onClick ? "hover:border-neutral-500 active:scale-95" : "cursor-default"}`}
+        ${onClick ? "hover:border-neutral-500 active:scale-95" : "cursor-default"}
+        ${dragProps ? "touch-manipulation cursor-grab active:cursor-grabbing" : ""}
+        ${dragging ? "opacity-30" : ""}`}
     >
       <Portrait id={id} />
       <span className="whitespace-nowrap font-medium">{nameOf(id)}</span>
