@@ -1,26 +1,42 @@
-# SF6 Community Tier List
+# Fighting Game Community Tier Lists
 
-Street Fighter 6 tier lists voted by the community, split by player rank.
+Tier lists for ten fighting games, voted by the community and split by player rank.
+Street Fighter 6 is at `/`; the others are at `/tekken8`, `/smash`, `/mk1`, `/ggst`, `/2xko`,
+`/brawlhalla`, `/rivals2`, `/cotw` and `/gbvsr`.
 
 ## Run it
 
 ```
 npm install
 npm run dev
+npm test
 ```
 
 With no settings it runs in demo mode and saves votes in your browser only.
 
 ## Go live with Supabase (free tier)
 
-1. Create a Supabase project, then run `supabase/schema.sql`, `supabase/002_profiles.sql`, `supabase/003_edit_lists.sql` and `supabase/004_save_list.sql` in its SQL editor, in that order.
+1. Create a Supabase project, then run `supabase/schema.sql`, `supabase/002_profiles.sql`, `supabase/003_edit_lists.sql`, `supabase/004_save_list.sql` and `supabase/005_games.sql` in its SQL editor, in that order.
 2. Under Authentication, turn on anonymous sign-ins.
 3. Copy `.env.example` to `.env.local` and fill in the project URL and publishable key.
 4. Deploy to Vercel with the same settings.
 
+## Games, rosters and rank ladders
+
+Every game lives in `src/lib/games.json`: its roster, patch and rank ladder. Each rank sits in
+one of four bands (Beginner, Intermediate, Advanced, Elite). Elite ranks need proof.
+
+- New character or balance patch: add the name and bump that game's `patch`, so a new round of
+  lists starts. Players' last lists pre-fill the new patch.
+- Changed rank ladder or new game: edit the JSON, run `npm run ranks-sql`, then run the
+  `insert into game_ranks` part of `supabase/005_games.sql` in the Supabase SQL editor (the
+  whole file is safe to re-run). `npm test` fails if the JSON and the SQL disagree.
+
+Character ids come from names, so renaming a character orphans its existing votes.
+
 ## Checking top-rank proof
 
-Grand Master, Ultimate Master and Legend lists count in the Advanced band until checked.
+Elite ranks (SF6 Grand Master and up, Tekken King and up, and so on) count in the Advanced band until checked.
 Open the `tier_lists` table, look at `proof_url` for rows marked `pending`, and set
 `verification` to `approved` or `rejected`.
 
@@ -52,6 +68,6 @@ can't leave a list half replaced.
 
 ## Character portraits
 
-Drop one image per character into `public/characters/`, named by the character id
-(`ryu.png`, `chun-li.png`, `e-honda.webp`). See `public/characters/README.md` for the
+Drop one image per character into `public/characters/<game id>/`, named by the character id
+(`sf6/ryu.png`, `sf6/chun-li.png`, `tekken8/jin-kazama.webp`). See `public/characters/README.md` for the
 copyright note. Characters without an image show coloured initials.

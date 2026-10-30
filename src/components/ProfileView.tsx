@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { useSession } from "@/lib/account";
 import { getListsFor, getProfileByUsername, type Profile, type PublicList } from "@/lib/profiles";
 import { demoMode } from "@/lib/store";
-import { RANKS } from "@/lib/sf6";
+import { getGame } from "@/lib/games";
 import TierRows from "@/components/TierRows";
 import ShareButton from "@/components/ShareButton";
+import { GameProvider } from "@/components/GameContext";
 
 // Stable colour per username, matching the character badges.
 function avatarColour(name: string) {
@@ -14,8 +15,6 @@ function avatarColour(name: string) {
   for (const ch of name) hash = (hash * 31 + ch.charCodeAt(0)) % 360;
   return `hsl(${hash} 45% 35%)`;
 }
-
-const GAME_NAMES: Record<string, string> = { sf6: "Street Fighter 6" };
 
 export default function ProfileView({ username }: { username: string }) {
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined);
@@ -36,7 +35,7 @@ export default function ProfileView({ username }: { username: string }) {
 
   return (
     <div className="mx-auto min-h-screen max-w-4xl space-y-8 px-4 py-8">
-      <Link href="/" className="text-sm font-black tracking-tight">← SF6 TIER LIST</Link>
+      <Link href="/" className="text-sm font-black tracking-tight">← TIER LISTS</Link>
       {demoMode ? (
         <p className="text-neutral-400">Profiles only work on the live site.</p>
       ) : error ? (
@@ -68,7 +67,7 @@ export default function ProfileView({ username }: { username: string }) {
               <p className="text-neutral-400">@{profile.username}</p>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
-              <ShareButton url={typeof window === "undefined" ? "" : window.location.href} title={`@${profile.username}'s SF6 tier list`} />
+              <ShareButton url={typeof window === "undefined" ? "" : window.location.href} title={`@${profile.username}'s tier lists`} />
               <Link href="/" className="rounded-full border border-neutral-600 px-4 py-2 text-sm font-semibold hover:border-neutral-400">
                 Make your own
               </Link>
@@ -76,12 +75,13 @@ export default function ProfileView({ username }: { username: string }) {
           </header>
           {lists.length === 0 && <p className="text-neutral-400">No tier lists yet.</p>}
           {lists.map((list) => {
-            const rank = RANKS.find((r) => r.id === list.claimed_rank)?.label ?? list.claimed_rank;
+            const game = getGame(list.game);
+            const rank = game?.ranks.find((r) => r.id === list.claimed_rank)?.label ?? list.claimed_rank;
             return (
               <section key={`${list.game}-${list.category}-${list.patch}`} className="space-y-3">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <h2 className="text-lg font-semibold">
-                    {GAME_NAMES[list.game] ?? list.game} · {list.category}
+                    {game?.name ?? list.game} · {list.category}
                   </h2>
                   <span className="text-sm text-neutral-400">Patch {list.patch}</span>
                   <span className="text-sm text-neutral-400">
@@ -98,7 +98,9 @@ export default function ProfileView({ username }: { username: string }) {
                     </span>
                   )}
                 </div>
-                <TierRows placements={list.placements} />
+                <GameProvider id={list.game}>
+                  <TierRows placements={list.placements} />
+                </GameProvider>
               </section>
             );
           })}

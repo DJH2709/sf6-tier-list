@@ -4,12 +4,12 @@ import {
   DndContext, DragOverlay, MouseSensor, TouchSensor, pointerWithin, useDroppable, useSensor, useSensors,
   type DragEndEvent, type DragStartEvent,
 } from "@dnd-kit/core";
-import { CHARACTERS, CURRENT_PATCH, RANKS } from "@/lib/sf6";
 import { getMyLists, submitList, type MyList, type Placements } from "@/lib/store";
 import type { Profile } from "@/lib/account";
 import TierRows, { scoreFromDropId } from "./TierRows";
 import CharacterTile, { nameOf } from "./CharacterTile";
 import DraggableTile from "./DraggableTile";
+import { useGame } from "./GameContext";
 
 function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
@@ -51,6 +51,8 @@ type Props = {
 };
 
 export default function MakeList({ profile, onSubmitted }: Props) {
+  const game = useGame();
+  const CHARACTERS = game.characters;
   const [placements, setPlacements] = useState<Placements>({});
   const [selected, setSelected] = useState<string | null>(CHARACTERS[0].id);
   const [dragging, setDragging] = useState<string | null>(null);
@@ -73,10 +75,10 @@ export default function MakeList({ profile, onSubmitted }: Props) {
   );
 
   useEffect(() => {
-    getMyLists().then((lists) => {
+    getMyLists(game).then((lists) => {
       if (touched.current) return;
-      const current = lists.find((l) => l.patch === CURRENT_PATCH);
-      const previous = lists.find((l) => l.patch !== CURRENT_PATCH);
+      const current = lists.find((l) => l.patch === game.patch);
+      const previous = lists.find((l) => l.patch !== game.patch);
       const from = current ?? previous;
       if (!from) return;
       // Characters that joined since the old list stay unplaced.
@@ -90,11 +92,11 @@ export default function MakeList({ profile, onSubmitted }: Props) {
       if (current) setExisting(current);
       else setBasedOn(from.patch);
     }, (e) => setStatus({ text: e instanceof Error ? e.message : String(e), error: true }));
-  }, []);
+  }, [game, CHARACTERS]);
 
   const unplaced = CHARACTERS.filter((c) => !(c.id in placements));
   const placedCount = CHARACTERS.length - unplaced.length;
-  const needsProof = RANKS.find((r) => r.id === rank)?.needsProof;
+  const needsProof = game.ranks.find((r) => r.id === rank)?.needsProof;
 
   function placeId(id: string, score: number) {
     touched.current = true;
@@ -133,9 +135,9 @@ export default function MakeList({ profile, onSubmitted }: Props) {
     setSaving(true);
     setStatus(null);
     try {
-      const { updated } = await submitList(rank, placements, needsProof ? proofUrl : undefined, isPublic);
+      const { updated } = await submitList(game, rank, placements, needsProof ? proofUrl : undefined, isPublic);
       setStatus({ text: updated ? "Updated." : "Saved. Thanks for voting." });
-      setExisting((e) => e ?? { id: "", patch: CURRENT_PATCH, rank, proofUrl: proofUrl || null, verification: "none", isPublic, placements });
+      setExisting((e) => e ?? { id: "", patch: game.patch, rank, proofUrl: proofUrl || null, verification: "none", isPublic, placements });
       setBasedOn(null);
       onSubmitted({ isPublic, updated });
     } catch (e) {
@@ -149,7 +151,7 @@ export default function MakeList({ profile, onSubmitted }: Props) {
     <div className="space-y-8">
       {existing && (
         <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
-          You&apos;re editing the list you submitted for patch {CURRENT_PATCH}. Saving replaces it.
+          You&apos;re editing the list you submitted for {game.short} patch {game.patch}. Saving replaces it.
         </p>
       )}
       {basedOn && (
@@ -165,15 +167,15 @@ export default function MakeList({ profile, onSubmitted }: Props) {
           className="w-full rounded-lg border border-neutral-700 bg-neutral-900 p-2.5 sm:w-72"
         >
           <option value="">Choose your rank</option>
-          {RANKS.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
+          {game.ranks.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
         </select>
         {needsProof && (
           <label className="block space-y-1 text-sm">
-            <span>Link to your Buckler&apos;s Boot Camp profile</span>
+            <span>Link to your {game.proofSite}</span>
             <input
               value={proofUrl}
               onChange={(e) => setProofUrl(e.target.value)}
-              placeholder="https://www.streetfighter.com/6/buckler/profile/..."
+              placeholder={game.proofPlaceholder}
               className="block w-full rounded-lg border border-neutral-700 bg-neutral-900 p-2.5"
             />
             <span className="block text-neutral-400">
@@ -189,7 +191,7 @@ export default function MakeList({ profile, onSubmitted }: Props) {
           <div className="flex items-center justify-between text-sm">
             <span>
               {selected ? (
-                <>Placing <b className="text-emerald-300">{nameOf(selected)}</b>. Tap a tier, or drag.</>
+                <>Placing <b className="text-emerald-300">{nameOf(game, selected)}</b>. Tap a tier, or drag.</>
               ) : (
                 "All placed. Tap or drag any character to move them."
               )}

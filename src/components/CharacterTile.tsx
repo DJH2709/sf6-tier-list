@@ -1,11 +1,12 @@
-import { CHARACTERS } from "@/lib/sf6";
+import type { Game } from "@/lib/games";
 import portraits from "@/lib/portraits.json";
+import { useGame } from "./GameContext";
 
-export function nameOf(id: string) {
-  return CHARACTERS.find((c) => c.id === id)?.name ?? id;
+export function nameOf(game: Game, id: string) {
+  return game.characters.find((c) => c.id === id)?.name ?? id;
 }
 
-// Characters without a portrait in public/characters get a stable colour and initials.
+// Characters without a portrait in public/characters/<game> get a stable colour and initials.
 function badge(name: string) {
   const words = name.split(/[\s.\-]+/).filter(Boolean);
   const initials = (words.length > 1 ? words[0][0] + words[1][0] : name.slice(0, 2)).toUpperCase();
@@ -17,8 +18,9 @@ function badge(name: string) {
 const PORTRAITS = portraits as Record<string, string>;
 
 export function Portrait({ id, size = "h-7 w-7" }: { id: string; size?: string }) {
-  const name = nameOf(id);
-  const src = PORTRAITS[id];
+  const game = useGame();
+  const name = nameOf(game, id);
+  const src = PORTRAITS[`${game.id}/${id}`];
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element -- static files, no optimisation needed
     return <img src={src} alt="" className={`${size} shrink-0 rounded object-cover`} />;
@@ -47,6 +49,7 @@ type Props = {
 };
 
 export default function CharacterTile({ id, selected, detail, onClick, buttonRef, dragProps, dragging }: Props) {
+  const game = useGame();
   return (
     <button
       ref={buttonRef}
@@ -65,7 +68,7 @@ export default function CharacterTile({ id, selected, detail, onClick, buttonRef
         ${dragging ? "opacity-30" : ""}`}
     >
       <Portrait id={id} />
-      <span className="whitespace-nowrap font-medium">{nameOf(id)}</span>
+      <span className="whitespace-nowrap font-medium">{nameOf(game, id)}</span>
       {detail && <span className="text-xs tabular-nums text-neutral-400">{detail}</span>}
     </button>
   );

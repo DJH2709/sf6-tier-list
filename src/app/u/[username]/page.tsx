@@ -9,9 +9,9 @@ type Params = { params: Promise<{ username: string }> };
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { username } = await params;
   const profile = await getProfileByUsername(username).catch(() => null);
-  if (!profile) return { title: "SF6 Community Tier List" };
-  const title = `${profile.display_name || profile.username}'s SF6 tier list`;
-  const description = `See how @${profile.username} ranks the Street Fighter 6 roster, then make your own.`;
+  if (!profile) return { title: "Fighting Game Community Tier Lists" };
+  const title = `${profile.display_name || profile.username}'s tier lists`;
+  const description = `See how @${profile.username} ranks their fighting game rosters, then make your own.`;
   return {
     title,
     description,

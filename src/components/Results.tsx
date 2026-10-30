@@ -1,17 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
-import { BANDS, MIN_LISTS, type Band } from "@/lib/sf6";
+import { bandsFor, MIN_LISTS, type Band } from "@/lib/games";
 import { getResults, type BandResult } from "@/lib/store";
 import TierRows from "./TierRows";
+import { useGame } from "./GameContext";
 
 export default function Results({ refreshKey, onMakeList }: { refreshKey: number; onMakeList: () => void }) {
+  const game = useGame();
+  const BANDS = bandsFor(game);
   const [band, setBand] = useState<Band>("beginner");
   const [results, setResults] = useState<BandResult[]>([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getResults().then(setResults, (e) => setError(String(e.message ?? e)));
-  }, [refreshKey]);
+    getResults(game).then(setResults, (e) => setError(String(e.message ?? e)));
+  }, [game, refreshKey]);
 
   const listsIn = (b: Band) => results.find((r) => r.band === b)?.lists ?? 0;
   // Highest average first, so order within a tier means something.
