@@ -2,7 +2,7 @@
 import { useState } from "react";
 import MakeList from "@/components/MakeList";
 import Results from "@/components/Results";
-import { demoMode } from "@/lib/store";
+import { demoMode, missingConfig } from "@/lib/store";
 import { CURRENT_PATCH } from "@/lib/sf6";
 
 export default function Home() {
@@ -16,8 +16,13 @@ export default function Home() {
         <p className="text-neutral-400">
           How players at each rank see the Street Fighter 6 roster. Patch {CURRENT_PATCH}.
         </p>
-        {demoMode && (
-          <p className="text-sm text-yellow-400">Demo mode: votes are saved in this browser only.</p>
+        {missingConfig ? (
+          <p className="rounded bg-red-900 p-3 text-sm text-red-100">
+            Setup problem: this deployment has no Supabase settings, so votes can&apos;t be saved. In Vercel,
+            add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY for this environment, then redeploy.
+          </p>
+        ) : (
+          demoMode && <p className="text-sm text-yellow-400">Demo mode: votes are saved in this browser only.</p>
         )}
       </header>
       <nav className="flex gap-2">

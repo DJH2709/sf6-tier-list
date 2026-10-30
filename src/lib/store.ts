@@ -11,6 +11,9 @@ const supabase: SupabaseClient | null = url && key ? createClient(url, key) : nu
 
 // Without Supabase settings the site runs in demo mode, saving to this browser only.
 export const demoMode = !supabase;
+// Vercel sets NEXT_PUBLIC_VERCEL_ENV. A deployed site with no Supabase settings must not
+// quietly fall back to demo mode, or votes vanish without anyone noticing.
+export const missingConfig = demoMode && !!process.env.NEXT_PUBLIC_VERCEL_ENV;
 const DEMO_KEY = "sf6-demo-lists";
 
 type DemoList = { rank: string; placements: Placements };
@@ -25,6 +28,7 @@ function readDemo(): DemoList[] {
 
 export async function submitList(rank: string, placements: Placements, proofUrl?: string) {
   const needsProof = RANKS.find((r) => r.id === rank)?.needsProof;
+  if (missingConfig) throw new Error("Votes can't be saved: this deployment has no Supabase settings.");
   if (!supabase) {
     // Demo mode keeps one list per browser, like one per account.
     localStorage.setItem(DEMO_KEY, JSON.stringify([{ rank, placements }]));
