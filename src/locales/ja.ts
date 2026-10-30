@@ -5,8 +5,6 @@ import type { Messages } from "./en";
 const ja: Messages = {
   "site.title": "格ゲー みんなのキャラランク",
   "site.description": "格闘ゲームのキャラランクを、プレイヤーのランク帯ごとにみんなで投票。",
-  "site.brand": "キャラランク",
-  "site.gameBrand": "{game} キャラランク",
   "site.gameTitle": "{game} みんなのキャラランク",
   "site.gameDescription": "{game}のキャラランクを、プレイヤーのランク帯ごとにみんなで投票。",
   "site.footer": "ファンによる非公式サイトです。{owner}とは関係ありません。ゲーム名とキャラクター名は各権利者に帰属します。",
@@ -136,7 +134,7 @@ const ja: Messages = {
   "follow.pickUsername": "フォローやいいねをするには、ホームでユーザー名を決めてください。",
   "follow.updateFailed": "更新できませんでした。もう一度お試しください。",
   "following.title": "フォロー中",
-  "following.metaTitle": "フォロー中 · スト6 みんなのキャラランク",
+  "following.metaTitle": "フォロー中",
   "following.demoOnly": "フォローは公開サイトでのみ使えます。",
   "following.signedOut": "プレイヤーをフォローするには、上からサインインして、ホームでユーザー名を決めてください。",
   "following.empty": "まだ誰もフォローしていません。プレイヤーのプロフィールでフォローすると、ここにキャラランクが表示されます。",
@@ -152,7 +150,7 @@ const ja: Messages = {
 
   "players.link": "プレイヤー",
   "players.title": "プレイヤー",
-  "players.metaTitle": "プレイヤー · スト6 みんなのキャラランク",
+  "players.metaTitle": "プレイヤー",
   "players.mostLiked": "いいねが多い順",
   "players.newest": "新しい順",
   "players.empty": "まだプレイヤーがいません。サインインしてユーザー名を決めれば、あなたが最初です。",

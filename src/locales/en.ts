@@ -4,8 +4,6 @@
 const en = {
   "site.title": "Fighting Game Community Tier Lists",
   "site.description": "Fighting game tier lists voted by the community, split by player rank.",
-  "site.brand": "TIER LISTS",
-  "site.gameBrand": "{game} TIER LIST",
   "site.gameTitle": "{game} Community Tier List",
   "site.gameDescription": "{game} tier lists voted by the community, split by player rank.",
   "site.footer": "A fan project. Not affiliated with or endorsed by {owner}. Game and character names belong to their owners.",
@@ -135,7 +133,7 @@ const en = {
   "follow.pickUsername": "Pick a username on the home page to follow players and like lists.",
   "follow.updateFailed": "Couldn't update. Try again.",
   "following.title": "Following",
-  "following.metaTitle": "Following · SF6 Community Tier List",
+  "following.metaTitle": "Following",
   "following.demoOnly": "Following only works on the live site.",
   "following.signedOut": "Sign in at the top, then pick a username on the home page, to follow players.",
   "following.empty": "You don't follow anyone yet. Open a player's profile and press Follow to see their lists here.",
@@ -151,7 +149,7 @@ const en = {
 
   "players.link": "Players",
   "players.title": "Players",
-  "players.metaTitle": "Players · SF6 Community Tier List",
+  "players.metaTitle": "Players",
   "players.mostLiked": "Most liked",
   "players.newest": "Newest",
   "players.empty": "No players yet. Sign in and pick a username to be the first.",

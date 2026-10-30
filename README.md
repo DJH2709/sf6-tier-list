@@ -1,4 +1,6 @@
-# Fighting Game Community Tier Lists
+# LobbyTier
+
+Community tier lists at https://lobbytier.com.
 
 Tier lists for ten fighting games, voted by the community and split by player rank.
 Street Fighter 6 is at `/`; the others are at `/tekken8`, `/smash`, `/mk1`, `/ggst`,

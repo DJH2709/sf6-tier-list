@@ -1,11 +1,12 @@
 import { ImageResponse } from "next/og";
 import { DEFAULT_GAME, getGame, TIERS } from "@/lib/games";
 import { getListsFor, getProfileByUsername } from "@/lib/profiles";
+import { SITE_NAME } from "@/lib/site";
 
 // The picture Discord, X and others show when someone shares a profile link.
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Fighting game tier list";
+export const alt = `${SITE_NAME} tier list`;
 
 // Same as TIER_COLOURS in TierRows.tsx, as hex because this isn't rendered with Tailwind.
 const TIER_HEX: Record<string, string> = {
@@ -18,14 +19,14 @@ export default async function Image({ params }: { params: Promise<{ username: st
   // Signed out, so only public lists come back. Newest first.
   const list = profile ? (await getListsFor(profile.id).catch(() => []))[0] : undefined;
   const game = (list && getGame(list.game)) || DEFAULT_GAME;
-  const name = profile ? profile.display_name || profile.username : "Fighting Game Tier Lists";
+  const name = profile ? profile.display_name || profile.username : SITE_NAME;
 
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", background: "#0a0a0a", color: "#f5f5f5", padding: 40 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 24 }}>
           <div style={{ display: "flex", fontSize: 44, fontWeight: 800 }}>{profile ? `${name}'s tier list` : name}</div>
-          <div style={{ display: "flex", fontSize: 26, color: "#34d399", fontWeight: 700 }}>{game.short.toUpperCase()} TIER LIST</div>
+          <div style={{ display: "flex", fontSize: 26, color: "#34d399", fontWeight: 700 }}>{game.short.toUpperCase()} · {SITE_NAME.toUpperCase()}</div>
         </div>
         {list ? (
           <div style={{ display: "flex", flexDirection: "column", flex: 1, border: "2px solid #262626", borderRadius: 16, overflow: "hidden" }}>
