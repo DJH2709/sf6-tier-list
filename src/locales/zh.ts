@@ -149,6 +149,14 @@ const zh: Messages = {
   "tag.influencer": "博主",
   "tag.influencerTitle": "制作街头霸王相关内容",
 
+  "players.link": "玩家",
+  "players.title": "玩家",
+  "players.metaTitle": "玩家 · 街霸6 社区强度榜",
+  "players.mostLiked": "最多赞",
+  "players.newest": "最新",
+  "players.empty": "还没有玩家。登录并设置用户名，成为第一位吧。",
+  "players.noLists": "没有公开榜单",
+
   "share.button": "分享",
   "share.copied": "链接已复制",
 

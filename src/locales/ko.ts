@@ -149,6 +149,14 @@ const ko: Messages = {
   "tag.influencer": "인플루언서",
   "tag.influencerTitle": "스트리트 파이터 콘텐츠를 만듭니다",
 
+  "players.link": "플레이어",
+  "players.title": "플레이어",
+  "players.metaTitle": "플레이어 · 스파6 커뮤니티 티어 리스트",
+  "players.mostLiked": "좋아요 많은 순",
+  "players.newest": "최신순",
+  "players.empty": "아직 플레이어가 없습니다. 로그인하고 사용자 이름을 정해 첫 번째가 되어 보세요.",
+  "players.noLists": "공개 리스트 없음",
+
   "share.button": "공유",
   "share.copied": "링크 복사됨",
 

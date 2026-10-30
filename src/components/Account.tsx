@@ -109,10 +109,13 @@ export default function AccountBar({ account }: { account: ReturnType<typeof use
   if (demoMode || !account.loaded) return null;
   const { signedIn, profile } = account;
 
+  const players = <Link href="/players" className="text-neutral-300 hover:text-white">{t("players.link")}</Link>;
+
   return (
     <div className="flex flex-col items-end gap-2 text-sm">
       {signedIn ? (
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
+          {players}
           {profile && (
             <Link href={`/u/${profile.username}`} className="flex items-center gap-2 font-semibold text-emerald-300 hover:underline">
               {profile.avatar_url && (
@@ -126,7 +129,10 @@ export default function AccountBar({ account }: { account: ReturnType<typeof use
           <button onClick={signOut} className="text-neutral-400 hover:text-white">{t("account.signOut")}</button>
         </div>
       ) : (
-        <SignInButtons onError={setAuthError} />
+        <div className="flex items-start gap-3">
+          <span className="pt-2">{players}</span>
+          <SignInButtons onError={setAuthError} />
+        </div>
       )}
       {authError && (
         <div className="max-w-sm rounded-lg bg-red-950 p-3 text-left text-red-200">
