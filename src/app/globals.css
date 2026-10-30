@@ -3,3 +3,8 @@
 body {
   font-family: system-ui, Arial, Helvetica, sans-serif;
 }
+
+/* Korean wraps between words, not inside them. */
+:lang(ko) {
+  word-break: keep-all;
+}

@@ -39,6 +39,37 @@ and makes their tier lists public at `/u/<username>`.
 4. In Supabase, go to Authentication → URL Configuration. Set Site URL to your live site, and
    add `https://*-<your-vercel-team>.vercel.app/**` to Redirect URLs so previews can sign in.
 
+## More sign-in options (Google, Kakao, X)
+
+Discord is the default. To add more buttons, switch each provider on in Supabase first, then
+list them in the `NEXT_PUBLIC_AUTH_PROVIDERS` setting in Vercel (e.g. `discord,google,kakao,x`)
+and redeploy. A provider that's listed but not switched on gives a broken button. Every
+provider uses the same redirect: `https://<your-project-ref>.supabase.co/auth/v1/callback`.
+The button order follows the visitor's language (Kakao first in Korean, X first in Japanese).
+
+- **Google** (works everywhere except mainland China): in Google Cloud Console, set up the
+  OAuth consent screen (External), then Credentials → Create OAuth client ID → Web application,
+  with the redirect above. Paste the client ID and secret into Supabase → Sign In / Providers → Google.
+- **Kakao** (Korea): on developers.kakao.com, add an app. Turn on Kakao Login and add the redirect,
+  under Security generate a client secret, and under consent items turn on nickname and profile
+  image. The REST API key is the client ID. Paste both into Supabase → Kakao. Kakao only shares
+  email with business-verified apps, so turn on "Allow users without an email" in Supabase if it's offered.
+- **X** (Japan): on developer.x.com, create a project and app, open User authentication settings,
+  pick OAuth 2.0 and Web App, and add the redirect and your site URL. Paste the client ID and
+  secret into Supabase → X / Twitter (OAuth 2.0).
+
+Avatars are only stored from Discord (the database only accepts cdn.discordapp.com), so players
+signing in another way get coloured initials.
+
+## Languages
+
+The site is in English, Japanese, Korean and Simplified Chinese. It follows the browser's
+language until someone picks one in the switcher, which is remembered in a cookie. UI text lives
+in `src/locales/`: add new text to `en.ts`, and other languages show English for it until it's
+translated. `npm run i18n:check` lists what each language is missing. Character names use
+Capcom's official names per language (`src/locales/characters.ts`). The non-English text is a
+machine-assisted first pass and says so in the footer; it needs a native speaker's review.
+
 ## Editing and private lists
 
 A player has one list per patch. Opening "Make your list" again loads that list for editing,
