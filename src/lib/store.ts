@@ -32,6 +32,14 @@ function readDemo(): DemoList[] {
   }
 }
 
+// "Failed to fetch" means the browser never reached Supabase: a wrong URL setting,
+// a paused project or an ad blocker. Say which address it tried.
+function explain(error: { message: string }) {
+  return /fetch/i.test(error.message)
+    ? new Error(`Couldn't reach Supabase at ${url}. Check the URL setting in Vercel, and try with ad blockers off.`)
+    : error;
+}
+
 export async function submitList(rank: string, placements: Placements, proofUrl?: string) {
   const needsProof = RANKS.find((r) => r.id === rank)?.needsProof;
   if (missingConfig) throw new Error("Votes can't be saved: this deployment has no Supabase settings.");
@@ -43,7 +51,7 @@ export async function submitList(rank: string, placements: Placements, proofUrl?
   const { data: session } = await supabase.auth.getSession();
   if (!session.session) {
     const { error } = await supabase.auth.signInAnonymously();
-    if (error) throw error;
+    if (error) throw explain(error);
   }
   const { data: list, error } = await supabase
     .from("tier_lists")
@@ -57,10 +65,10 @@ export async function submitList(rank: string, placements: Placements, proofUrl?
     })
     .select("id")
     .single();
-  if (error) throw error.code === "23505" ? new Error("You've already submitted a list for this patch.") : error;
+  if (error) throw error.code === "23505" ? new Error("You've already submitted a list for this patch.") : explain(error);
   const rows = Object.entries(placements).map(([item_id, score]) => ({ list_id: list.id, item_id, score }));
   const { error: placementError } = await supabase.from("tier_placements").insert(rows);
-  if (placementError) throw placementError;
+  if (placementError) throw explain(placementError);
 }
 
 export async function getResults(): Promise<BandResult[]> {
@@ -71,7 +79,7 @@ export async function getResults(): Promise<BandResult[]> {
       .eq("game", GAME)
       .eq("category", CATEGORY)
       .eq("patch", CURRENT_PATCH);
-    if (error) throw error;
+    if (error) throw explain(error);
     return data as BandResult[];
   }
   const totals = new Map<string, BandResult>();
