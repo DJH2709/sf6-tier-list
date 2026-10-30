@@ -3,7 +3,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import {
-  createProfile, getProfileById, signInFresh, signInWithDiscord, signOut, suggestUsername, useSession, type Profile,
+  createProfile, discordAvatar, getProfileById, signInFresh, signInWithDiscord, signOut, suggestUsername, updateAvatar,
+  useSession, type Profile,
 } from "@/lib/account";
 import { demoMode } from "@/lib/store";
 
@@ -26,7 +27,16 @@ export function useAccount() {
       setLoaded(true);
       return;
     }
-    getProfileById(session!.user.id).then((p) => { setProfile(p); setLoaded(true); }, () => setLoaded(true));
+    getProfileById(session!.user.id).then((p) => {
+      // Keep the avatar in step with Discord without the player doing anything.
+      const avatar = discordAvatar(session!);
+      if (p && avatar && p.avatar_url !== avatar) {
+        updateAvatar(p.id, avatar);
+        p = { ...p, avatar_url: avatar };
+      }
+      setProfile(p);
+      setLoaded(true);
+    }, () => setLoaded(true));
   }, [ready, signedIn, session]);
 
   return { session, signedIn, profile, setProfile, loaded: ready && loaded };
@@ -44,7 +54,11 @@ export default function AccountBar({ account }: { account: ReturnType<typeof use
       {signedIn ? (
         <div className="flex items-center gap-3">
           {profile && (
-            <Link href={`/u/${profile.username}`} className="font-semibold text-emerald-300 hover:underline">
+            <Link href={`/u/${profile.username}`} className="flex items-center gap-2 font-semibold text-emerald-300 hover:underline">
+              {profile.avatar_url && (
+                // eslint-disable-next-line @next/next/no-img-element -- Discord CDN, no optimisation needed
+                <img src={profile.avatar_url} alt="" className="h-6 w-6 rounded-full" />
+              )}
               @{profile.username}
             </Link>
           )}
@@ -80,7 +94,11 @@ export function PickUsername({ session, onDone }: { session: Session; onDone: (p
     e.preventDefault();
     setError("");
     try {
-      await createProfile(username, String(session.user.user_metadata?.full_name ?? session.user.user_metadata?.name ?? ""));
+      await createProfile(
+        username,
+        String(session.user.user_metadata?.full_name ?? session.user.user_metadata?.name ?? ""),
+        discordAvatar(session),
+      );
       const p = await getProfileById(session.user.id);
       if (p) onDone(p);
     } catch (err) {
