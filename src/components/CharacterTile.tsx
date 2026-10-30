@@ -1,8 +1,10 @@
 import type { Game } from "@/lib/games";
 import portraits from "@/lib/portraits.json";
+import { useI18n } from "@/lib/i18n/client";
 import { useGame } from "./GameContext";
 
-export function nameOf(game: Game, id: string) {
+// The initials badge uses the English name so it looks the same in every language.
+function englishName(game: Game, id: string) {
   return game.characters.find((c) => c.id === id)?.name ?? id;
 }
 
@@ -19,7 +21,7 @@ const PORTRAITS = portraits as Record<string, string>;
 
 export function Portrait({ id, size = "h-7 w-7" }: { id: string; size?: string }) {
   const game = useGame();
-  const name = nameOf(game, id);
+  const name = englishName(game, id);
   const src = PORTRAITS[`${game.id}/${id}`];
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element -- static files, no optimisation needed
@@ -49,6 +51,7 @@ type Props = {
 };
 
 export default function CharacterTile({ id, selected, detail, onClick, buttonRef, dragProps, dragging }: Props) {
+  const { nameOf } = useI18n();
   const game = useGame();
   return (
     <button
@@ -68,7 +71,7 @@ export default function CharacterTile({ id, selected, detail, onClick, buttonRef
         ${dragging ? "opacity-30" : ""}`}
     >
       <Portrait id={id} />
-      <span className="whitespace-nowrap font-medium">{nameOf(game, id)}</span>
+      <span className="whitespace-nowrap font-medium">{nameOf(id, game)}</span>
       {detail && <span className="text-xs tabular-nums text-neutral-400">{detail}</span>}
     </button>
   );

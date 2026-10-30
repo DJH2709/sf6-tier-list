@@ -7,9 +7,12 @@ import {
 import { getMyLists, submitList, type MyList, type Placements } from "@/lib/store";
 import type { Profile } from "@/lib/account";
 import TierRows, { scoreFromDropId } from "./TierRows";
-import CharacterTile, { nameOf } from "./CharacterTile";
+import CharacterTile from "./CharacterTile";
 import DraggableTile from "./DraggableTile";
 import { useGame } from "./GameContext";
+import { useI18n } from "@/lib/i18n/client";
+import { errorText } from "@/lib/i18n/config";
+import { rankName } from "@/lib/i18n/games";
 
 function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
@@ -25,9 +28,16 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
   );
 }
 
+// Shows a translated sentence with the {name} part in bold, wherever the language puts it.
+function Highlighted({ text, name }: { text: string; name: string }) {
+  const [before, after = ""] = text.split("{name}");
+  return <>{before}<b className="text-emerald-300">{name}</b>{after}</>;
+}
+
 // Unplaced characters. Dropping a placed character here takes them back out of the list.
 function Roster({ ids, selected, onSelect }: { ids: string[]; selected: string | null; onSelect: (id: string) => void }) {
   const { setNodeRef, isOver } = useDroppable({ id: "roster" });
+  const { t } = useI18n();
   return (
     <div
       ref={setNodeRef}
@@ -39,7 +49,7 @@ function Roster({ ids, selected, onSelect }: { ids: string[]; selected: string |
         <DraggableTile key={id} id={id} selected={selected === id} onClick={() => onSelect(id)} />
       ))}
       {ids.length === 0 && (
-        <span className="text-xs text-neutral-500">All placed. Drop a character here to take them out.</span>
+        <span className="text-xs text-neutral-500">{t("make.rosterEmpty")}</span>
       )}
     </div>
   );
@@ -51,6 +61,7 @@ type Props = {
 };
 
 export default function MakeList({ profile, onSubmitted }: Props) {
+  const { t, nameOf } = useI18n();
   const game = useGame();
   const CHARACTERS = game.characters;
   const [placements, setPlacements] = useState<Placements>({});
@@ -91,8 +102,10 @@ export default function MakeList({ profile, onSubmitted }: Props) {
       setIsPublic(from.isPublic);
       if (current) setExisting(current);
       else setBasedOn(from.patch);
-    }, (e) => setStatus({ text: e instanceof Error ? e.message : String(e), error: true }));
-  }, [game, CHARACTERS]);
+    }, (e) => setStatus({ text: errorText(e, t), error: true }));
+    // Runs once per game (the page remounts on a new game); t only changes the wording of an error.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const unplaced = CHARACTERS.filter((c) => !(c.id in placements));
   const placedCount = CHARACTERS.length - unplaced.length;
@@ -136,12 +149,12 @@ export default function MakeList({ profile, onSubmitted }: Props) {
     setStatus(null);
     try {
       const { updated } = await submitList(game, rank, placements, needsProof ? proofUrl : undefined, isPublic);
-      setStatus({ text: updated ? "Updated." : "Saved. Thanks for voting." });
+      setStatus({ text: t(updated ? "make.updated" : "make.thanks") });
       setExisting((e) => e ?? { id: "", patch: game.patch, rank, proofUrl: proofUrl || null, verification: "none", isPublic, placements });
       setBasedOn(null);
       onSubmitted({ isPublic, updated });
     } catch (e) {
-      setStatus({ text: e instanceof Error ? e.message : "Something went wrong.", error: true });
+      setStatus({ text: errorText(e, t), error: true });
     } finally {
       setSaving(false);
     }
@@ -151,27 +164,27 @@ export default function MakeList({ profile, onSubmitted }: Props) {
     <div className="space-y-8">
       {existing && (
         <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
-          You&apos;re editing the list you submitted for {game.short} patch {game.patch}. Saving replaces it.
+          {t("make.editing", { patch: game.patch })}
         </p>
       )}
       {basedOn && (
         <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
-          New patch. This starts from your patch {basedOn} list, so move what&apos;s changed and submit.
+          {t("make.newPatch", { patch: basedOn })}
         </p>
       )}
 
-      <Step n={1} title="Your current rank">
+      <Step n={1} title={t("make.step1")}>
         <select
           value={rank}
           onChange={(e) => setRank(e.target.value)}
           className="w-full rounded-lg border border-neutral-700 bg-neutral-900 p-2.5 sm:w-72"
         >
-          <option value="">Choose your rank</option>
-          {game.ranks.map((r) => <option key={r.id} value={r.id}>{r.label}</option>)}
+          <option value="">{t("make.chooseRank")}</option>
+          {game.ranks.map((r) => <option key={r.id} value={r.id}>{rankName(game, r.id, t)}</option>)}
         </select>
         {needsProof && (
           <label className="block space-y-1 text-sm">
-            <span>Link to your {game.proofSite}</span>
+            <span>{t("make.proofLabel", { site: game.proofSite })}</span>
             <input
               value={proofUrl}
               onChange={(e) => setProofUrl(e.target.value)}
@@ -179,21 +192,21 @@ export default function MakeList({ profile, onSubmitted }: Props) {
               className="block w-full rounded-lg border border-neutral-700 bg-neutral-900 p-2.5"
             />
             <span className="block text-neutral-400">
-              Top ranks are checked by hand. Until then, your list counts in the Advanced band.
-              {existing?.verification === "approved" && " Changing your rank or link means it gets checked again."}
+              {t("make.proofNote")}
+              {existing?.verification === "approved" && ` ${t("make.proofRecheck")}`}
             </span>
           </label>
         )}
       </Step>
 
-      <Step n={2} title="Rank the roster">
+      <Step n={2} title={t("make.step2")}>
         <div className="sticky top-0 z-10 -mx-4 space-y-2 border-b border-neutral-800 bg-neutral-950/95 px-4 py-3 backdrop-blur sm:mx-0 sm:rounded-lg sm:border">
           <div className="flex items-center justify-between text-sm">
             <span>
               {selected ? (
-                <>Placing <b className="text-emerald-300">{nameOf(game, selected)}</b>. Tap a tier, or drag.</>
+                <Highlighted text={t("make.placing")} name={nameOf(selected, game)} />
               ) : (
-                "All placed. Tap or drag any character to move them."
+                t("make.allPlaced")
               )}
             </span>
             <span className="tabular-nums text-neutral-400">{placedCount}/{CHARACTERS.length}</span>
@@ -211,7 +224,7 @@ export default function MakeList({ profile, onSubmitted }: Props) {
           onDragCancel={() => setDragging(null)}
           accessibility={{
             screenReaderInstructions: {
-              draggable: "Press to select this character, then press a tier row to place them. With a mouse or touch you can also drag.",
+              draggable: t("make.dragHelp"),
             },
           }}
         >
@@ -231,16 +244,16 @@ export default function MakeList({ profile, onSubmitted }: Props) {
             onClick={() => { touched.current = true; setPlacements({}); setSelected(CHARACTERS[0].id); }}
             className="text-sm text-neutral-400 underline-offset-2 hover:underline"
           >
-            Start over
+            {t("make.startOver")}
           </button>
         )}
       </Step>
 
-      <Step n={3} title="Submit">
+      <Step n={3} title={t("make.step3")}>
         {profile && (
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} className="h-4 w-4 accent-emerald-500" />
-            Show on my profile (/u/{profile.username}). Untick to keep it private; it still counts in the results.
+            {t("make.showOnProfile", { username: profile.username })}
           </label>
         )}
         <button
@@ -248,7 +261,7 @@ export default function MakeList({ profile, onSubmitted }: Props) {
           onClick={submit}
           className="w-full rounded-lg bg-emerald-500 px-5 py-3 font-semibold text-neutral-950 transition hover:bg-emerald-400 disabled:pointer-events-none disabled:opacity-40 sm:w-auto"
         >
-          {saving ? "Saving..." : !rank ? "Choose your rank first" : unplaced.length > 0 ? `Place ${unplaced.length} more` : existing ? "Update my tier list" : "Submit my tier list"}
+          {saving ? t("make.saving") : !rank ? t("make.chooseRankFirst") : unplaced.length > 0 ? t("make.placeMore", { n: unplaced.length }) : t(existing ? "make.update" : "make.submit")}
         </button>
         {status && <p className={`text-sm ${status.error ? "text-red-400" : "text-lime-400"}`}>{status.text}</p>}
       </Step>

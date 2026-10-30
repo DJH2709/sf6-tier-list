@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import GameHome from "@/components/GameHome";
 import { DEFAULT_GAME, GAMES, getGame } from "@/lib/games";
+import { gameName } from "@/lib/i18n/games";
+import { getT } from "@/lib/i18n/server";
 
 type Params = { params: Promise<{ game: string }> };
 
@@ -12,12 +14,11 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const game = getGame((await params).game);
-  if (!game) return {};
-  return {
-    title: `${game.name} Community Tier List`,
-    description: `${game.name} tier lists voted by the community, split by player rank.`,
-  };
+  const found = getGame((await params).game);
+  if (!found) return {};
+  const t = await getT();
+  const game = gameName(found, t);
+  return { title: t("site.gameTitle", { game }), description: t("site.gameDescription", { game }) };
 }
 
 export default async function GamePage({ params }: Params) {

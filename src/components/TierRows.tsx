@@ -3,6 +3,7 @@ import { useDroppable } from "@dnd-kit/core";
 import { TIERS } from "@/lib/games";
 import CharacterTile from "./CharacterTile";
 import DraggableTile from "./DraggableTile";
+import { useI18n } from "@/lib/i18n/client";
 
 const TIER_COLOURS: Record<string, string> = {
   S: "bg-rose-500", A: "bg-orange-400", B: "bg-amber-300", C: "bg-lime-400", D: "bg-sky-400",
@@ -32,6 +33,7 @@ type RowProps = Props & {
 
 function Row({ tier, ids, over, rowRef, onRowClick, onCharacterClick, selected, detail, droppable }: RowProps) {
   const Tile = droppable ? DraggableTile : CharacterTile;
+  const { t } = useI18n();
   return (
     <div
       ref={rowRef}
@@ -57,7 +59,7 @@ function Row({ tier, ids, over, rowRef, onRowClick, onCharacterClick, selected, 
           />
         ))}
         {onRowClick && ids.length === 0 && (
-          <span className="self-center text-xs text-neutral-600">{droppable ? "Tap or drop here" : "Tap to place here"}</span>
+          <span className="self-center text-xs text-neutral-600">{t(droppable ? "tiers.tapOrDrop" : "tiers.tapToPlace")}</span>
         )}
       </div>
     </div>

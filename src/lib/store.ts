@@ -130,7 +130,7 @@ export async function submitList(game: Game, rank: string, placements: Placement
     p_is_public: isPublic,
     p_placements: placements,
   });
-  if (error) throw error.code === "23505" ? new Error("You've already submitted a list for this patch. Reload the page to edit it.") : explain(error);
+  if (error) throw error.code === "23505" ? new Error("error.alreadySubmitted") : explain(error);
   return { updated: !!updated };
 }
 
