@@ -62,6 +62,7 @@ export default function AccountBar({ account }: { account: ReturnType<typeof use
               @{profile.username}
             </Link>
           )}
+          {profile && <Link href="/following" className="text-neutral-300 hover:text-white">Following</Link>}
           <button onClick={signOut} className="text-neutral-400 hover:text-white">Sign out</button>
         </div>
       ) : (

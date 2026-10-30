@@ -4,7 +4,7 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "./store";
 
 export type { Profile, PublicList } from "./profiles";
-import type { Profile } from "./profiles";
+import { PROFILE_COLUMNS, type Profile } from "./profiles";
 
 export function useSession() {
   const [session, setSession] = useState<Session | null>(null);
@@ -47,7 +47,7 @@ export async function signOut() {
 
 export async function getProfileById(id: string): Promise<Profile | null> {
   if (!supabase) return null;
-  const { data, error } = await supabase.from("profiles").select("id, username, display_name, avatar_url").eq("id", id).maybeSingle();
+  const { data, error } = await supabase.from("profiles").select(PROFILE_COLUMNS).eq("id", id).maybeSingle();
   if (error) throw error;
   return data;
 }
