@@ -13,7 +13,7 @@ With no settings it runs in demo mode and saves votes in your browser only.
 
 ## Go live with Supabase (free tier)
 
-1. Create a Supabase project, then run `supabase/schema.sql`, `supabase/002_profiles.sql` and `supabase/003_edit_lists.sql` in its SQL editor, in that order.
+1. Create a Supabase project, then run `supabase/schema.sql`, `supabase/002_profiles.sql`, `supabase/003_edit_lists.sql` and `supabase/004_save_list.sql` in its SQL editor, in that order.
 2. Under Authentication, turn on anonymous sign-ins.
 3. Copy `.env.example` to `.env.local` and fill in the project URL and publishable key.
 4. Deploy to Vercel with the same settings.
@@ -46,7 +46,9 @@ and saving replaces it. When a new patch starts, the maker pre-fills from their 
 only move what changed. Signed-in players can untick "Show on my profile" to keep a list off
 their public page; it still counts in the community results.
 
-Run `supabase/003_edit_lists.sql` once to enable this (it also stores Discord avatars).
+Run `supabase/003_edit_lists.sql` once to enable this (it also stores Discord avatars), then
+`supabase/004_save_list.sql`, which saves a list and its placements in one go so a failed save
+can't leave a list half replaced.
 
 ## Character portraits
 

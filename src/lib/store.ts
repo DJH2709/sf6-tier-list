@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { effectiveBand, GAME, CATEGORY, CURRENT_PATCH, RANKS, type Band, type Verification } from "./sf6";
+import { effectiveBand, GAME, CATEGORY, CURRENT_PATCH, type Band, type Verification } from "./sf6";
 
 export type Placements = Record<string, number>; // item id -> score 1..5
 export type BandResult = { band: Band; item_id: string; avg_score: number; votes: number; lists: number };
@@ -48,8 +48,8 @@ function explain(error: { message: string; code?: string }) {
   if (/fetch/i.test(error.message)) {
     return new Error(`Couldn't reach Supabase at ${url}. Check the URL setting in Vercel, and try with ad blockers off.`);
   }
-  // Missing column or permission: the site is ahead of the database.
-  if (error.code === "42703" || error.code === "42501") {
+  // Missing column, permission or function: the site is ahead of the database.
+  if (error.code === "42703" || error.code === "42501" || error.code === "PGRST202") {
     return new Error("The database is behind the site. Run the latest file in supabase/ in the Supabase SQL editor (see README).");
   }
   return error;
@@ -102,7 +102,6 @@ export async function getMyLists(): Promise<MyList[]> {
 // Saves the player's list for the current patch, replacing the one they already have.
 // Returns whether an existing list was replaced.
 export async function submitList(rank: string, placements: Placements, proofUrl?: string, isPublic = true) {
-  const needsProof = RANKS.find((r) => r.id === rank)?.needsProof;
   if (missingConfig) throw new Error("Votes can't be saved: this deployment has no Supabase settings.");
   if (!supabase) {
     // Demo mode keeps one list per patch in this browser, like one per account.
@@ -112,54 +111,22 @@ export async function submitList(rank: string, placements: Placements, proofUrl?
     return { updated };
   }
   const { data: session } = await supabase.auth.getSession();
-  let userId = session.session?.user.id;
-  if (!userId) {
-    const { data, error } = await supabase.auth.signInAnonymously();
+  if (!session.session) {
+    const { error } = await supabase.auth.signInAnonymously();
     if (error) throw explain(error);
-    userId = data.user!.id;
   }
-  const { data: existing, error: findError } = await supabase
-    .from("tier_lists")
-    .select("id")
-    .eq("user_id", userId)
-    .eq("game", GAME)
-    .eq("category", CATEGORY)
-    .eq("patch", CURRENT_PATCH)
-    .maybeSingle();
-  if (findError) throw explain(findError);
-
-  let listId: string;
-  if (existing) {
-    // Verification is reset by a database trigger when the rank or proof link changes.
-    const { error } = await supabase
-      .from("tier_lists")
-      .update({ claimed_rank: rank, proof_url: proofUrl || null, is_public: isPublic })
-      .eq("id", existing.id);
-    if (error) throw explain(error);
-    const { error: clearError } = await supabase.from("tier_placements").delete().eq("list_id", existing.id);
-    if (clearError) throw explain(clearError);
-    listId = existing.id;
-  } else {
-    const { data: list, error } = await supabase
-      .from("tier_lists")
-      .insert({
-        game: GAME,
-        category: CATEGORY,
-        patch: CURRENT_PATCH,
-        claimed_rank: rank,
-        verification: needsProof && proofUrl ? "pending" : "none",
-        proof_url: proofUrl || null,
-        is_public: isPublic,
-      })
-      .select("id")
-      .single();
-    if (error) throw error.code === "23505" ? new Error("You've already submitted a list for this patch. Reload the page to edit it.") : explain(error);
-    listId = list.id;
-  }
-  const rows = Object.entries(placements).map(([item_id, score]) => ({ list_id: listId, item_id, score }));
-  const { error: placementError } = await supabase.from("tier_placements").insert(rows);
-  if (placementError) throw explain(placementError);
-  return { updated: !!existing };
+  // One database call, so a failed save can't leave the list half replaced.
+  const { data: updated, error } = await supabase.rpc("save_list", {
+    p_game: GAME,
+    p_category: CATEGORY,
+    p_patch: CURRENT_PATCH,
+    p_rank: rank,
+    p_proof_url: proofUrl || null,
+    p_is_public: isPublic,
+    p_placements: placements,
+  });
+  if (error) throw error.code === "23505" ? new Error("You've already submitted a list for this patch. Reload the page to edit it.") : explain(error);
+  return { updated: !!updated };
 }
 
 export async function getResults(): Promise<BandResult[]> {
