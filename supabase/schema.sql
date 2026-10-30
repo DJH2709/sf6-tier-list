@@ -58,6 +58,9 @@ create policy "own placements read" on tier_placements for select
 create policy "own placements insert" on tier_placements for insert
   with check (exists (select 1 from tier_lists l where l.id = list_id and l.user_id = auth.uid()));
 
+-- Signed-in users, anonymous ones included, use the authenticated role.
+grant select, insert on tier_lists, tier_placements to authenticated;
+
 -- Aggregates are public. Views run as the owner, so they bypass the row policies above.
 revoke all on list_bands from anon, authenticated;
 grant select on band_results to anon, authenticated;

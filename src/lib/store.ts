@@ -5,12 +5,21 @@ export type Placements = Record<string, number>; // item id -> score 1..5
 export type BandResult = { band: Band; item_id: string; avg_score: number; votes: number; lists: number };
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-// Supabase now issues sb_publishable_ keys; older projects still have an anon key.
-const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Supabase now issues sb_publishable_ keys; its Connect panel names the variable
+// ..._PUBLISHABLE_DEFAULT_KEY. Older projects still have an anon key.
+const key =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase: SupabaseClient | null = url && key ? createClient(url, key) : null;
 
 // Without Supabase settings the site runs in demo mode, saving to this browser only.
 export const demoMode = !supabase;
+// Shown on the page so a setup problem says which setting the build didn't see.
+export const configFound = { url: !!url, key: !!key };
+// Vercel sets NEXT_PUBLIC_VERCEL_ENV. A deployed site with no Supabase settings must not
+// quietly fall back to demo mode, or votes vanish without anyone noticing.
+export const missingConfig = demoMode && !!process.env.NEXT_PUBLIC_VERCEL_ENV;
 const DEMO_KEY = "sf6-demo-lists";
 
 type DemoList = { rank: string; placements: Placements };
@@ -23,8 +32,17 @@ function readDemo(): DemoList[] {
   }
 }
 
+// "Failed to fetch" means the browser never reached Supabase: a wrong URL setting,
+// a paused project or an ad blocker. Say which address it tried.
+function explain(error: { message: string }) {
+  return /fetch/i.test(error.message)
+    ? new Error(`Couldn't reach Supabase at ${url}. Check the URL setting in Vercel, and try with ad blockers off.`)
+    : error;
+}
+
 export async function submitList(rank: string, placements: Placements, proofUrl?: string) {
   const needsProof = RANKS.find((r) => r.id === rank)?.needsProof;
+  if (missingConfig) throw new Error("Votes can't be saved: this deployment has no Supabase settings.");
   if (!supabase) {
     // Demo mode keeps one list per browser, like one per account.
     localStorage.setItem(DEMO_KEY, JSON.stringify([{ rank, placements }]));
@@ -33,7 +51,7 @@ export async function submitList(rank: string, placements: Placements, proofUrl?
   const { data: session } = await supabase.auth.getSession();
   if (!session.session) {
     const { error } = await supabase.auth.signInAnonymously();
-    if (error) throw error;
+    if (error) throw explain(error);
   }
   const { data: list, error } = await supabase
     .from("tier_lists")
@@ -47,10 +65,10 @@ export async function submitList(rank: string, placements: Placements, proofUrl?
     })
     .select("id")
     .single();
-  if (error) throw error.code === "23505" ? new Error("You've already submitted a list for this patch.") : error;
+  if (error) throw error.code === "23505" ? new Error("You've already submitted a list for this patch.") : explain(error);
   const rows = Object.entries(placements).map(([item_id, score]) => ({ list_id: list.id, item_id, score }));
   const { error: placementError } = await supabase.from("tier_placements").insert(rows);
-  if (placementError) throw placementError;
+  if (placementError) throw explain(placementError);
 }
 
 export async function getResults(): Promise<BandResult[]> {
@@ -61,7 +79,7 @@ export async function getResults(): Promise<BandResult[]> {
       .eq("game", GAME)
       .eq("category", CATEGORY)
       .eq("patch", CURRENT_PATCH);
-    if (error) throw error;
+    if (error) throw explain(error);
     return data as BandResult[];
   }
   const totals = new Map<string, BandResult>();
