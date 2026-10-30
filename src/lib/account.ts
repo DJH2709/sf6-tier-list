@@ -4,13 +4,14 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "./store";
 import type { Placements } from "./store";
 
-export type Profile = { id: string; username: string; display_name: string | null };
+export type Profile = { id: string; username: string; display_name: string | null; avatar_url: string | null };
 export type PublicList = {
   game: string;
   category: string;
   patch: string;
   claimed_rank: string;
   verification: string;
+  is_public: boolean;
   placements: Placements;
 };
 
@@ -55,7 +56,7 @@ export async function signOut() {
 
 export async function getProfileById(id: string): Promise<Profile | null> {
   if (!supabase) return null;
-  const { data, error } = await supabase.from("profiles").select("id, username, display_name").eq("id", id).maybeSingle();
+  const { data, error } = await supabase.from("profiles").select("id, username, display_name, avatar_url").eq("id", id).maybeSingle();
   if (error) throw error;
   return data;
 }
@@ -64,7 +65,7 @@ export async function getProfileByUsername(username: string): Promise<Profile | 
   if (!supabase) return null;
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, username, display_name")
+    .select("id, username, display_name, avatar_url")
     .eq("username", username.toLowerCase())
     .maybeSingle();
   if (error) throw error;
@@ -77,9 +78,18 @@ export function suggestUsername(session: Session) {
   return raw.toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 20);
 }
 
-export async function createProfile(username: string, displayName: string) {
+// Discord's avatar for this account, if the sign-in gave us one. Only cdn.discordapp.com
+// addresses are stored (the database checks this too).
+export function discordAvatar(session: Session): string | null {
+  const u = session.user.user_metadata?.avatar_url;
+  return typeof u === "string" && u.startsWith("https://cdn.discordapp.com/") ? u : null;
+}
+
+export async function createProfile(username: string, displayName: string, avatarUrl: string | null) {
   if (!supabase) throw new Error("Profiles need Supabase.");
-  const { error } = await supabase.from("profiles").insert({ username, display_name: displayName || null });
+  const { error } = await supabase
+    .from("profiles")
+    .insert({ username, display_name: displayName || null, avatar_url: avatarUrl });
   if (error) {
     if (error.code === "23505") throw new Error("That username is taken.");
     if (error.code === "23514") throw new Error("Use 3 to 20 lowercase letters, numbers or underscores.");
@@ -87,11 +97,17 @@ export async function createProfile(username: string, displayName: string) {
   }
 }
 
+export async function updateAvatar(id: string, avatarUrl: string | null) {
+  if (!supabase) return;
+  await supabase.from("profiles").update({ avatar_url: avatarUrl }).eq("id", id);
+}
+
+// A player's lists. Others see only public ones; the owner sees all of theirs.
 export async function getListsFor(userId: string): Promise<PublicList[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from("tier_lists")
-    .select("game, category, patch, claimed_rank, verification, created_at, tier_placements(item_id, score)")
+    .select("game, category, patch, claimed_rank, verification, is_public, created_at, tier_placements(item_id, score)")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -101,6 +117,7 @@ export async function getListsFor(userId: string): Promise<PublicList[]> {
     patch: l.patch,
     claimed_rank: l.claimed_rank,
     verification: l.verification,
+    is_public: l.is_public,
     placements: Object.fromEntries(l.tier_placements.map((p: { item_id: string; score: number }) => [p.item_id, p.score])),
   }));
 }

@@ -16,7 +16,7 @@ const STEPS = [
 export default function Home() {
   const [tab, setTab] = useState<"make" | "results">("results");
   const [refreshKey, setRefreshKey] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState<{ isPublic: boolean; updated: boolean } | null>(null);
   const account = useAccount();
 
   function open(next: "make" | "results") {
@@ -86,15 +86,26 @@ export default function Home() {
         )}
         {submitted && account.profile && (
           <p className="rounded-xl border border-lime-400/40 bg-lime-400/5 p-4 text-sm">
-            Your list is on your profile.{" "}
-            <Link href={`/u/${account.profile.username}`} className="font-semibold text-lime-300 underline">
-              View and share it
-            </Link>
+            {submitted.isPublic ? (
+              <>
+                Your list is on your profile.{" "}
+                <Link href={`/u/${account.profile.username}`} className="font-semibold text-lime-300 underline">
+                  View and share it
+                </Link>
+              </>
+            ) : (
+              "Saved. Your list is hidden from your profile, but it still counts in the community results."
+            )}
           </p>
         )}
         {submitted && account.loaded && !account.signedIn && !demoMode && (
           <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
-            Want friends to see your list? Sign in with Discord at the top. Your vote comes with you.
+            {submitted.updated ? "Updated." : "Saved."} Want friends to see your list? Sign in with Discord at the top. Your vote comes with you.
+          </p>
+        )}
+        {submitted && demoMode && (
+          <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
+            {submitted.updated ? "Updated" : "Saved"} in this browser. Open &quot;Make your list&quot; again to change it.
           </p>
         )}
         <nav className="inline-flex rounded-lg border border-neutral-800 bg-neutral-900 p-1">
@@ -111,7 +122,10 @@ export default function Home() {
         {tab === "results" ? (
           <Results refreshKey={refreshKey} onMakeList={() => setTab("make")} />
         ) : (
-          <MakeList onSubmitted={() => { setRefreshKey((k) => k + 1); setSubmitted(true); setTab("results"); }} />
+          <MakeList
+            profile={account.profile}
+            onSubmitted={(r) => { setRefreshKey((k) => k + 1); setSubmitted(r); setTab("results"); }}
+          />
         )}
       </main>
 

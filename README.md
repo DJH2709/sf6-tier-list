@@ -13,7 +13,7 @@ With no settings it runs in demo mode and saves votes in your browser only.
 
 ## Go live with Supabase (free tier)
 
-1. Create a Supabase project, then run `supabase/schema.sql` and `supabase/002_profiles.sql` in its SQL editor, in that order.
+1. Create a Supabase project, then run `supabase/schema.sql`, `supabase/002_profiles.sql` and `supabase/003_edit_lists.sql` in its SQL editor, in that order.
 2. Under Authentication, turn on anonymous sign-ins.
 3. Copy `.env.example` to `.env.local` and fill in the project URL and publishable key.
 4. Deploy to Vercel with the same settings.
@@ -38,6 +38,15 @@ and makes their tier lists public at `/u/<username>`.
    This lets someone who voted before signing in keep that vote.
 4. In Supabase, go to Authentication → URL Configuration. Set Site URL to your live site, and
    add `https://*-<your-vercel-team>.vercel.app/**` to Redirect URLs so previews can sign in.
+
+## Editing and private lists
+
+A player has one list per patch. Opening "Make your list" again loads that list for editing,
+and saving replaces it. When a new patch starts, the maker pre-fills from their last list so they
+only move what changed. Signed-in players can untick "Show on my profile" to keep a list off
+their public page; it still counts in the community results.
+
+Run `supabase/003_edit_lists.sql` once to enable this (it also stores Discord avatars).
 
 ## Character portraits
 

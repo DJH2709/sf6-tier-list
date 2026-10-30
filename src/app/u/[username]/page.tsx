@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getListsFor, getProfileByUsername, type Profile, type PublicList } from "@/lib/account";
+import { getListsFor, getProfileByUsername, useSession, type Profile, type PublicList } from "@/lib/account";
 import { demoMode } from "@/lib/store";
 import { RANKS } from "@/lib/sf6";
 import TierRows from "@/components/TierRows";
@@ -22,6 +22,9 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined);
   const [lists, setLists] = useState<PublicList[]>([]);
   const [error, setError] = useState("");
+  const { session } = useSession();
+  // The owner also sees lists they've hidden, so they know what others can't see.
+  const own = !!profile && session?.user.id === profile.id;
 
   useEffect(() => {
     getProfileByUsername(username)
@@ -49,13 +52,18 @@ export default function ProfilePage() {
       ) : (
         <>
           <header className="space-y-4 border-b border-neutral-800 pb-8 text-center">
-            <span
-              className="mx-auto flex h-20 w-20 items-center justify-center rounded-full text-2xl font-black text-white"
-              style={{ backgroundColor: avatarColour(profile.username) }}
-              aria-hidden
-            >
-              {(profile.display_name || profile.username).slice(0, 2).toUpperCase()}
-            </span>
+            {profile.avatar_url ? (
+              // eslint-disable-next-line @next/next/no-img-element -- Discord CDN, no optimisation needed
+              <img src={profile.avatar_url} alt="" className="mx-auto h-20 w-20 rounded-full object-cover" />
+            ) : (
+              <span
+                className="mx-auto flex h-20 w-20 items-center justify-center rounded-full text-2xl font-black text-white"
+                style={{ backgroundColor: avatarColour(profile.username) }}
+                aria-hidden
+              >
+                {(profile.display_name || profile.username).slice(0, 2).toUpperCase()}
+              </span>
+            )}
             <div>
               <h1 className="text-3xl font-black tracking-tight">{profile.display_name || profile.username}</h1>
               <p className="text-neutral-400">@{profile.username}</p>
@@ -85,6 +93,11 @@ export default function ProfilePage() {
                       <span className="ml-1">(self-reported)</span>
                     )}
                   </span>
+                  {own && !list.is_public && (
+                    <span className="rounded-full border border-neutral-700 px-2 py-0.5 text-xs text-neutral-400">
+                      Hidden from your profile. Only you can see it.
+                    </span>
+                  )}
                 </div>
                 <TierRows placements={list.placements} />
               </section>
