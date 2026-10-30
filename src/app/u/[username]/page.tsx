@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ProfileView from "@/components/ProfileView";
 import { getProfileByUsername } from "@/lib/profiles";
+import { getT } from "@/lib/i18n/server";
 
 type Params = { params: Promise<{ username: string }> };
 
@@ -8,10 +9,11 @@ type Params = { params: Promise<{ username: string }> };
 // The list image comes from opengraph-image.tsx next to this file.
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { username } = await params;
+  const t = await getT();
   const profile = await getProfileByUsername(username).catch(() => null);
-  if (!profile) return { title: "SF6 Community Tier List" };
-  const title = `${profile.display_name || profile.username}'s SF6 tier list`;
-  const description = `See how @${profile.username} ranks the Street Fighter 6 roster, then make your own.`;
+  if (!profile) return { title: t("site.title") };
+  const title = t("profile.metaTitle", { name: profile.display_name || profile.username });
+  const description = t("profile.metaDescription", { username: profile.username });
   return {
     title,
     description,

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import type { Session } from "@supabase/supabase-js";
+import type { Provider, Session } from "@supabase/supabase-js";
 import { supabase } from "./store";
 
 export type { Profile, PublicList } from "./profiles";
@@ -21,24 +21,36 @@ export function useSession() {
   return { session, ready };
 }
 
+// Sign-in buttons to show, comma separated, e.g. "discord,google,kakao,x". Only list a provider
+// once it's switched on in Supabase (Authentication → Sign In / Providers), or its button fails.
+// A custom OAuth provider set up in Supabase is listed as custom:<id>, e.g. custom:line.
+export const AUTH_PROVIDERS = (process.env.NEXT_PUBLIC_AUTH_PROVIDERS || "discord")
+  .split(",")
+  .map((p) => p.trim())
+  .filter(Boolean) as Provider[];
+
+const LAST_PROVIDER = "sign-in-provider";
+
 // An anonymous voter who signs in keeps the same user id, so their list comes with them.
 // That needs "Allow manual linking" on in Supabase.
-export async function signInWithDiscord() {
+export async function signInWith(provider: Provider) {
   if (!supabase) throw new Error("Sign-in needs Supabase.");
+  sessionStorage.setItem(LAST_PROVIDER, provider);
   const redirectTo = window.location.href;
   const { data } = await supabase.auth.getSession();
   const { error } = data.session?.user.is_anonymous
-    ? await supabase.auth.linkIdentity({ provider: "discord", options: { redirectTo } })
-    : await supabase.auth.signInWithOAuth({ provider: "discord", options: { redirectTo } });
+    ? await supabase.auth.linkIdentity({ provider, options: { redirectTo } })
+    : await supabase.auth.signInWithOAuth({ provider, options: { redirectTo } });
   if (error) throw error;
 }
 
-// Used when this Discord account already belongs to an older account: drop the
+// Used when this account (Discord, Google...) already belongs to an older account: drop the
 // anonymous session and sign in to that one instead.
 export async function signInFresh() {
   if (!supabase) return;
+  const provider = (sessionStorage.getItem(LAST_PROVIDER) || AUTH_PROVIDERS[0]) as Provider;
   await supabase.auth.signOut();
-  await supabase.auth.signInWithOAuth({ provider: "discord", options: { redirectTo: window.location.origin } });
+  await supabase.auth.signInWithOAuth({ provider, options: { redirectTo: window.location.origin } });
 }
 
 export async function signOut() {
@@ -71,8 +83,8 @@ export async function createProfile(username: string, displayName: string, avata
     .from("profiles")
     .insert({ username, display_name: displayName || null, avatar_url: avatarUrl });
   if (error) {
-    if (error.code === "23505") throw new Error("That username is taken.");
-    if (error.code === "23514") throw new Error("Use 3 to 20 lowercase letters, numbers or underscores.");
+    if (error.code === "23505") throw new Error("error.usernameTaken");
+    if (error.code === "23514") throw new Error("error.usernameFormat");
     throw error;
   }
 }
