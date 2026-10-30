@@ -40,17 +40,20 @@ type Props = {
   onChange: (liked: boolean) => void;
 };
 
-// Thumbs up on someone else's list. Your own list shows its count only.
+// Thumbs up on someone else's list. On your own list it shows the count, and a tap says why
+// you can't like it (phones don't show the title tooltip).
 export default function LikeButton({ listId, count, liked, me, signedIn, own, onChange }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const { t } = useI18n();
   const label = `👍 ${count}`;
 
-  if (own) return <span className="text-sm text-neutral-400" title={t("like.own")}>{label}</span>;
-
   async function toggle() {
     setError("");
+    if (own) {
+      setError(t("like.ownNote"));
+      return;
+    }
     if (!me) {
       setError(t(signedIn ? "follow.pickUsername" : "follow.signInToFollow"));
       return;
@@ -74,12 +77,12 @@ export default function LikeButton({ listId, count, liked, me, signedIn, own, on
         onClick={toggle}
         disabled={busy}
         aria-pressed={liked}
-        title={t(liked ? "like.remove" : "like.add")}
-        className={`rounded-full border px-3 py-0.5 text-sm font-semibold disabled:opacity-50 ${liked ? "border-emerald-400 bg-emerald-500/15 text-emerald-300" : "border-neutral-700 text-neutral-300 hover:border-neutral-400"}`}
+        title={t(own ? "like.own" : liked ? "like.remove" : "like.add")}
+        className={`rounded-full border px-3 py-0.5 text-sm font-semibold disabled:opacity-50 ${own ? "border-neutral-800 text-neutral-400" : liked ? "border-emerald-400 bg-emerald-500/15 text-emerald-300" : "border-neutral-700 text-neutral-300 hover:border-neutral-400"}`}
       >
         {label}
       </button>
-      {error && <span className="text-sm text-red-400">{error}</span>}
+      {error && <span className={`text-sm ${own ? "text-neutral-400" : "text-red-400"}`}>{error}</span>}
     </>
   );
 }

@@ -143,6 +143,7 @@ const zh: Messages = {
   "like.add": "给这个强度榜点赞",
   "like.remove": "取消点赞",
   "like.own": "你的强度榜获得的赞",
+  "like.ownNote": "这是你自己的强度榜，不能给自己点赞，其他玩家可以。",
   "tag.pro": "职业",
   "tag.proTitle": "职业水平的参赛选手",
   "tag.influencer": "博主",
