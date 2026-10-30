@@ -100,6 +100,15 @@ Run `supabase/003_edit_lists.sql` once to enable this (it also stores Discord av
 `supabase/004_save_list.sql`, which saves a list and its placements in one go so a failed save
 can't leave a list half replaced.
 
+## Follows, likes and tags
+
+Players with a username can follow each other (/following shows the latest public list from
+everyone they follow) and give a thumbs up to other players' public lists. Run
+`supabase/006_follows_likes.sql` once to enable this.
+
+Pro and Influencer tags are set by hand, never by the player: in the Supabase table editor, open
+`profiles` and set `tag` to `pro` or `influencer` (or empty to remove it).
+
 ## Character portraits
 
 Drop one image per character into `public/characters/<game id>/`, named by the character id

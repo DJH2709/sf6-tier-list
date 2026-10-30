@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useSession } from "@/lib/account";
 import { getListsFor, getProfileByUsername, type Profile, type PublicList } from "@/lib/profiles";
 import { demoMode } from "@/lib/store";
 import { getGame } from "@/lib/games";
@@ -9,23 +8,21 @@ import { gameName, rankName } from "@/lib/i18n/games";
 import TierRows from "@/components/TierRows";
 import ShareButton from "@/components/ShareButton";
 import { GameProvider } from "@/components/GameContext";
+import PlayerAvatar from "@/components/PlayerAvatar";
+import ProfileTag from "@/components/ProfileTag";
+import FollowBar from "@/components/FollowBar";
+import AccountBar, { useAccount } from "@/components/Account";
+import LikeButton, { useLikes } from "@/components/LikeButton";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
 import type { MessageKey } from "@/locales/en";
 
-// Stable colour per username, matching the character badges.
-function avatarColour(name: string) {
-  let hash = 0;
-  for (const ch of name) hash = (hash * 31 + ch.charCodeAt(0)) % 360;
-  return `hsl(${hash} 45% 35%)`;
-}
-
 export default function ProfileView({ username }: { username: string }) {
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined);
   const [lists, setLists] = useState<PublicList[]>([]);
   const [error, setError] = useState("");
-  const { session } = useSession();
+  const account = useAccount();
   const { t } = useI18n();
   // Categories added later fall back to their id until they get a string.
   const label = (key: string) => {
@@ -33,7 +30,8 @@ export default function ProfileView({ username }: { username: string }) {
     return text === key ? key.split(".").pop()! : text;
   };
   // The owner also sees lists they've hidden, so they know what others can't see.
-  const own = !!profile && session?.user.id === profile.id;
+  const own = !!profile && account.session?.user.id === profile.id;
+  const likes = useLikes(lists, account.profile);
 
   useEffect(() => {
     getProfileByUsername(username)
@@ -47,9 +45,12 @@ export default function ProfileView({ username }: { username: string }) {
 
   return (
     <div className="mx-auto min-h-screen max-w-4xl space-y-8 px-4 py-8">
-      <div className="flex items-center justify-between gap-4">
-        <Link href="/" className="text-sm font-black tracking-tight">← {t("site.brand")}</Link>
-        <LanguageSwitcher />
+      <div className="flex items-start justify-between gap-4">
+        <Link href="/" className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">← {t("site.brand")}</Link>
+        <div className="flex flex-wrap items-start justify-end gap-3">
+          <LanguageSwitcher />
+          <AccountBar account={account} />
+        </div>
       </div>
       {demoMode ? (
         <p className="text-neutral-400">{t("profile.demoOnly")}</p>
@@ -65,22 +66,18 @@ export default function ProfileView({ username }: { username: string }) {
       ) : (
         <>
           <header className="space-y-4 border-b border-neutral-800 pb-8 text-center">
-            {profile.avatar_url ? (
-              // eslint-disable-next-line @next/next/no-img-element -- Discord CDN, no optimisation needed
-              <img src={profile.avatar_url} alt="" className="mx-auto h-20 w-20 rounded-full object-cover" />
-            ) : (
-              <span
-                className="mx-auto flex h-20 w-20 items-center justify-center rounded-full text-2xl font-black text-white"
-                style={{ backgroundColor: avatarColour(profile.username) }}
-                aria-hidden
-              >
-                {(profile.display_name || profile.username).slice(0, 2).toUpperCase()}
-              </span>
-            )}
+            <PlayerAvatar profile={profile} className="mx-auto h-20 w-20 text-2xl" />
             <div>
-              <h1 className="text-3xl font-black tracking-tight">{profile.display_name || profile.username}</h1>
+              <h1 className="text-3xl font-black tracking-tight">
+                {profile.display_name || profile.username} <ProfileTag tag={profile.tag} />
+              </h1>
               <p className="text-neutral-400">@{profile.username}</p>
             </div>
+            <FollowBar
+              profile={profile}
+              account={account}
+              likes={lists.filter((l) => l.is_public).reduce((n, l) => n + likes.count(l), 0)}
+            />
             <div className="flex flex-wrap justify-center gap-3">
               <ShareButton url={typeof window === "undefined" ? "" : window.location.href} title={t("profile.shareTitle", { username: profile.username })} />
               <Link href="/" className="rounded-full border border-neutral-600 px-4 py-2 text-sm font-semibold hover:border-neutral-400">
@@ -107,6 +104,17 @@ export default function ProfileView({ username }: { username: string }) {
                       <span className="ml-1">{t("profile.selfReported")}</span>
                     )}
                   </span>
+                  {list.is_public && (
+                    <LikeButton
+                      listId={list.id}
+                      count={likes.count(list)}
+                      liked={likes.isLiked(list)}
+                      me={account.profile}
+                      signedIn={account.signedIn}
+                      own={own}
+                      onChange={(now) => likes.set(list, now)}
+                    />
+                  )}
                   {own && !list.is_public && (
                     <span className="rounded-full border border-neutral-700 px-2 py-0.5 text-xs text-neutral-400">
                       {t("profile.hidden")}
