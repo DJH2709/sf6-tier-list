@@ -31,7 +31,7 @@ export default function FollowingView() {
   return (
     <div className="mx-auto min-h-screen max-w-4xl space-y-8 px-4 py-8">
       <div className="flex items-start justify-between gap-4">
-        <Link href="/" className="pt-1.5 text-sm font-black tracking-tight">← {t("site.brand")}</Link>
+        <Link href="/" className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">← {t("site.brand")}</Link>
         <div className="flex flex-wrap items-start justify-end gap-3">
           <LanguageSwitcher />
           <AccountBar account={account} />
