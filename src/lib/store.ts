@@ -11,7 +11,7 @@ const key =
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY ||
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const supabase: SupabaseClient | null = url && key ? createClient(url, key) : null;
+export const supabase: SupabaseClient | null = url && key ? createClient(url, key) : null;
 
 // Without Supabase settings the site runs in demo mode, saving to this browser only.
 export const demoMode = !supabase;

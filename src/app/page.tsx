@@ -4,6 +4,8 @@ import MakeList from "@/components/MakeList";
 import Results from "@/components/Results";
 import { configFound, demoMode, missingConfig } from "@/lib/store";
 import { CURRENT_PATCH } from "@/lib/sf6";
+import Link from "next/link";
+import AccountBar, { PickUsername, useAccount } from "@/components/Account";
 
 const STEPS = [
   { title: "Pick your rank", text: "Tell us where you play, from Rookie to Legend." },
@@ -14,6 +16,8 @@ const STEPS = [
 export default function Home() {
   const [tab, setTab] = useState<"make" | "results">("results");
   const [refreshKey, setRefreshKey] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const account = useAccount();
 
   function open(next: "make" | "results") {
     setTab(next);
@@ -40,7 +44,11 @@ export default function Home() {
       )}
 
       <header className="border-b border-neutral-800 bg-gradient-to-b from-amber-500/10 to-transparent">
-        <div className="mx-auto max-w-5xl space-y-8 px-4 py-12 sm:py-16">
+        <div className="mx-auto flex max-w-5xl items-start justify-between gap-4 px-4 pt-4">
+          <span className="pt-2 text-sm font-black tracking-tight">SF6 TIER LIST</span>
+          <AccountBar account={account} />
+        </div>
+        <div className="mx-auto max-w-5xl space-y-8 px-4 pb-12 pt-8 sm:pb-16">
           <div className="space-y-4">
             <p className="text-sm font-semibold uppercase tracking-widest text-amber-400">
               Street Fighter 6 · Patch {CURRENT_PATCH}
@@ -74,6 +82,22 @@ export default function Home() {
       </header>
 
       <main id="app" className="mx-auto max-w-5xl scroll-mt-4 space-y-6 px-4 py-10">
+        {account.signedIn && account.loaded && !account.profile && account.session && (
+          <PickUsername session={account.session} onDone={account.setProfile} />
+        )}
+        {submitted && account.profile && (
+          <p className="rounded-xl border border-lime-400/40 bg-lime-400/5 p-4 text-sm">
+            Your list is on your profile.{" "}
+            <Link href={`/u/${account.profile.username}`} className="font-semibold text-lime-300 underline">
+              View and share it
+            </Link>
+          </p>
+        )}
+        {submitted && account.loaded && !account.signedIn && !demoMode && (
+          <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
+            Want friends to see your list? Sign in with Discord at the top. Your vote comes with you.
+          </p>
+        )}
         <nav className="inline-flex rounded-lg border border-neutral-800 bg-neutral-900 p-1">
           {(["results", "make"] as const).map((t) => (
             <button
@@ -88,7 +112,7 @@ export default function Home() {
         {tab === "results" ? (
           <Results refreshKey={refreshKey} onMakeList={() => setTab("make")} />
         ) : (
-          <MakeList onSubmitted={() => { setRefreshKey((k) => k + 1); setTab("results"); }} />
+          <MakeList onSubmitted={() => { setRefreshKey((k) => k + 1); setSubmitted(true); setTab("results"); }} />
         )}
       </main>
 
