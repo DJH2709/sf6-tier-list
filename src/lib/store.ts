@@ -5,12 +5,18 @@ export type Placements = Record<string, number>; // item id -> score 1..5
 export type BandResult = { band: Band; item_id: string; avg_score: number; votes: number; lists: number };
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-// Supabase now issues sb_publishable_ keys; older projects still have an anon key.
-const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Supabase now issues sb_publishable_ keys; its Connect panel names the variable
+// ..._PUBLISHABLE_DEFAULT_KEY. Older projects still have an anon key.
+const key =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase: SupabaseClient | null = url && key ? createClient(url, key) : null;
 
 // Without Supabase settings the site runs in demo mode, saving to this browser only.
 export const demoMode = !supabase;
+// Shown on the page so a setup problem says which setting the build didn't see.
+export const configFound = { url: !!url, key: !!key };
 // Vercel sets NEXT_PUBLIC_VERCEL_ENV. A deployed site with no Supabase settings must not
 // quietly fall back to demo mode, or votes vanish without anyone noticing.
 export const missingConfig = demoMode && !!process.env.NEXT_PUBLIC_VERCEL_ENV;
