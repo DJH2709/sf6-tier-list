@@ -13,7 +13,7 @@ With no settings it runs in demo mode and saves votes in your browser only.
 
 ## Go live with Supabase (free tier)
 
-1. Create a Supabase project, then run `supabase/schema.sql` in its SQL editor.
+1. Create a Supabase project, then run `supabase/schema.sql` and `supabase/002_profiles.sql` in its SQL editor, in that order.
 2. Under Authentication, turn on anonymous sign-ins.
 3. Copy `.env.example` to `.env.local` and fill in the project URL and publishable key.
 4. Deploy to Vercel with the same settings.
@@ -23,3 +23,24 @@ With no settings it runs in demo mode and saves votes in your browser only.
 Grand Master, Ultimate Master and Legend lists count in the Advanced band until checked.
 Open the `tier_lists` table, look at `proof_url` for rows marked `pending`, and set
 `verification` to `approved` or `rejected`.
+
+## Discord sign-in and public profiles
+
+Voting works without an account. Signing in with Discord lets a player pick a username
+and makes their tier lists public at `/u/<username>`.
+
+1. In the [Discord Developer Portal](https://discord.com/developers/applications), create an
+   application. Under OAuth2, copy the Client ID and Client Secret, and add the redirect
+   `https://<your-project-ref>.supabase.co/auth/v1/callback`.
+2. In Supabase, go to Authentication → Sign In / Providers → Discord. Turn it on and paste
+   the ID and secret.
+3. In Supabase, go to Authentication → Sign In / Providers and turn on **Allow manual linking**.
+   This lets someone who voted before signing in keep that vote.
+4. In Supabase, go to Authentication → URL Configuration. Set Site URL to your live site, and
+   add `https://*-<your-vercel-team>.vercel.app/**` to Redirect URLs so previews can sign in.
+
+## Character portraits
+
+Drop one image per character into `public/characters/`, named by the character id
+(`ryu.png`, `chun-li.png`, `e-honda.webp`). See `public/characters/README.md` for the
+copyright note. Characters without an image show coloured initials.
