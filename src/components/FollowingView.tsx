@@ -3,10 +3,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getFollowing, type FollowedPlayer } from "@/lib/follows";
 import { demoMode } from "@/lib/store";
-import { RANKS } from "@/lib/sf6";
+import { getGame } from "@/lib/games";
+import { gameName, rankName } from "@/lib/i18n/games";
+import { GameProvider } from "@/components/GameContext";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
-import type { MessageKey } from "@/locales/en";
 import AccountBar, { useAccount } from "@/components/Account";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import PlayerAvatar from "@/components/PlayerAvatar";
@@ -61,10 +62,15 @@ export default function FollowingView() {
               <>
                 <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400">
                   <span>
-                    {t("profile.patch", { patch: latest.patch })} ·{" "}
-                    {t("profile.votedAs", {
-                      rank: RANKS.some((r) => r.id === latest.claimed_rank) ? t(`rank.${latest.claimed_rank}` as MessageKey) : latest.claimed_rank,
-                    })}
+                    {(() => {
+                      const game = getGame(latest.game);
+                      return (
+                        <>
+                          {game ? gameName(game, t) : latest.game} · {t("profile.patch", { patch: latest.patch })} ·{" "}
+                          {t("profile.votedAs", { rank: game ? rankName(game, latest.claimed_rank, t) : latest.claimed_rank })}
+                        </>
+                      );
+                    })()}
                     {latest.verification === "approved" && <span className="ml-1 font-semibold text-lime-400">{t("profile.verified")}</span>}
                   </span>
                   <LikeButton
@@ -77,7 +83,9 @@ export default function FollowingView() {
                     onChange={(now) => likes.set(latest, now)}
                   />
                 </div>
-                <TierRows placements={latest.placements} />
+                <GameProvider id={latest.game}>
+                  <TierRows placements={latest.placements} />
+                </GameProvider>
               </>
             ) : (
               <p className="text-sm text-neutral-500">{t("following.noList")}</p>

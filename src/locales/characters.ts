@@ -1,9 +1,10 @@
-import { CHARACTERS } from "@/lib/sf6";
+import { DEFAULT_GAME, type Game } from "@/lib/games";
 import type { Locale } from "@/lib/i18n/config";
 
 // Official Capcom names per language, from each character's page on streetfighter.com/6
 // (checked 2026-10-30). Capcom's Korean and Chinese pages show the English names, so those
-// languages use the English names too. Characters missing here show their English name.
+// languages use the English names too. Characters missing here, and other games' characters,
+// show their English name.
 const NAMES: Partial<Record<Locale, Record<string, string>>> = {
   ja: {
     "ryu": "リュウ",
@@ -41,6 +42,7 @@ const NAMES: Partial<Record<Locale, Record<string, string>>> = {
   },
 };
 
-export function characterName(id: string, locale: Locale = "en") {
-  return NAMES[locale]?.[id] ?? CHARACTERS.find((c) => c.id === id)?.name ?? id;
+export function characterName(id: string, locale: Locale = "en", game: Game = DEFAULT_GAME) {
+  const translated = game.id === DEFAULT_GAME.id ? NAMES[locale]?.[id] : undefined;
+  return translated ?? game.characters.find((c) => c.id === id)?.name ?? id;
 }

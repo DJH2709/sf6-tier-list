@@ -3,9 +3,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getListsFor, getProfileByUsername, type Profile, type PublicList } from "@/lib/profiles";
 import { demoMode } from "@/lib/store";
-import { RANKS } from "@/lib/sf6";
+import { getGame } from "@/lib/games";
+import { gameName, rankName } from "@/lib/i18n/games";
 import TierRows from "@/components/TierRows";
 import ShareButton from "@/components/ShareButton";
+import { GameProvider } from "@/components/GameContext";
 import PlayerAvatar from "@/components/PlayerAvatar";
 import ProfileTag from "@/components/ProfileTag";
 import FollowBar from "@/components/FollowBar";
@@ -22,7 +24,7 @@ export default function ProfileView({ username }: { username: string }) {
   const [error, setError] = useState("");
   const account = useAccount();
   const { t } = useI18n();
-  // Games and categories added later fall back to their id until they get a string.
+  // Categories added later fall back to their id until they get a string.
   const label = (key: string) => {
     const text = t(key as MessageKey);
     return text === key ? key.split(".").pop()! : text;
@@ -85,12 +87,13 @@ export default function ProfileView({ username }: { username: string }) {
           </header>
           {lists.length === 0 && <p className="text-neutral-400">{t("profile.noLists")}</p>}
           {lists.map((list) => {
-            const rank = RANKS.some((r) => r.id === list.claimed_rank) ? t(`rank.${list.claimed_rank}` as MessageKey) : list.claimed_rank;
+            const game = getGame(list.game);
+            const rank = game ? rankName(game, list.claimed_rank, t) : list.claimed_rank;
             return (
               <section key={`${list.game}-${list.category}-${list.patch}`} className="space-y-3">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <h2 className="text-lg font-semibold">
-                    {label(`game.${list.game}`)} · {label(`category.${list.category}`)}
+                    {game ? gameName(game, t) : list.game} · {label(`category.${list.category}`)}
                   </h2>
                   <span className="text-sm text-neutral-400">{t("profile.patch", { patch: list.patch })}</span>
                   <span className="text-sm text-neutral-400">
@@ -118,7 +121,9 @@ export default function ProfileView({ username }: { username: string }) {
                     </span>
                   )}
                 </div>
-                <TierRows placements={list.placements} />
+                <GameProvider id={list.game}>
+                  <TierRows placements={list.placements} />
+                </GameProvider>
               </section>
             );
           })}

@@ -1,6 +1,6 @@
 "use client";
 import { useDroppable } from "@dnd-kit/core";
-import { TIERS } from "@/lib/sf6";
+import { TIERS } from "@/lib/games";
 import CharacterTile from "./CharacterTile";
 import DraggableTile from "./DraggableTile";
 import { useI18n } from "@/lib/i18n/client";

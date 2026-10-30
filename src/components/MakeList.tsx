@@ -4,15 +4,15 @@ import {
   DndContext, DragOverlay, MouseSensor, TouchSensor, pointerWithin, useDroppable, useSensor, useSensors,
   type DragEndEvent, type DragStartEvent,
 } from "@dnd-kit/core";
-import { CHARACTERS, CURRENT_PATCH, RANKS } from "@/lib/sf6";
 import { getMyLists, submitList, type MyList, type Placements } from "@/lib/store";
 import type { Profile } from "@/lib/account";
 import TierRows, { scoreFromDropId } from "./TierRows";
 import CharacterTile from "./CharacterTile";
 import DraggableTile from "./DraggableTile";
+import { useGame } from "./GameContext";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
-import type { MessageKey } from "@/locales/en";
+import { rankName } from "@/lib/i18n/games";
 
 function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
@@ -62,6 +62,8 @@ type Props = {
 
 export default function MakeList({ profile, onSubmitted }: Props) {
   const { t, nameOf } = useI18n();
+  const game = useGame();
+  const CHARACTERS = game.characters;
   const [placements, setPlacements] = useState<Placements>({});
   const [selected, setSelected] = useState<string | null>(CHARACTERS[0].id);
   const [dragging, setDragging] = useState<string | null>(null);
@@ -84,10 +86,10 @@ export default function MakeList({ profile, onSubmitted }: Props) {
   );
 
   useEffect(() => {
-    getMyLists().then((lists) => {
+    getMyLists(game).then((lists) => {
       if (touched.current) return;
-      const current = lists.find((l) => l.patch === CURRENT_PATCH);
-      const previous = lists.find((l) => l.patch !== CURRENT_PATCH);
+      const current = lists.find((l) => l.patch === game.patch);
+      const previous = lists.find((l) => l.patch !== game.patch);
       const from = current ?? previous;
       if (!from) return;
       // Characters that joined since the old list stay unplaced.
@@ -101,13 +103,13 @@ export default function MakeList({ profile, onSubmitted }: Props) {
       if (current) setExisting(current);
       else setBasedOn(from.patch);
     }, (e) => setStatus({ text: errorText(e, t), error: true }));
-    // Runs once on mount; t only changes the wording of an error.
+    // Runs once per game (the page remounts on a new game); t only changes the wording of an error.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const unplaced = CHARACTERS.filter((c) => !(c.id in placements));
   const placedCount = CHARACTERS.length - unplaced.length;
-  const needsProof = RANKS.find((r) => r.id === rank)?.needsProof;
+  const needsProof = game.ranks.find((r) => r.id === rank)?.needsProof;
 
   function placeId(id: string, score: number) {
     touched.current = true;
@@ -146,9 +148,9 @@ export default function MakeList({ profile, onSubmitted }: Props) {
     setSaving(true);
     setStatus(null);
     try {
-      const { updated } = await submitList(rank, placements, needsProof ? proofUrl : undefined, isPublic);
+      const { updated } = await submitList(game, rank, placements, needsProof ? proofUrl : undefined, isPublic);
       setStatus({ text: t(updated ? "make.updated" : "make.thanks") });
-      setExisting((e) => e ?? { id: "", patch: CURRENT_PATCH, rank, proofUrl: proofUrl || null, verification: "none", isPublic, placements });
+      setExisting((e) => e ?? { id: "", patch: game.patch, rank, proofUrl: proofUrl || null, verification: "none", isPublic, placements });
       setBasedOn(null);
       onSubmitted({ isPublic, updated });
     } catch (e) {
@@ -162,7 +164,7 @@ export default function MakeList({ profile, onSubmitted }: Props) {
     <div className="space-y-8">
       {existing && (
         <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
-          {t("make.editing", { patch: CURRENT_PATCH })}
+          {t("make.editing", { patch: game.patch })}
         </p>
       )}
       {basedOn && (
@@ -178,15 +180,15 @@ export default function MakeList({ profile, onSubmitted }: Props) {
           className="w-full rounded-lg border border-neutral-700 bg-neutral-900 p-2.5 sm:w-72"
         >
           <option value="">{t("make.chooseRank")}</option>
-          {RANKS.map((r) => <option key={r.id} value={r.id}>{t(`rank.${r.id}` as MessageKey)}</option>)}
+          {game.ranks.map((r) => <option key={r.id} value={r.id}>{rankName(game, r.id, t)}</option>)}
         </select>
         {needsProof && (
           <label className="block space-y-1 text-sm">
-            <span>{t("make.proofLabel")}</span>
+            <span>{t("make.proofLabel", { site: game.proofSite })}</span>
             <input
               value={proofUrl}
               onChange={(e) => setProofUrl(e.target.value)}
-              placeholder="https://www.streetfighter.com/6/buckler/profile/..."
+              placeholder={game.proofPlaceholder}
               className="block w-full rounded-lg border border-neutral-700 bg-neutral-900 p-2.5"
             />
             <span className="block text-neutral-400">
@@ -202,7 +204,7 @@ export default function MakeList({ profile, onSubmitted }: Props) {
           <div className="flex items-center justify-between text-sm">
             <span>
               {selected ? (
-                <Highlighted text={t("make.placing")} name={nameOf(selected)} />
+                <Highlighted text={t("make.placing")} name={nameOf(selected, game)} />
               ) : (
                 t("make.allPlaced")
               )}

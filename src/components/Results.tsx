@@ -1,22 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
-import { BANDS, MIN_LISTS, type Band } from "@/lib/sf6";
+import { bandsFor, MIN_LISTS, type Band } from "@/lib/games";
 import { getResults, type BandResult } from "@/lib/store";
 import TierRows from "./TierRows";
+import { useGame } from "./GameContext";
+import { bandRanks } from "@/lib/i18n/games";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
 import type { MessageKey } from "@/locales/en";
 
 export default function Results({ refreshKey, onMakeList }: { refreshKey: number; onMakeList: () => void }) {
   const { t } = useI18n();
+  const game = useGame();
   const [band, setBand] = useState<Band>("beginner");
   const [results, setResults] = useState<BandResult[]>([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getResults().then(setResults, (e) => setError(errorText(e, t)));
+    getResults(game).then(setResults, (e) => setError(errorText(e, t)));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- t only changes the wording of an error
-  }, [refreshKey]);
+  }, [game, refreshKey]);
 
   const listsIn = (b: Band) => results.find((r) => r.band === b)?.lists ?? 0;
   // Highest average first, so order within a tier means something.
@@ -30,7 +33,7 @@ export default function Results({ refreshKey, onMakeList }: { refreshKey: number
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {BANDS.map((b) => (
+        {bandsFor(game).map((b) => (
           <button
             key={b.id}
             onClick={() => setBand(b.id)}
@@ -38,7 +41,7 @@ export default function Results({ refreshKey, onMakeList }: { refreshKey: number
               ${band === b.id ? "border-emerald-500 bg-emerald-500/10" : "border-neutral-800 bg-neutral-900 hover:border-neutral-600"}`}
           >
             <span className="block text-sm font-semibold">{t(`band.${b.id}` as MessageKey)}</span>
-            <span className="block text-xs text-neutral-400">{t(`band.${b.id}.ranks` as MessageKey)}</span>
+            <span className="block text-xs text-neutral-400">{bandRanks(game, b.id, t)}</span>
             <span className="mt-1 block text-xs tabular-nums text-neutral-500">{listCount(listsIn(b.id))}</span>
           </button>
         ))}

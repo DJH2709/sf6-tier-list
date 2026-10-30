@@ -1,0 +1,1057 @@
+{
+  "games": [
+    {
+      "id": "sf6",
+      "name": "Street Fighter 6",
+      "short": "SF6",
+      "patch": "2026-10",
+      "owner": "Capcom",
+      "proofSite": "Buckler's Boot Camp profile",
+      "proofPlaceholder": "https://www.streetfighter.com/6/buckler/profile/...",
+      "characters": [
+        "Ryu",
+        "Luke",
+        "Jamie",
+        "Chun-Li",
+        "Guile",
+        "Kimberly",
+        "Juri",
+        "Ken",
+        "Blanka",
+        "Dhalsim",
+        "E. Honda",
+        "Dee Jay",
+        "Manon",
+        "Marisa",
+        "JP",
+        "Zangief",
+        "Lily",
+        "Cammy",
+        "Rashid",
+        "A.K.I.",
+        "Ed",
+        "Akuma",
+        "M. Bison",
+        "Terry",
+        "Mai",
+        "Elena",
+        "Sagat",
+        "C. Viper",
+        "Alex",
+        "Ingrid",
+        "Yasmine",
+        "Arjun"
+      ],
+      "ranks": [
+        {
+          "id": "rookie",
+          "label": "Rookie",
+          "band": "beginner"
+        },
+        {
+          "id": "iron",
+          "label": "Iron",
+          "band": "beginner"
+        },
+        {
+          "id": "bronze",
+          "label": "Bronze",
+          "band": "beginner"
+        },
+        {
+          "id": "silver",
+          "label": "Silver",
+          "band": "beginner"
+        },
+        {
+          "id": "gold",
+          "label": "Gold",
+          "band": "intermediate"
+        },
+        {
+          "id": "platinum",
+          "label": "Platinum",
+          "band": "intermediate"
+        },
+        {
+          "id": "diamond",
+          "label": "Diamond",
+          "band": "advanced"
+        },
+        {
+          "id": "master",
+          "label": "Master",
+          "band": "advanced"
+        },
+        {
+          "id": "high_master",
+          "label": "High Master",
+          "band": "advanced"
+        },
+        {
+          "id": "grand_master",
+          "label": "Grand Master",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "ultimate_master",
+          "label": "Ultimate Master",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "legend",
+          "label": "Legend",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "tekken8",
+      "name": "Tekken 8",
+      "short": "Tekken 8",
+      "patch": "2026-10",
+      "owner": "Bandai Namco",
+      "proofSite": "player stats page (e.g. a Tekken stats site) or a screenshot showing your rank",
+      "proofPlaceholder": "https://...",
+      "characters": [
+        "Alisa Bosconovitch",
+        "Asuka Kazama",
+        "Azucena",
+        "Bryan Fury",
+        "Claudio Serafino",
+        "Devil Jin",
+        "Feng Wei",
+        "Hwoarang",
+        "Jin Kazama",
+        "Jun Kazama",
+        "Jack-8",
+        "King",
+        "Kuma",
+        "Kazuya Mishima",
+        "Lars Alexandersson",
+        "Lee Chaolan",
+        "Leo",
+        "Leroy Smith",
+        "Lili",
+        "Ling Xiaoyu",
+        "Marshall Law",
+        "Nina Williams",
+        "Panda",
+        "Paul Phoenix",
+        "Raven",
+        "Reina",
+        "Sergei Dragunov",
+        "Shaheen",
+        "Steve Fox",
+        "Victor Chevalier",
+        "Yoshimitsu",
+        "Zafina",
+        "Eddy Gordo",
+        "Lidia Sobieska",
+        "Heihachi Mishima",
+        "Clive Rosfield",
+        "Anna Williams",
+        "Armor King",
+        "Fahkumram",
+        "Miary Zo",
+        "Kunimitsu",
+        "Bob"
+      ],
+      "ranks": [
+        {
+          "id": "beginner",
+          "label": "Beginner",
+          "band": "beginner"
+        },
+        {
+          "id": "1st_dan",
+          "label": "1st Dan",
+          "band": "beginner"
+        },
+        {
+          "id": "2nd_dan",
+          "label": "2nd Dan",
+          "band": "beginner"
+        },
+        {
+          "id": "fighter",
+          "label": "Fighter",
+          "band": "beginner"
+        },
+        {
+          "id": "strategist",
+          "label": "Strategist",
+          "band": "beginner"
+        },
+        {
+          "id": "combatant",
+          "label": "Combatant",
+          "band": "beginner"
+        },
+        {
+          "id": "brawler",
+          "label": "Brawler",
+          "band": "beginner"
+        },
+        {
+          "id": "ranger",
+          "label": "Ranger",
+          "band": "beginner"
+        },
+        {
+          "id": "cavalry",
+          "label": "Cavalry",
+          "band": "intermediate"
+        },
+        {
+          "id": "warrior",
+          "label": "Warrior",
+          "band": "intermediate"
+        },
+        {
+          "id": "assailant",
+          "label": "Assailant",
+          "band": "intermediate"
+        },
+        {
+          "id": "dominator",
+          "label": "Dominator",
+          "band": "intermediate"
+        },
+        {
+          "id": "vanquisher",
+          "label": "Vanquisher",
+          "band": "intermediate"
+        },
+        {
+          "id": "destroyer",
+          "label": "Destroyer",
+          "band": "intermediate"
+        },
+        {
+          "id": "eliminator",
+          "label": "Eliminator",
+          "band": "intermediate"
+        },
+        {
+          "id": "garyu",
+          "label": "Garyu",
+          "band": "advanced"
+        },
+        {
+          "id": "shinryu",
+          "label": "Shinryu",
+          "band": "advanced"
+        },
+        {
+          "id": "tenryu",
+          "label": "Tenryu",
+          "band": "advanced"
+        },
+        {
+          "id": "mighty_ruler",
+          "label": "Mighty Ruler",
+          "band": "advanced"
+        },
+        {
+          "id": "flame_ruler",
+          "label": "Flame Ruler",
+          "band": "advanced"
+        },
+        {
+          "id": "battle_ruler",
+          "label": "Battle Ruler",
+          "band": "advanced"
+        },
+        {
+          "id": "fujin",
+          "label": "Fujin",
+          "band": "advanced"
+        },
+        {
+          "id": "raijin",
+          "label": "Raijin",
+          "band": "advanced"
+        },
+        {
+          "id": "kishin",
+          "label": "Kishin",
+          "band": "advanced"
+        },
+        {
+          "id": "bushin",
+          "label": "Bushin",
+          "band": "advanced"
+        },
+        {
+          "id": "tekken_king",
+          "label": "Tekken King",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "tekken_emperor",
+          "label": "Tekken Emperor",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "tekken_god",
+          "label": "Tekken God",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "tekken_god_supreme",
+          "label": "Tekken God Supreme",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "god_of_destruction",
+          "label": "God of Destruction",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "smash",
+      "name": "Super Smash Bros. Ultimate",
+      "short": "Smash Ultimate",
+      "patch": "2026-10",
+      "owner": "Nintendo",
+      "proofSite": "screenshot showing your Elite Smash status and GSP (e.g. an Imgur link)",
+      "proofPlaceholder": "https://imgur.com/...",
+      "characters": [
+        "Mario",
+        "Donkey Kong",
+        "Link",
+        "Samus",
+        "Dark Samus",
+        "Yoshi",
+        "Kirby",
+        "Fox",
+        "Pikachu",
+        "Luigi",
+        "Ness",
+        "Captain Falcon",
+        "Jigglypuff",
+        "Peach",
+        "Daisy",
+        "Bowser",
+        "Ice Climbers",
+        "Sheik",
+        "Zelda",
+        "Dr. Mario",
+        "Pichu",
+        "Falco",
+        "Marth",
+        "Lucina",
+        "Young Link",
+        "Ganondorf",
+        "Mewtwo",
+        "Roy",
+        "Chrom",
+        "Mr. Game & Watch",
+        "Meta Knight",
+        "Pit",
+        "Dark Pit",
+        "Zero Suit Samus",
+        "Wario",
+        "Snake",
+        "Ike",
+        "Pokémon Trainer",
+        "Diddy Kong",
+        "Lucas",
+        "Sonic",
+        "King Dedede",
+        "Olimar",
+        "Lucario",
+        "R.O.B.",
+        "Toon Link",
+        "Wolf",
+        "Villager",
+        "Mega Man",
+        "Wii Fit Trainer",
+        "Rosalina & Luma",
+        "Little Mac",
+        "Greninja",
+        "Mii Brawler",
+        "Mii Swordfighter",
+        "Mii Gunner",
+        "Palutena",
+        "Pac-Man",
+        "Robin",
+        "Shulk",
+        "Bowser Jr.",
+        "Duck Hunt",
+        "Ryu",
+        "Ken",
+        "Cloud",
+        "Corrin",
+        "Bayonetta",
+        "Inkling",
+        "Ridley",
+        "Simon",
+        "Richter",
+        "King K. Rool",
+        "Isabelle",
+        "Incineroar",
+        "Piranha Plant",
+        "Joker",
+        "Hero",
+        "Banjo & Kazooie",
+        "Terry",
+        "Byleth",
+        "Min Min",
+        "Steve",
+        "Sephiroth",
+        "Pyra & Mythra",
+        "Kazuya",
+        "Sora"
+      ],
+      "ranks": [
+        {
+          "id": "gsp_under_3m",
+          "label": "Under 3M GSP",
+          "band": "beginner"
+        },
+        {
+          "id": "gsp_3m_8m",
+          "label": "3M to 8M GSP",
+          "band": "intermediate"
+        },
+        {
+          "id": "gsp_8m_elite",
+          "label": "8M GSP to just below Elite",
+          "band": "advanced"
+        },
+        {
+          "id": "elite_smash",
+          "label": "Elite Smash",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "mk1",
+      "name": "Mortal Kombat 1",
+      "short": "MK1",
+      "patch": "2026-10",
+      "owner": "Warner Bros. Games",
+      "proofSite": "screenshot showing your Kombat League rank (e.g. an Imgur link)",
+      "proofPlaceholder": "https://imgur.com/...",
+      "characters": [
+        "Ashrah",
+        "Baraka",
+        "General Shao",
+        "Geras",
+        "Havik",
+        "Johnny Cage",
+        "Kenshi",
+        "Kitana",
+        "Kung Lao",
+        "Li Mei",
+        "Liu Kang",
+        "Mileena",
+        "Nitara",
+        "Raiden",
+        "Rain",
+        "Reiko",
+        "Reptile",
+        "Scorpion",
+        "Sindel",
+        "Smoke",
+        "Sub-Zero",
+        "Tanya",
+        "Shang Tsung",
+        "Ermac",
+        "Homelander",
+        "Omni-Man",
+        "Peacemaker",
+        "Quan Chi",
+        "Takeda",
+        "Noob Saibot",
+        "Sektor",
+        "Cyrax",
+        "Conan the Barbarian",
+        "Ghostface",
+        "T-1000"
+      ],
+      "ranks": [
+        {
+          "id": "apprentice",
+          "label": "Apprentice",
+          "band": "beginner"
+        },
+        {
+          "id": "kombatant",
+          "label": "Kombatant",
+          "band": "beginner"
+        },
+        {
+          "id": "warrior",
+          "label": "Warrior",
+          "band": "intermediate"
+        },
+        {
+          "id": "champion",
+          "label": "Champion",
+          "band": "intermediate"
+        },
+        {
+          "id": "master",
+          "label": "Master",
+          "band": "advanced"
+        },
+        {
+          "id": "grand_master",
+          "label": "Grand Master",
+          "band": "advanced"
+        },
+        {
+          "id": "demi_god",
+          "label": "Demi God",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "god",
+          "label": "God",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "elder_god",
+          "label": "Elder God",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "ggst",
+      "name": "Guilty Gear -Strive-",
+      "short": "Strive",
+      "patch": "2026-10",
+      "owner": "Arc System Works",
+      "proofSite": "screenshot showing your rank (e.g. an Imgur link)",
+      "proofPlaceholder": "https://imgur.com/...",
+      "characters": [
+        "Sol Badguy",
+        "Ky Kiske",
+        "May",
+        "Axl Low",
+        "Chipp Zanuff",
+        "Potemkin",
+        "Faust",
+        "Millia Rage",
+        "Zato-1",
+        "Ramlethal Valentine",
+        "Leo Whitefang",
+        "Nagoriyuki",
+        "Giovanna",
+        "Anji Mito",
+        "I-No",
+        "Goldlewis Dickinson",
+        "Jack-O",
+        "Happy Chaos",
+        "Baiken",
+        "Testament",
+        "Bridget",
+        "Sin Kiske",
+        "Bedman?",
+        "Asuka R#",
+        "Johnny",
+        "Elphelt Valentine",
+        "A.B.A",
+        "Slayer",
+        "Queen Dizzy",
+        "Venom",
+        "Unika",
+        "Lucy",
+        "Jam Kuradoberi",
+        "Robo-Ky"
+      ],
+      "ranks": [
+        {
+          "id": "iron",
+          "label": "Iron",
+          "band": "beginner"
+        },
+        {
+          "id": "bronze",
+          "label": "Bronze",
+          "band": "beginner"
+        },
+        {
+          "id": "silver",
+          "label": "Silver",
+          "band": "intermediate"
+        },
+        {
+          "id": "gold",
+          "label": "Gold",
+          "band": "intermediate"
+        },
+        {
+          "id": "platinum",
+          "label": "Platinum",
+          "band": "advanced"
+        },
+        {
+          "id": "diamond",
+          "label": "Diamond",
+          "band": "advanced"
+        },
+        {
+          "id": "vanquisher",
+          "label": "Vanquisher",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "brawlhalla",
+      "name": "Brawlhalla",
+      "short": "Brawlhalla",
+      "patch": "2026-10",
+      "owner": "Ubisoft",
+      "proofSite": "ranked stats page (e.g. Corehalla) or a screenshot showing your rank",
+      "proofPlaceholder": "https://...",
+      "characters": [
+        "Ada",
+        "Arcadia",
+        "Artemis",
+        "Asuri",
+        "Aurus",
+        "Azoth",
+        "Barraza",
+        "Bödvar",
+        "Brynn",
+        "Caspian",
+        "Cassidy",
+        "Cross",
+        "Diana",
+        "Dusk",
+        "Ember",
+        "Ezio",
+        "Fait",
+        "Gnash",
+        "Hattori",
+        "Imugi",
+        "Isaiah",
+        "Jaeyun",
+        "Jhala",
+        "Jiro",
+        "Kaya",
+        "Koji",
+        "Kor",
+        "Lin Fei",
+        "Loki",
+        "Lucien",
+        "Magyar",
+        "Mako",
+        "Mirage",
+        "Mordex",
+        "Munin",
+        "Queen Nai",
+        "Nix",
+        "Onyx",
+        "Orion",
+        "Petra",
+        "Priya",
+        "Qinghua & Baobao",
+        "Ragnir",
+        "Ransom",
+        "Rayman",
+        "Red Raptor",
+        "Reno",
+        "Sir Roland",
+        "Rupture",
+        "Scarlet",
+        "Sentinel",
+        "Seven",
+        "Sidra",
+        "Teros",
+        "Tezca",
+        "Thatch",
+        "Thea",
+        "Thor",
+        "Ulgrim",
+        "Val",
+        "Vector",
+        "Lady Vera",
+        "Vivi",
+        "Volkov",
+        "Lord Vraxx",
+        "Wu Shang",
+        "Xull",
+        "Yumiko",
+        "Zariel",
+        "King Zuva"
+      ],
+      "ranks": [
+        {
+          "id": "tin",
+          "label": "Tin",
+          "band": "beginner"
+        },
+        {
+          "id": "bronze",
+          "label": "Bronze",
+          "band": "beginner"
+        },
+        {
+          "id": "silver",
+          "label": "Silver",
+          "band": "intermediate"
+        },
+        {
+          "id": "gold",
+          "label": "Gold",
+          "band": "intermediate"
+        },
+        {
+          "id": "platinum",
+          "label": "Platinum",
+          "band": "advanced"
+        },
+        {
+          "id": "diamond",
+          "label": "Diamond",
+          "band": "advanced"
+        },
+        {
+          "id": "valhallan",
+          "label": "Valhallan",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "rivals2",
+      "name": "Rivals of Aether II",
+      "short": "Rivals II",
+      "patch": "2026-10",
+      "owner": "Aether Studios",
+      "proofSite": "screenshot showing your rank (e.g. an Imgur link)",
+      "proofPlaceholder": "https://imgur.com/...",
+      "characters": [
+        "Zetterburn",
+        "Forsburn",
+        "Clairen",
+        "Loxodont",
+        "Maypul",
+        "Kragg",
+        "Olympia",
+        "Ranno",
+        "Orcane",
+        "Etalus",
+        "Wrastor",
+        "Fleet",
+        "Absa",
+        "Galvan",
+        "La Reina",
+        "Gouie"
+      ],
+      "ranks": [
+        {
+          "id": "bronze",
+          "label": "Bronze or below",
+          "band": "beginner"
+        },
+        {
+          "id": "silver",
+          "label": "Silver",
+          "band": "intermediate"
+        },
+        {
+          "id": "gold",
+          "label": "Gold",
+          "band": "intermediate"
+        },
+        {
+          "id": "platinum",
+          "label": "Platinum",
+          "band": "advanced"
+        },
+        {
+          "id": "diamond",
+          "label": "Diamond",
+          "band": "advanced"
+        },
+        {
+          "id": "master",
+          "label": "Master",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "cotw",
+      "name": "Fatal Fury: City of the Wolves",
+      "short": "City of the Wolves",
+      "patch": "2026-10",
+      "owner": "SNK",
+      "proofSite": "screenshot showing your rank (e.g. an Imgur link)",
+      "proofPlaceholder": "https://imgur.com/...",
+      "characters": [
+        "Terry Bogard",
+        "Rock Howard",
+        "Mai Shiranui",
+        "Hotaru Futaba",
+        "Preecha",
+        "Tizoc",
+        "Gato",
+        "Kain R. Heinlein",
+        "Kevin Rian",
+        "Marco Rodrigues",
+        "Salvatore Ganacci",
+        "Cristiano Ronaldo",
+        "B. Jenet",
+        "Vox Reaper",
+        "Hokutomaru",
+        "Kim Dong Hwan",
+        "Billy Kane",
+        "Andy Bogard",
+        "Ken",
+        "Joe Higashi",
+        "Chun-Li",
+        "Mr. Big",
+        "Kim Jae Hoon",
+        "Nightmare Geese",
+        "Blue Mary",
+        "Wolfgang Krauser",
+        "Mr. Karate",
+        "Kenshiro",
+        "Rick Strowd",
+        "Duck King",
+        "Kim Kaphwan",
+        "Mikey & Draken"
+      ],
+      "ranks": [
+        {
+          "id": "newcomer",
+          "label": "Newcomer",
+          "band": "beginner"
+        },
+        {
+          "id": "iron_wolf",
+          "label": "Iron Wolf",
+          "band": "beginner"
+        },
+        {
+          "id": "bronze_wolf",
+          "label": "Bronze Wolf",
+          "band": "beginner"
+        },
+        {
+          "id": "above_bronze_wolf",
+          "label": "Above Bronze, below Diamond Wolf",
+          "band": "intermediate"
+        },
+        {
+          "id": "diamond_wolf",
+          "label": "Diamond Wolf",
+          "band": "advanced"
+        },
+        {
+          "id": "legendary_wolf",
+          "label": "Legendary Wolf",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "garou",
+          "label": "GAROU",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "gbvsr",
+      "name": "Granblue Fantasy Versus: Rising",
+      "short": "GBVS Rising",
+      "patch": "2026-10",
+      "owner": "Cygames",
+      "proofSite": "screenshot showing your rank (e.g. an Imgur link)",
+      "proofPlaceholder": "https://imgur.com/...",
+      "characters": [
+        "Gran",
+        "Djeeta",
+        "Katalina",
+        "Anila",
+        "Charlotta",
+        "Lowain",
+        "Zeta",
+        "Soriz",
+        "Yuel",
+        "Seox",
+        "Vira",
+        "Beelzebub",
+        "Belial",
+        "Siegfried",
+        "Lancelot",
+        "Percival",
+        "Ladiva",
+        "Vaseraga",
+        "Zooey",
+        "Cagliostro",
+        "Anre",
+        "Eustace",
+        "Avatar Belial",
+        "Grimnir",
+        "Metera",
+        "Ferry",
+        "Narmaya",
+        "Nier",
+        "Lucilius",
+        "2B",
+        "Vane",
+        "Beatrix",
+        "Versusia",
+        "Vikala",
+        "Sandalphon",
+        "Galleon",
+        "Wilnas",
+        "Meg",
+        "Ilsa",
+        "Id"
+      ],
+      "ranks": [
+        {
+          "id": "d",
+          "label": "D",
+          "band": "beginner"
+        },
+        {
+          "id": "c",
+          "label": "C",
+          "band": "beginner"
+        },
+        {
+          "id": "b",
+          "label": "B",
+          "band": "intermediate"
+        },
+        {
+          "id": "a",
+          "label": "A",
+          "band": "intermediate"
+        },
+        {
+          "id": "s",
+          "label": "S",
+          "band": "advanced"
+        },
+        {
+          "id": "s_plus",
+          "label": "S+",
+          "band": "advanced"
+        },
+        {
+          "id": "s_plus_plus",
+          "label": "S++",
+          "band": "advanced"
+        },
+        {
+          "id": "master",
+          "label": "Master",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "invincible",
+      "name": "Invincible VS",
+      "short": "Invincible VS",
+      "patch": "2026-10",
+      "owner": "Skybound",
+      "proofSite": "screenshot showing your rank (e.g. an Imgur link)",
+      "proofPlaceholder": "https://imgur.com/...",
+      "characters": [
+        "Invincible",
+        "Omni-Man",
+        "Atom Eve",
+        "Battle Beast",
+        "Bulletproof",
+        "Rex Splode",
+        "Lucan",
+        "Anissa",
+        "Dupli-Kate",
+        "Allen the Alien",
+        "Conquest",
+        "Thula",
+        "Robot",
+        "Monster Girl",
+        "Cecil Stedman",
+        "Ella Mental",
+        "Titan",
+        "Powerplex",
+        "Universa",
+        "The Immortal",
+        "Angstrom Levy"
+      ],
+      "ranks": [
+        {
+          "id": "new_blood",
+          "label": "New Blood",
+          "band": "beginner"
+        },
+        {
+          "id": "rookie",
+          "label": "Rookie",
+          "band": "beginner"
+        },
+        {
+          "id": "bronze",
+          "label": "Bronze",
+          "band": "beginner"
+        },
+        {
+          "id": "silver",
+          "label": "Silver",
+          "band": "intermediate"
+        },
+        {
+          "id": "gold",
+          "label": "Gold",
+          "band": "intermediate"
+        },
+        {
+          "id": "platinum",
+          "label": "Platinum",
+          "band": "advanced"
+        },
+        {
+          "id": "diamond",
+          "label": "Diamond",
+          "band": "advanced"
+        },
+        {
+          "id": "superhero",
+          "label": "Superhero",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "guardian_of_the_globe",
+          "label": "Guardian of the Globe",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    }
+  ]
+}

@@ -2,8 +2,9 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { HTML_LANG, LOCALE_COOKIE, translator, type Locale, type Translate } from "./config";
 import { characterName } from "@/locales/characters";
+import type { Game } from "@/lib/games";
 
-type I18n = { locale: Locale; t: Translate; setLocale: (l: Locale) => void; nameOf: (id: string) => string };
+type I18n = { locale: Locale; t: Translate; setLocale: (l: Locale) => void; nameOf: (id: string, game?: Game) => string };
 const Context = createContext<I18n | null>(null);
 
 export function I18nProvider({ initial, children }: { initial: Locale; children: React.ReactNode }) {
@@ -14,7 +15,7 @@ export function I18nProvider({ initial, children }: { initial: Locale; children:
     setLocaleState(next);
   }, []);
   const value = useMemo(
-    () => ({ locale, setLocale, t: translator(locale), nameOf: (id: string) => characterName(id, locale) }),
+    () => ({ locale, setLocale, t: translator(locale), nameOf: (id: string, game?: Game) => characterName(id, locale, game) }),
     [locale, setLocale],
   );
   return <Context.Provider value={value}>{children}</Context.Provider>;
