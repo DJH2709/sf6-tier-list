@@ -38,3 +38,9 @@ and makes their tier lists public at `/u/<username>`.
    This lets someone who voted before signing in keep that vote.
 4. In Supabase, go to Authentication → URL Configuration. Set Site URL to your live site, and
    add `https://*-<your-vercel-team>.vercel.app/**` to Redirect URLs so previews can sign in.
+
+## Character portraits
+
+Drop one image per character into `public/characters/`, named by the character id
+(`ryu.png`, `chun-li.png`, `e-honda.webp`). See `public/characters/README.md` for the
+copyright note. Characters without an image show coloured initials.

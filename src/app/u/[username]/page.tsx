@@ -8,6 +8,13 @@ import { RANKS } from "@/lib/sf6";
 import TierRows from "@/components/TierRows";
 import ShareButton from "@/components/ShareButton";
 
+// Stable colour per username, matching the character badges.
+function avatarColour(name: string) {
+  let hash = 0;
+  for (const ch of name) hash = (hash * 31 + ch.charCodeAt(0)) % 360;
+  return `hsl(${hash} 45% 35%)`;
+}
+
 const GAME_NAMES: Record<string, string> = { sf6: "Street Fighter 6" };
 
 export default function ProfilePage() {
@@ -26,7 +33,7 @@ export default function ProfilePage() {
   }, [username]);
 
   return (
-    <div className="mx-auto min-h-screen max-w-5xl space-y-6 px-4 py-8">
+    <div className="mx-auto min-h-screen max-w-4xl space-y-8 px-4 py-8">
       <Link href="/" className="text-sm font-black tracking-tight">← SF6 TIER LIST</Link>
       {demoMode ? (
         <p className="text-neutral-400">Profiles only work on the live site.</p>
@@ -41,12 +48,24 @@ export default function ProfilePage() {
         </div>
       ) : (
         <>
-          <header className="flex flex-wrap items-end justify-between gap-4">
+          <header className="space-y-4 border-b border-neutral-800 pb-8 text-center">
+            <span
+              className="mx-auto flex h-20 w-20 items-center justify-center rounded-full text-2xl font-black text-white"
+              style={{ backgroundColor: avatarColour(profile.username) }}
+              aria-hidden
+            >
+              {(profile.display_name || profile.username).slice(0, 2).toUpperCase()}
+            </span>
             <div>
-              <h1 className="text-3xl font-black">{profile.display_name || profile.username}</h1>
+              <h1 className="text-3xl font-black tracking-tight">{profile.display_name || profile.username}</h1>
               <p className="text-neutral-400">@{profile.username}</p>
             </div>
-            <ShareButton url={typeof window === "undefined" ? "" : window.location.href} title={`@${profile.username}'s SF6 tier list`} />
+            <div className="flex flex-wrap justify-center gap-3">
+              <ShareButton url={typeof window === "undefined" ? "" : window.location.href} title={`@${profile.username}'s SF6 tier list`} />
+              <Link href="/" className="rounded-full border border-neutral-600 px-4 py-2 text-sm font-semibold hover:border-neutral-400">
+                Make your own
+              </Link>
+            </div>
           </header>
           {lists.length === 0 && <p className="text-neutral-400">No tier lists yet.</p>}
           {lists.map((list) => {
@@ -71,7 +90,6 @@ export default function ProfilePage() {
               </section>
             );
           })}
-          <Link href="/" className="inline-block text-sm text-amber-300 underline">Make your own tier list</Link>
         </>
       )}
     </div>

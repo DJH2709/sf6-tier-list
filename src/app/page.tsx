@@ -43,36 +43,35 @@ export default function Home() {
         )
       )}
 
-      <header className="border-b border-neutral-800 bg-gradient-to-b from-amber-500/10 to-transparent">
-        <div className="mx-auto flex max-w-5xl items-start justify-between gap-4 px-4 pt-4">
-          <span className="pt-2 text-sm font-black tracking-tight">SF6 TIER LIST</span>
+      <header className="border-b border-neutral-800 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.14),transparent_60%)]">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 pt-4">
+          <span className="text-sm font-black tracking-tight">SF6 TIER LIST</span>
           <AccountBar account={account} />
         </div>
-        <div className="mx-auto max-w-5xl space-y-8 px-4 pb-12 pt-8 sm:pb-16">
-          <div className="space-y-4">
-            <p className="text-sm font-semibold uppercase tracking-widest text-amber-400">
-              Street Fighter 6 · Patch {CURRENT_PATCH}
-            </p>
-            <h1 className="max-w-2xl text-4xl font-black tracking-tight sm:text-5xl">
-              The tier list that changes with your rank
-            </h1>
-            <p className="max-w-xl text-lg text-neutral-300">
-              Pro tier lists tell you what wins at the top. This one shows how players at your level rate the
-              cast, voted by the community and split by rank.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <button onClick={() => open("make")} className="rounded-lg bg-amber-400 px-5 py-3 font-semibold text-neutral-950 hover:bg-amber-300">
+        <div className="mx-auto max-w-3xl space-y-8 px-4 pb-14 pt-12 text-center sm:pb-20 sm:pt-16">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">
+            Street Fighter 6 · Patch {CURRENT_PATCH}
+          </p>
+          <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+            The tier list that changes with your rank
+          </h1>
+          <p className="mx-auto max-w-xl text-lg text-neutral-300">
+            Pro tier lists tell you what wins at the top. This one shows how players at your level rate the
+            cast, voted by the community and split by rank.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <button onClick={() => open("make")} className="rounded-full bg-amber-400 px-6 py-3 font-semibold text-neutral-950 hover:bg-amber-300">
               Make your tier list
             </button>
-            <button onClick={() => open("results")} className="rounded-lg border border-neutral-700 px-5 py-3 font-semibold hover:border-neutral-500">
+            <button onClick={() => open("results")} className="rounded-full border border-neutral-600 px-6 py-3 font-semibold hover:border-neutral-400">
               See community results
             </button>
           </div>
-          <ol className="grid gap-3 sm:grid-cols-3">
+          <hr className="mx-auto w-16 border-neutral-700" />
+          <ol className="grid gap-6 text-left sm:grid-cols-3 sm:text-center">
             {STEPS.map((step, i) => (
-              <li key={step.title} className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
-                <span className="text-sm font-bold text-amber-400">{i + 1}</span>
+              <li key={step.title} className="space-y-1">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">Step {i + 1}</span>
                 <p className="font-semibold">{step.title}</p>
                 <p className="text-sm text-neutral-400">{step.text}</p>
               </li>
