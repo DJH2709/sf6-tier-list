@@ -5,7 +5,8 @@ export type Placements = Record<string, number>; // item id -> score 1..5
 export type BandResult = { band: Band; item_id: string; avg_score: number; votes: number; lists: number };
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Supabase now issues sb_publishable_ keys; older projects still have an anon key.
+const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase: SupabaseClient | null = url && key ? createClient(url, key) : null;
 
 // Without Supabase settings the site runs in demo mode, saving to this browser only.

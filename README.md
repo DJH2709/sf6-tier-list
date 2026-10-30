@@ -15,7 +15,7 @@ With no settings it runs in demo mode and saves votes in your browser only.
 
 1. Create a Supabase project, then run `supabase/schema.sql` in its SQL editor.
 2. Under Authentication, turn on anonymous sign-ins.
-3. Copy `.env.example` to `.env.local` and fill in the project URL and anon key.
+3. Copy `.env.example` to `.env.local` and fill in the project URL and publishable key.
 4. Deploy to Vercel with the same settings.
 
 ## Checking top-rank proof
