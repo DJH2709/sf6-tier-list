@@ -81,17 +81,6 @@ insert into game_ranks (game, rank_id, band, needs_proof) values
   ('ggst', 'platinum', 'advanced', false),
   ('ggst', 'diamond', 'advanced', false),
   ('ggst', 'vanquisher', 'elite', true),
-  ('2xko', 'aspirant', 'beginner', false),
-  ('2xko', 'iron', 'beginner', false),
-  ('2xko', 'bronze', 'beginner', false),
-  ('2xko', 'silver', 'intermediate', false),
-  ('2xko', 'gold', 'intermediate', false),
-  ('2xko', 'platinum', 'advanced', false),
-  ('2xko', 'emerald', 'advanced', false),
-  ('2xko', 'diamond', 'advanced', false),
-  ('2xko', 'master', 'elite', true),
-  ('2xko', 'grandmaster', 'elite', true),
-  ('2xko', 'challenger', 'elite', true),
   ('brawlhalla', 'tin', 'beginner', false),
   ('brawlhalla', 'bronze', 'beginner', false),
   ('brawlhalla', 'silver', 'intermediate', false),
@@ -119,7 +108,16 @@ insert into game_ranks (game, rank_id, band, needs_proof) values
   ('gbvsr', 's', 'advanced', false),
   ('gbvsr', 's_plus', 'advanced', false),
   ('gbvsr', 's_plus_plus', 'advanced', false),
-  ('gbvsr', 'master', 'elite', true)
+  ('gbvsr', 'master', 'elite', true),
+  ('invincible', 'new_blood', 'beginner', false),
+  ('invincible', 'rookie', 'beginner', false),
+  ('invincible', 'bronze', 'beginner', false),
+  ('invincible', 'silver', 'intermediate', false),
+  ('invincible', 'gold', 'intermediate', false),
+  ('invincible', 'platinum', 'advanced', false),
+  ('invincible', 'diamond', 'advanced', false),
+  ('invincible', 'superhero', 'elite', true),
+  ('invincible', 'guardian_of_the_globe', 'elite', true)
 on conflict (game, rank_id) do update set band = excluded.band, needs_proof = excluded.needs_proof;
 -- ranks:end
 

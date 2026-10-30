@@ -618,92 +618,6 @@
       ]
     },
     {
-      "id": "2xko",
-      "name": "2XKO",
-      "short": "2XKO",
-      "patch": "2026-10",
-      "owner": "Riot Games",
-      "proofSite": "screenshot or profile link showing your rank",
-      "proofPlaceholder": "https://...",
-      "characters": [
-        "Ahri",
-        "Ekko",
-        "Yasuo",
-        "Darius",
-        "Illaoi",
-        "Braum",
-        "Jinx",
-        "Vi",
-        "Blitzcrank",
-        "Teemo",
-        "Warwick",
-        "Caitlyn",
-        "Akali",
-        "Senna",
-        "Thresh"
-      ],
-      "ranks": [
-        {
-          "id": "aspirant",
-          "label": "Aspirant",
-          "band": "beginner"
-        },
-        {
-          "id": "iron",
-          "label": "Iron",
-          "band": "beginner"
-        },
-        {
-          "id": "bronze",
-          "label": "Bronze",
-          "band": "beginner"
-        },
-        {
-          "id": "silver",
-          "label": "Silver",
-          "band": "intermediate"
-        },
-        {
-          "id": "gold",
-          "label": "Gold",
-          "band": "intermediate"
-        },
-        {
-          "id": "platinum",
-          "label": "Platinum",
-          "band": "advanced"
-        },
-        {
-          "id": "emerald",
-          "label": "Emerald",
-          "band": "advanced"
-        },
-        {
-          "id": "diamond",
-          "label": "Diamond",
-          "band": "advanced"
-        },
-        {
-          "id": "master",
-          "label": "Master",
-          "band": "elite",
-          "needsProof": true
-        },
-        {
-          "id": "grandmaster",
-          "label": "Grandmaster",
-          "band": "elite",
-          "needsProof": true
-        },
-        {
-          "id": "challenger",
-          "label": "Challenger",
-          "band": "elite",
-          "needsProof": true
-        }
-      ]
-    },
-    {
       "id": "brawlhalla",
       "name": "Brawlhalla",
       "short": "Brawlhalla",
@@ -1053,6 +967,87 @@
         {
           "id": "master",
           "label": "Master",
+          "band": "elite",
+          "needsProof": true
+        }
+      ]
+    },
+    {
+      "id": "invincible",
+      "name": "Invincible VS",
+      "short": "Invincible VS",
+      "patch": "2026-10",
+      "owner": "Skybound",
+      "proofSite": "screenshot showing your rank (e.g. an Imgur link)",
+      "proofPlaceholder": "https://imgur.com/...",
+      "characters": [
+        "Invincible",
+        "Omni-Man",
+        "Atom Eve",
+        "Battle Beast",
+        "Bulletproof",
+        "Rex Splode",
+        "Lucan",
+        "Anissa",
+        "Dupli-Kate",
+        "Allen the Alien",
+        "Conquest",
+        "Thula",
+        "Robot",
+        "Monster Girl",
+        "Cecil Stedman",
+        "Ella Mental",
+        "Titan",
+        "Powerplex",
+        "Universa",
+        "The Immortal",
+        "Angstrom Levy"
+      ],
+      "ranks": [
+        {
+          "id": "new_blood",
+          "label": "New Blood",
+          "band": "beginner"
+        },
+        {
+          "id": "rookie",
+          "label": "Rookie",
+          "band": "beginner"
+        },
+        {
+          "id": "bronze",
+          "label": "Bronze",
+          "band": "beginner"
+        },
+        {
+          "id": "silver",
+          "label": "Silver",
+          "band": "intermediate"
+        },
+        {
+          "id": "gold",
+          "label": "Gold",
+          "band": "intermediate"
+        },
+        {
+          "id": "platinum",
+          "label": "Platinum",
+          "band": "advanced"
+        },
+        {
+          "id": "diamond",
+          "label": "Diamond",
+          "band": "advanced"
+        },
+        {
+          "id": "superhero",
+          "label": "Superhero",
+          "band": "elite",
+          "needsProof": true
+        },
+        {
+          "id": "guardian_of_the_globe",
+          "label": "Guardian of the Globe",
           "band": "elite",
           "needsProof": true
         }
