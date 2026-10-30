@@ -44,7 +44,7 @@ export default function ProfilePage() {
       ) : profile === null ? (
         <div className="space-y-3">
           <h1 className="text-2xl font-bold">No player called @{username}</h1>
-          <Link href="/" className="text-amber-300 underline">Make your own tier list</Link>
+          <Link href="/" className="text-emerald-300 underline">Make your own tier list</Link>
         </div>
       ) : (
         <>

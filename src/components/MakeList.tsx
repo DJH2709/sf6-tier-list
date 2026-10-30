@@ -9,7 +9,7 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
   return (
     <section className="space-y-3">
       <h3 className="flex items-center gap-2 font-semibold">
-        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-xs font-bold text-neutral-950">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-neutral-950">
           {n}
         </span>
         {title}
@@ -83,7 +83,7 @@ export default function MakeList({ onSubmitted }: { onSubmitted: () => void }) {
           <div className="flex items-center justify-between text-sm">
             <span>
               {selected ? (
-                <>Placing <b className="text-amber-300">{nameOf(selected)}</b>. Tap a tier.</>
+                <>Placing <b className="text-emerald-300">{nameOf(selected)}</b>. Tap a tier.</>
               ) : (
                 "All placed. Tap any character to move them."
               )}
@@ -91,7 +91,7 @@ export default function MakeList({ onSubmitted }: { onSubmitted: () => void }) {
             <span className="tabular-nums text-neutral-400">{placedCount}/{CHARACTERS.length}</span>
           </div>
           <div className="h-1.5 overflow-hidden rounded-full bg-neutral-800">
-            <div className="h-full bg-amber-400 transition-all" style={{ width: `${(placedCount / CHARACTERS.length) * 100}%` }} />
+            <div className="h-full bg-emerald-500 transition-all" style={{ width: `${(placedCount / CHARACTERS.length) * 100}%` }} />
           </div>
         </div>
         <TierRows placements={placements} selected={selected} onRowClick={place} onCharacterClick={setSelected} />
@@ -117,7 +117,7 @@ export default function MakeList({ onSubmitted }: { onSubmitted: () => void }) {
         <button
           disabled={!rank || unplaced.length > 0 || saving}
           onClick={submit}
-          className="w-full rounded-lg bg-amber-400 px-5 py-3 font-semibold text-neutral-950 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+          className="w-full rounded-lg bg-emerald-500 px-5 py-3 font-semibold text-neutral-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
         >
           {saving ? "Saving..." : !rank ? "Choose your rank first" : unplaced.length > 0 ? `Place ${unplaced.length} more` : "Submit my tier list"}
         </button>

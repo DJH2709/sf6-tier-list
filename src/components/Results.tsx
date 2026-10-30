@@ -29,7 +29,7 @@ export default function Results({ refreshKey, onMakeList }: { refreshKey: number
             key={b.id}
             onClick={() => setBand(b.id)}
             className={`rounded-lg border px-3 py-2 text-left transition
-              ${band === b.id ? "border-amber-400 bg-amber-400/10" : "border-neutral-800 bg-neutral-900 hover:border-neutral-600"}`}
+              ${band === b.id ? "border-emerald-500 bg-emerald-500/10" : "border-neutral-800 bg-neutral-900 hover:border-neutral-600"}`}
           >
             <span className="block text-sm font-semibold">{b.label}</span>
             <span className="block text-xs text-neutral-400">{b.ranks}</span>
@@ -44,13 +44,13 @@ export default function Results({ refreshKey, onMakeList }: { refreshKey: number
         <div className="space-y-4 rounded-xl border border-neutral-800 bg-neutral-900/60 p-6 text-center">
           <p className="font-semibold">Not enough votes from {current.label} players yet</p>
           <div className="mx-auto h-2 max-w-xs overflow-hidden rounded-full bg-neutral-800">
-            <div className="h-full bg-amber-400" style={{ width: `${(lists / MIN_LISTS) * 100}%` }} />
+            <div className="h-full bg-emerald-500" style={{ width: `${(lists / MIN_LISTS) * 100}%` }} />
           </div>
           <p className="text-sm text-neutral-400">
             {lists} of {MIN_LISTS} lists. Results show once {MIN_LISTS} {MIN_LISTS === 1 ? "player" : "players"} at this rank have voted, so one
             person can&apos;t decide the list.
           </p>
-          <button onClick={onMakeList} className="rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-neutral-950 hover:bg-amber-300">
+          <button onClick={onMakeList} className="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-neutral-950 hover:bg-emerald-400">
             Add your tier list
           </button>
         </div>

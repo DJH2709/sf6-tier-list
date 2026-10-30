@@ -53,7 +53,7 @@ export default function CharacterTile({ id, selected, detail, onClick }: Props) 
       }}
       disabled={!onClick}
       className={`flex items-center gap-2 rounded-md border bg-neutral-900 py-1 pl-1 pr-2.5 text-sm transition
-        ${selected ? "border-amber-400 ring-2 ring-amber-400/60" : "border-neutral-700"}
+        ${selected ? "border-emerald-500 ring-2 ring-emerald-500/60" : "border-neutral-700"}
         ${onClick ? "hover:border-neutral-500 active:scale-95" : "cursor-default"}`}
     >
       <Portrait id={id} />

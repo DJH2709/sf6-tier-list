@@ -37,19 +37,19 @@ export default function Home() {
         </p>
       ) : (
         demoMode && (
-          <p className="bg-amber-950 px-4 py-2 text-center text-sm text-amber-300">
+          <p className="bg-emerald-950 px-4 py-2 text-center text-sm text-emerald-300">
             Demo mode: votes are saved in this browser only.
           </p>
         )
       )}
 
-      <header className="border-b border-neutral-800 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.14),transparent_60%)]">
+      <header className="border-b border-neutral-800 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.16),transparent_60%)]">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 pt-4">
           <span className="text-sm font-black tracking-tight">SF6 TIER LIST</span>
           <AccountBar account={account} />
         </div>
         <div className="mx-auto max-w-3xl space-y-8 px-4 pb-14 pt-12 text-center sm:pb-20 sm:pt-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-500">
             Street Fighter 6 · Patch {CURRENT_PATCH}
           </p>
           <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
@@ -60,7 +60,7 @@ export default function Home() {
             cast, voted by the community and split by rank.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <button onClick={() => open("make")} className="rounded-full bg-amber-400 px-6 py-3 font-semibold text-neutral-950 hover:bg-amber-300">
+            <button onClick={() => open("make")} className="rounded-full bg-emerald-500 px-6 py-3 font-semibold text-neutral-950 hover:bg-emerald-400">
               Make your tier list
             </button>
             <button onClick={() => open("results")} className="rounded-full border border-neutral-600 px-6 py-3 font-semibold hover:border-neutral-400">
@@ -71,7 +71,7 @@ export default function Home() {
           <ol className="grid gap-6 text-left sm:grid-cols-3 sm:text-center">
             {STEPS.map((step, i) => (
               <li key={step.title} className="space-y-1">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">Step {i + 1}</span>
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-500">Step {i + 1}</span>
                 <p className="font-semibold">{step.title}</p>
                 <p className="text-sm text-neutral-400">{step.text}</p>
               </li>
@@ -102,7 +102,7 @@ export default function Home() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`rounded-md px-4 py-2 text-sm font-semibold transition ${tab === t ? "bg-amber-400 text-neutral-950" : "text-neutral-300 hover:text-white"}`}
+              className={`rounded-md px-4 py-2 text-sm font-semibold transition ${tab === t ? "bg-emerald-500 text-neutral-950" : "text-neutral-300 hover:text-white"}`}
             >
               {t === "results" ? "Community results" : "Make your list"}
             </button>

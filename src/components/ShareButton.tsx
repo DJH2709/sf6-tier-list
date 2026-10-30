@@ -20,7 +20,7 @@ export default function ShareButton({ url, title }: { url: string; title: string
   }
 
   return (
-    <button onClick={share} className="rounded-full bg-amber-400 px-5 py-2 text-sm font-semibold text-neutral-950 hover:bg-amber-300">
+    <button onClick={share} className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-semibold text-neutral-950 hover:bg-emerald-400">
       {copied ? "Link copied" : "Share"}
     </button>
   );

@@ -44,7 +44,7 @@ export default function AccountBar({ account }: { account: ReturnType<typeof use
       {signedIn ? (
         <div className="flex items-center gap-3">
           {profile && (
-            <Link href={`/u/${profile.username}`} className="font-semibold text-amber-300 hover:underline">
+            <Link href={`/u/${profile.username}`} className="font-semibold text-emerald-300 hover:underline">
               @{profile.username}
             </Link>
           )}
@@ -89,7 +89,7 @@ export function PickUsername({ session, onDone }: { session: Session; onDone: (p
   }
 
   return (
-    <form onSubmit={save} className="space-y-3 rounded-xl border border-amber-400/40 bg-amber-400/5 p-4">
+    <form onSubmit={save} className="space-y-3 rounded-xl border border-emerald-500/40 bg-emerald-500/5 p-4">
       <p className="font-semibold">Pick a username for your public profile</p>
       <p className="text-sm text-neutral-400">
         Your tier lists will be public at /u/{username || "your-name"}, so friends can see how you voted.
@@ -101,7 +101,7 @@ export function PickUsername({ session, onDone }: { session: Session; onDone: (p
           placeholder="username"
           className="w-56 rounded-lg border border-neutral-700 bg-neutral-900 p-2.5"
         />
-        <button className="rounded-lg bg-amber-400 px-4 py-2 font-semibold text-neutral-950 hover:bg-amber-300">Save</button>
+        <button className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-neutral-950 hover:bg-emerald-400">Save</button>
       </div>
       {error && <p className="text-sm text-red-400">{error}</p>}
     </form>
