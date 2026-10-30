@@ -143,6 +143,7 @@ const en = {
   "like.add": "Like this list",
   "like.remove": "Remove your like",
   "like.own": "Likes on your list",
+  "like.ownNote": "This is your list, so you can't like it. Other players can.",
   "tag.pro": "Pro",
   "tag.proTitle": "Competes at a professional level",
   "tag.influencer": "Influencer",

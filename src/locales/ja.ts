@@ -144,6 +144,7 @@ const ja: Messages = {
   "like.add": "このキャラランクにいいね",
   "like.remove": "いいねを取り消す",
   "like.own": "あなたのキャラランクへのいいね",
+  "like.ownNote": "自分のキャラランクにはいいねできません。ほかのプレイヤーはできます。",
   "tag.pro": "プロ",
   "tag.proTitle": "プロとして大会に出場しています",
   "tag.influencer": "インフルエンサー",

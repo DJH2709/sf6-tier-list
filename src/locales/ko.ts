@@ -143,6 +143,7 @@ const ko: Messages = {
   "like.add": "이 티어 리스트에 좋아요",
   "like.remove": "좋아요 취소",
   "like.own": "내 티어 리스트의 좋아요",
+  "like.ownNote": "내 티어 리스트에는 좋아요를 누를 수 없습니다. 다른 플레이어는 누를 수 있습니다.",
   "tag.pro": "프로",
   "tag.proTitle": "프로 수준으로 대회에 참가합니다",
   "tag.influencer": "인플루언서",
