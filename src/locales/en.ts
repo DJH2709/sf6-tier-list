@@ -149,6 +149,14 @@ const en = {
   "tag.influencer": "Influencer",
   "tag.influencerTitle": "Makes Street Fighter content",
 
+  "players.link": "Players",
+  "players.title": "Players",
+  "players.metaTitle": "Players · SF6 Community Tier List",
+  "players.mostLiked": "Most liked",
+  "players.newest": "Newest",
+  "players.empty": "No players yet. Sign in and pick a username to be the first.",
+  "players.noLists": "No public list",
+
   "share.button": "Share",
   "share.copied": "Link copied",
 

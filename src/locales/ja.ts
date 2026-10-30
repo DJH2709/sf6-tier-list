@@ -150,6 +150,14 @@ const ja: Messages = {
   "tag.influencer": "インフルエンサー",
   "tag.influencerTitle": "ストリートファイターの動画や配信を作っています",
 
+  "players.link": "プレイヤー",
+  "players.title": "プレイヤー",
+  "players.metaTitle": "プレイヤー · スト6 みんなのキャラランク",
+  "players.mostLiked": "いいねが多い順",
+  "players.newest": "新しい順",
+  "players.empty": "まだプレイヤーがいません。サインインしてユーザー名を決めれば、あなたが最初です。",
+  "players.noLists": "公開リストなし",
+
   "share.button": "シェア",
   "share.copied": "リンクをコピーしました",
 
