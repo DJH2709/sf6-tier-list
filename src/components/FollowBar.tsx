@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { signInWithDiscord } from "@/lib/account";
+import { useI18n } from "@/lib/i18n/client";
 import { follow, getFollowCounts, isFollowing, unfollow, type FollowCounts } from "@/lib/follows";
 import type { Profile } from "@/lib/profiles";
 import type { useAccount } from "./Account";
@@ -14,6 +14,7 @@ export default function FollowBar({ profile, account, likes }: Props) {
   const [following, setFollowing] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const { t } = useI18n();
   const me = account.profile;
   const own = me?.id === profile.id;
 
@@ -35,7 +36,8 @@ export default function FollowBar({ profile, account, likes }: Props) {
       setFollowing(!following);
       setCounts((c) => c && { ...c, followers: c.followers + (following ? -1 : 1) });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't update.");
+      console.error(e);
+      setError(t("follow.updateFailed"));
     } finally {
       setBusy(false);
     }
@@ -45,12 +47,12 @@ export default function FollowBar({ profile, account, likes }: Props) {
   return (
     <div className="space-y-3">
       {counts && (
-        <p className="text-sm text-neutral-400">
-          <span className="font-semibold text-white">{counts.followers}</span> {counts.followers === 1 ? "follower" : "followers"}
+        <p className="text-sm text-neutral-300">
+          {t(counts.followers === 1 ? "follow.followersOne" : "follow.followers", { count: counts.followers })}
           {" · "}
-          <span className="font-semibold text-white">{counts.following}</span> following
+          {t("follow.following", { count: counts.following })}
           {" · "}
-          <span className="font-semibold text-white">{likes}</span> {likes === 1 ? "like" : "likes"}
+          {t(likes === 1 ? "follow.likesOne" : "follow.likes", { count: likes })}
         </p>
       )}
       {account.loaded && !own && (
@@ -60,14 +62,12 @@ export default function FollowBar({ profile, account, likes }: Props) {
             disabled={busy}
             className={`${button} ${following ? "border border-neutral-600 hover:border-red-400 hover:text-red-300" : "bg-white text-neutral-950 hover:bg-neutral-200"} disabled:opacity-50`}
           >
-            {following ? "Following" : "Follow"}
+            {t(following ? "follow.followingButton" : "follow.follow")}
           </button>
         ) : account.signedIn ? (
-          <Link href="/" className="text-sm text-emerald-300 underline">Pick a username to follow players</Link>
+          <Link href="/" className="text-sm text-emerald-300 underline">{t("follow.pickUsername")}</Link>
         ) : (
-          <button onClick={() => signInWithDiscord().catch((e) => setError(e.message))} className={`${button} bg-white text-neutral-950 hover:bg-neutral-200`}>
-            Sign in to follow
-          </button>
+          <p className="text-sm text-neutral-400">{t("follow.signInToFollow")}</p>
         )
       )}
       {error && <p className="text-sm text-red-400">{error}</p>}

@@ -6,18 +6,21 @@ import { configFound, demoMode, missingConfig } from "@/lib/store";
 import { CURRENT_PATCH } from "@/lib/sf6";
 import Link from "next/link";
 import AccountBar, { PickUsername, useAccount } from "@/components/Account";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useI18n } from "@/lib/i18n/client";
 
 const STEPS = [
-  { title: "Pick your rank", text: "Tell us where you play, from Rookie to Legend." },
-  { title: "Rank the roster", text: "Place every character from S to D. Takes about two minutes." },
-  { title: "Compare by rank", text: "See how Beginner and Elite players disagree about the same cast." },
-];
+  { title: "home.step1.title", text: "home.step1.text" },
+  { title: "home.step2.title", text: "home.step2.text" },
+  { title: "home.step3.title", text: "home.step3.text" },
+] as const;
 
 export default function Home() {
   const [tab, setTab] = useState<"make" | "results">("results");
   const [refreshKey, setRefreshKey] = useState(0);
   const [submitted, setSubmitted] = useState<{ isPublic: boolean; updated: boolean } | null>(null);
   const account = useAccount();
+  const { t } = useI18n();
 
   function open(next: "make" | "results") {
     setTab(next);
@@ -28,52 +31,54 @@ export default function Home() {
     <div className="min-h-screen">
       {missingConfig ? (
         <p className="bg-red-900 px-4 py-3 text-sm text-red-100">
-          Setup problem: this deployment has no Supabase settings, so votes can&apos;t be saved.
+          {t("setup.missing")}
           <br />
-          NEXT_PUBLIC_SUPABASE_URL: {configFound.url ? "found" : "missing"}. Supabase key
-          (NEXT_PUBLIC_SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY): {configFound.key ? "found" : "missing"}.
+          NEXT_PUBLIC_SUPABASE_URL: {t(configFound.url ? "setup.found" : "setup.missingValue")}. Supabase key
+          (NEXT_PUBLIC_SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY): {t(configFound.key ? "setup.found" : "setup.missingValue")}.
           <br />
-          Fix the missing one in Vercel for this environment, then redeploy.
+          {t("setup.fix")}
         </p>
       ) : (
         demoMode && (
           <p className="bg-emerald-950 px-4 py-2 text-center text-sm text-emerald-300">
-            Demo mode: votes are saved in this browser only.
+            {t("demo.banner")}
           </p>
         )
       )}
 
       <header className="border-b border-neutral-800 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.16),transparent_60%)]">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 pt-4">
-          <span className="text-sm font-black tracking-tight">SF6 TIER LIST</span>
-          <AccountBar account={account} />
+          <span className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">{t("site.brand")}</span>
+          <div className="flex flex-wrap items-start justify-end gap-3">
+            <LanguageSwitcher />
+            <AccountBar account={account} />
+          </div>
         </div>
         <div className="mx-auto max-w-3xl space-y-8 px-4 pb-14 pt-12 text-center sm:pb-20 sm:pt-16">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-500">
-            Street Fighter 6 · Patch {CURRENT_PATCH}
+            {t("home.eyebrow", { patch: CURRENT_PATCH })}
           </p>
           <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-            The tier list that changes with your rank
+            {t("home.title")}
           </h1>
           <p className="mx-auto max-w-xl text-lg text-neutral-300">
-            Pro tier lists tell you what wins at the top. This one shows how players at your level rate the
-            cast, voted by the community and split by rank.
+            {t("home.intro")}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <button onClick={() => open("make")} className="rounded-full bg-emerald-500 px-6 py-3 font-semibold text-neutral-950 hover:bg-emerald-400">
-              Make your tier list
+              {t("home.makeCta")}
             </button>
             <button onClick={() => open("results")} className="rounded-full border border-neutral-600 px-6 py-3 font-semibold hover:border-neutral-400">
-              See community results
+              {t("home.resultsCta")}
             </button>
           </div>
           <hr className="mx-auto w-16 border-neutral-700" />
           <ol className="grid gap-6 text-left sm:grid-cols-3 sm:text-center">
             {STEPS.map((step, i) => (
               <li key={step.title} className="space-y-1">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-500">Step {i + 1}</span>
-                <p className="font-semibold">{step.title}</p>
-                <p className="text-sm text-neutral-400">{step.text}</p>
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-500">{t("home.step", { n: i + 1 })}</span>
+                <p className="font-semibold">{t(step.title)}</p>
+                <p className="text-sm text-neutral-400">{t(step.text)}</p>
               </li>
             ))}
           </ol>
@@ -88,34 +93,34 @@ export default function Home() {
           <p className="rounded-xl border border-lime-400/40 bg-lime-400/5 p-4 text-sm">
             {submitted.isPublic ? (
               <>
-                Your list is on your profile.{" "}
+                {t("home.onProfile")}{" "}
                 <Link href={`/u/${account.profile.username}`} className="font-semibold text-lime-300 underline">
-                  View and share it
+                  {t("home.viewAndShare")}
                 </Link>
               </>
             ) : (
-              "Saved. Your list is hidden from your profile, but it still counts in the community results."
+              t("home.savedPrivate")
             )}
           </p>
         )}
         {submitted && account.loaded && !account.signedIn && !demoMode && (
           <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
-            {submitted.updated ? "Updated." : "Saved."} Want friends to see your list? Sign in with Discord at the top. Your vote comes with you.
+            {t(submitted.updated ? "home.updated" : "home.saved")} {t("home.signInToShare")}
           </p>
         )}
         {submitted && demoMode && (
           <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
-            {submitted.updated ? "Updated" : "Saved"} in this browser. Open &quot;Make your list&quot; again to change it.
+            {t(submitted.updated ? "home.updatedInBrowser" : "home.savedInBrowser")}
           </p>
         )}
         <nav className="inline-flex rounded-lg border border-neutral-800 bg-neutral-900 p-1">
-          {(["results", "make"] as const).map((t) => (
+          {(["results", "make"] as const).map((name) => (
             <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`rounded-md px-4 py-2 text-sm font-semibold transition ${tab === t ? "bg-emerald-500 text-neutral-950" : "text-neutral-300 hover:text-white"}`}
+              key={name}
+              onClick={() => setTab(name)}
+              className={`rounded-md px-4 py-2 text-sm font-semibold transition ${tab === name ? "bg-emerald-500 text-neutral-950" : "text-neutral-300 hover:text-white"}`}
             >
-              {t === "results" ? "Community results" : "Make your list"}
+              {t(name === "results" ? "tab.results" : "tab.make")}
             </button>
           ))}
         </nav>
@@ -130,7 +135,8 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-neutral-800 px-4 py-8 text-center text-xs text-neutral-500">
-        A fan project. Not affiliated with or endorsed by Capcom. Street Fighter is a trademark of Capcom.
+        {t("site.footer")}
+        {t("site.machineTranslated") && <span className="mt-2 block">{t("site.machineTranslated")}</span>}
       </footer>
     </div>
   );

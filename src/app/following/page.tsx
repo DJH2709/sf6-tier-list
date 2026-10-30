@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import FollowingView from "@/components/FollowingView";
+import { getT } from "@/lib/i18n/server";
 
-export const metadata: Metadata = { title: "Following · SF6 Community Tier List" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t("following.metaTitle") };
+}
 
 export default function FollowingPage() {
   return <FollowingView />;

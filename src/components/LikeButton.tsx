@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { signInWithDiscord } from "@/lib/account";
+import { useI18n } from "@/lib/i18n/client";
 import { getMyLikes, like, unlike } from "@/lib/likes";
 import type { Profile, PublicList } from "@/lib/profiles";
 
@@ -44,18 +44,15 @@ type Props = {
 export default function LikeButton({ listId, count, liked, me, signedIn, own, onChange }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const { t } = useI18n();
   const label = `👍 ${count}`;
 
-  if (own) return <span className="text-sm text-neutral-400" title="Likes on your list">{label}</span>;
+  if (own) return <span className="text-sm text-neutral-400" title={t("like.own")}>{label}</span>;
 
   async function toggle() {
     setError("");
-    if (!me && signedIn) {
-      setError("Pick a username on the home page to like lists.");
-      return;
-    }
     if (!me) {
-      signInWithDiscord().catch((e) => setError(e.message));
+      setError(t(signedIn ? "follow.pickUsername" : "follow.signInToFollow"));
       return;
     }
     setBusy(true);
@@ -64,7 +61,8 @@ export default function LikeButton({ listId, count, liked, me, signedIn, own, on
       else await like(listId);
       onChange(!liked);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't update.");
+      console.error(e);
+      setError(t("follow.updateFailed"));
     } finally {
       setBusy(false);
     }
@@ -76,7 +74,7 @@ export default function LikeButton({ listId, count, liked, me, signedIn, own, on
         onClick={toggle}
         disabled={busy}
         aria-pressed={liked}
-        title={me ? (liked ? "Remove your like" : "Like this list") : "Sign in with Discord to like lists"}
+        title={t(liked ? "like.remove" : "like.add")}
         className={`rounded-full border px-3 py-0.5 text-sm font-semibold disabled:opacity-50 ${liked ? "border-emerald-400 bg-emerald-500/15 text-emerald-300" : "border-neutral-700 text-neutral-300 hover:border-neutral-400"}`}
       >
         {label}

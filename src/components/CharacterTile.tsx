@@ -1,7 +1,9 @@
 import { CHARACTERS } from "@/lib/sf6";
 import portraits from "@/lib/portraits.json";
+import { useI18n } from "@/lib/i18n/client";
 
-export function nameOf(id: string) {
+// The initials badge uses the English name so it looks the same in every language.
+function englishName(id: string) {
   return CHARACTERS.find((c) => c.id === id)?.name ?? id;
 }
 
@@ -17,7 +19,7 @@ function badge(name: string) {
 const PORTRAITS = portraits as Record<string, string>;
 
 export function Portrait({ id, size = "h-7 w-7" }: { id: string; size?: string }) {
-  const name = nameOf(id);
+  const name = englishName(id);
   const src = PORTRAITS[id];
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element -- static files, no optimisation needed
@@ -47,6 +49,7 @@ type Props = {
 };
 
 export default function CharacterTile({ id, selected, detail, onClick, buttonRef, dragProps, dragging }: Props) {
+  const { nameOf } = useI18n();
   return (
     <button
       ref={buttonRef}
