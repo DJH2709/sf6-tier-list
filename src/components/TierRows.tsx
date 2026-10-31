@@ -5,7 +5,8 @@ import CharacterTile from "./CharacterTile";
 import DraggableTile from "./DraggableTile";
 import { useI18n } from "@/lib/i18n/client";
 
-const TIER_COLOURS: Record<string, string> = {
+// The five tier colours are the product's own vocabulary and the one place colour lives.
+export const TIER_COLOURS: Record<string, string> = {
   S: "bg-rose-500", A: "bg-orange-400", B: "bg-amber-300", C: "bg-lime-400", D: "bg-sky-400",
 };
 
@@ -38,13 +39,13 @@ function Row({ tier, ids, over, rowRef, onRowClick, onCharacterClick, selected, 
     <div
       ref={rowRef}
       data-tier-row
-      className={`flex min-h-14 border-b border-neutral-800 transition-colors last:border-b-0
-        ${onRowClick ? "cursor-pointer hover:bg-neutral-800/60" : ""}
-        ${over ? "bg-emerald-500/15" : ""}`}
+      className={`flex min-h-14 border-b border-line transition-colors last:border-b-0
+        ${onRowClick ? "cursor-pointer hover:bg-ink-700/60" : ""}
+        ${over ? "bg-emerald-500/10" : ""}`}
       onClick={() => onRowClick?.(tier.score)}
     >
       <div
-        className={`${TIER_COLOURS[tier.label]} flex w-12 shrink-0 items-center justify-center text-xl font-black text-neutral-950 sm:w-16 sm:text-2xl`}
+        className={`${TIER_COLOURS[tier.label]} flex w-12 shrink-0 items-center justify-center text-lg font-semibold text-ink-950 sm:w-16 sm:text-xl`}
       >
         {tier.label}
       </div>
@@ -59,7 +60,7 @@ function Row({ tier, ids, over, rowRef, onRowClick, onCharacterClick, selected, 
           />
         ))}
         {onRowClick && ids.length === 0 && (
-          <span className="self-center text-xs text-neutral-600">{t(droppable ? "tiers.tapOrDrop" : "tiers.tapToPlace")}</span>
+          <span className="self-center text-xs text-ink-400">{t(droppable ? "tiers.tapOrDrop" : "tiers.tapToPlace")}</span>
         )}
       </div>
     </div>
@@ -74,7 +75,7 @@ function DroppableRow(props: RowProps) {
 export default function TierRows(props: Props) {
   const { placements, droppable } = props;
   return (
-    <div className="overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/60">
+    <div className="overflow-hidden rounded-xl border border-line bg-ink-800">
       {TIERS.map((tier) => {
         const ids = Object.entries(placements)
           .filter(([, score]) => score === tier.score)

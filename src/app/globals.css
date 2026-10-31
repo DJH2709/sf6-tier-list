@@ -1,10 +1,61 @@
 @import "tailwindcss";
 
+/* Design tokens. One neutral ramp tinted toward ink (night, screens, scoreboards), one
+   accent (emerald) for the primary action and the current selection, and the five tier
+   colours, which are the product's own vocabulary and stay as they are. */
+@theme {
+  --color-ink-950: #07080d; /* deepest surface */
+  --color-ink-900: #0b0d14; /* page background */
+  --color-ink-800: #11141c; /* card */
+  --color-ink-700: #1a1e28; /* raised: active row, input, hover */
+  --color-ink-600: #262b38; /* solid border, badge */
+  --color-ink-500: #3b4253;
+  --color-ink-400: #7a8296; /* muted text and icons (4.9:1 on a card) */
+  --color-ink-300: #a3a9b8; /* secondary text */
+  --color-ink-100: #eef0f5; /* primary text */
+  --color-line: rgb(238 240 245 / 0.08); /* hairline */
+  --color-line-strong: rgb(238 240 245 / 0.16);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  --default-transition-duration: 150ms;
+}
+
+/* Geist and Geist Mono are self-hosted by next/font (see layout.tsx), so the CSP's
+   font-src 'self' still holds. CJK text falls through to the system font. */
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+}
+
 body {
-  font-family: system-ui, Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
 
 /* Korean wraps between words, not inside them. */
 :lang(ko) {
   word-break: keep-all;
+}
+
+/* Balanced headings; no single-word last lines in running text. */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+p, li {
+  text-wrap: pretty;
+}
+
+/* Keyboard focus is always visible, inside the palette. */
+:focus-visible {
+  outline: 2px solid #34d399;
+  outline-offset: 2px;
+}
+
+/* Reduced motion: no transitions, animations or smooth scrolling. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

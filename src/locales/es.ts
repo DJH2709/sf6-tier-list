@@ -30,6 +30,8 @@ const es: Messages = {
   "home.step2.text": "Coloca a cada personaje de S a D. Toma unos dos minutos.",
   "home.step3.title": "Compara por rango",
   "home.step3.text": "Mira en qué no se ponen de acuerdo los principiantes y la élite sobre los mismos personajes.",
+  "home.previewExample": "Posiciones de ejemplo. Los promedios reales aparecen cuando {min} jugadores de cada rango hayan votado.",
+  "home.previewLive": "Promedios de la comunidad para el parche {patch}",
   "home.onProfile": "Tu lista está en tu perfil.",
   "home.viewAndShare": "Verla y compartirla",
   "home.savedPrivate": "Guardada. Tu lista no aparece en tu perfil, pero sigue contando en los resultados de la comunidad.",

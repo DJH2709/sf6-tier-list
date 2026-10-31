@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { ThumbsUp } from "lucide-react";
 import { useI18n } from "@/lib/i18n/client";
 import { getMyLikes, like, unlike } from "@/lib/likes";
 import type { Profile, PublicList } from "@/lib/profiles";
@@ -46,7 +47,6 @@ export default function LikeButton({ listId, count, liked, me, signedIn, own, on
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const { t } = useI18n();
-  const label = `👍 ${count}`;
 
   async function toggle() {
     setError("");
@@ -71,18 +71,23 @@ export default function LikeButton({ listId, count, liked, me, signedIn, own, on
     }
   }
 
+  const title = t(own ? "like.own" : liked ? "like.remove" : "like.add");
   return (
     <>
       <button
+        type="button"
         onClick={toggle}
         disabled={busy}
         aria-pressed={liked}
-        title={t(own ? "like.own" : liked ? "like.remove" : "like.add")}
-        className={`rounded-full border px-3 py-0.5 text-sm font-semibold disabled:opacity-50 ${own ? "border-neutral-800 text-neutral-400" : liked ? "border-emerald-400 bg-emerald-500/15 text-emerald-300" : "border-neutral-700 text-neutral-300 hover:border-neutral-400"}`}
+        aria-label={`${title}: ${count}`}
+        title={title}
+        className={`inline-flex h-7 items-center gap-1.5 rounded-md border px-2 font-mono text-xs tabular-nums transition-colors disabled:opacity-50
+          ${own ? "border-line text-ink-400" : liked ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300" : "border-line-strong text-ink-300 hover:border-ink-400 hover:text-ink-100"}`}
       >
-        {label}
+        <ThumbsUp size={16} strokeWidth={1.5} aria-hidden />
+        {count}
       </button>
-      {error && <span className={`text-sm ${own ? "text-neutral-400" : "text-red-400"}`}>{error}</span>}
+      {error && <span className={`text-sm ${own ? "text-ink-300" : "text-red-300"}`}>{error}</span>}
     </>
   );
 }

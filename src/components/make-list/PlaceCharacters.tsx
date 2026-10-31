@@ -14,7 +14,7 @@ import { useI18n } from "@/lib/i18n/client";
 // Shows a translated sentence with the {name} part in bold, wherever the language puts it.
 function Highlighted({ text, name }: { text: string; name: string }) {
   const [before, after = ""] = text.split("{name}");
-  return <>{before}<b className="text-emerald-300">{name}</b>{after}</>;
+  return <>{before}<b className="font-medium text-ink-100">{name}</b>{after}</>;
 }
 
 type Props = {
@@ -58,8 +58,8 @@ export default function PlaceCharacters({ placements, selected, onSelect, onPlac
 
   return (
     <>
-      <div className="sticky top-0 z-10 -mx-4 space-y-2 border-b border-neutral-800 bg-neutral-950/95 px-4 py-3 backdrop-blur sm:mx-0 sm:rounded-lg sm:border">
-        <div className="flex items-center justify-between text-sm">
+      <div className="sticky top-0 z-10 -mx-4 space-y-2 border-b border-line bg-ink-900/95 px-4 py-3 backdrop-blur sm:mx-0 sm:rounded-lg sm:border">
+        <div className="flex items-center justify-between gap-4 text-sm text-ink-300">
           <span>
             {selected ? (
               <Highlighted text={t("make.placing")} name={nameOf(selected, game)} />
@@ -67,10 +67,10 @@ export default function PlaceCharacters({ placements, selected, onSelect, onPlac
               t("make.allPlaced")
             )}
           </span>
-          <span className="tabular-nums text-neutral-400">{placedCount}/{characters.length}</span>
+          <span className="font-mono text-xs tabular-nums text-ink-300">{placedCount}/{characters.length}</span>
         </div>
-        <div className="h-1.5 overflow-hidden rounded-full bg-neutral-800">
-          <div className="h-full bg-emerald-500 transition-all" style={{ width: `${(placedCount / characters.length) * 100}%` }} />
+        <div className="h-1.5 overflow-hidden rounded-full bg-ink-700">
+          <div className="h-full bg-emerald-500 transition-[width]" style={{ width: `${(placedCount / characters.length) * 100}%` }} />
         </div>
       </div>
       <DndContext
@@ -106,7 +106,7 @@ export default function PlaceCharacters({ placements, selected, onSelect, onPlac
         <button
           type="button"
           onClick={onStartOver}
-          className="text-sm text-neutral-400 underline-offset-2 hover:underline"
+          className="flex min-h-6 items-center text-sm text-ink-300 underline-offset-2 hover:text-ink-100 hover:underline"
         >
           {t("make.startOver")}
         </button>

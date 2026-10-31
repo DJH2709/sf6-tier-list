@@ -10,6 +10,7 @@ import { useGame } from "./GameContext";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
 import { clearDraft, isEmptyDraft, loadDraft, saveDraft } from "@/lib/draft";
+import { BTN_LG, BTN_PRIMARY, NOTE } from "./ui";
 
 type Props = {
   profile: Profile | null;
@@ -129,12 +130,12 @@ export default function MakeList({ profile, onSubmitted }: Props) {
   return (
     <div className="space-y-8">
       {existing && (
-        <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
+        <p className={NOTE}>
           {t("make.editing", { patch: game.patch })}
         </p>
       )}
       {basedOn && (
-        <p className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm text-neutral-300">
+        <p className={NOTE}>
           {t("make.newPatch", { patch: basedOn })}
         </p>
       )}
@@ -162,19 +163,20 @@ export default function MakeList({ profile, onSubmitted }: Props) {
 
       <Step n={3} title={t("make.step3")}>
         {profile && (
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} className="h-4 w-4 accent-emerald-500" />
+          <label className="flex min-h-6 items-center gap-2 text-sm leading-5">
+            <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} className="h-4 w-4 shrink-0 accent-emerald-500" />
             {t("make.showOnProfile", { username: profile.username })}
           </label>
         )}
         <button
+          type="button"
           disabled={!rank || unplacedCount > 0 || saving}
           onClick={submit}
-          className="w-full rounded-lg bg-emerald-500 px-5 py-3 font-semibold text-neutral-950 transition hover:bg-emerald-400 disabled:pointer-events-none disabled:opacity-40 sm:w-auto"
+          className={`${BTN_PRIMARY} ${BTN_LG} w-full sm:w-auto`}
         >
           {saving ? t("make.saving") : !rank ? t("make.chooseRankFirst") : unplacedCount > 0 ? t("make.placeMore", { n: unplacedCount }) : t(existing ? "make.update" : "make.submit")}
         </button>
-        {status && <p className={`text-sm ${status.error ? "text-red-400" : "text-lime-400"}`}>{status.text}</p>}
+        {status && <p className={`text-sm ${status.error ? "text-red-300" : "text-emerald-300"}`}>{status.text}</p>}
       </Step>
     </div>
   );

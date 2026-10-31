@@ -9,15 +9,12 @@ import {
 import { demoMode } from "@/lib/supabase";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText, type Locale } from "@/lib/i18n/config";
+import { BTN_MD, BTN_PRIMARY, BTN_SECONDARY, ERROR, INPUT, PANEL } from "./ui";
 
-// Button name and brand colour per sign-in provider. Unknown providers get a plain button.
-const PROVIDER_STYLE: Record<string, { name: string; className: string }> = {
-  discord: { name: "Discord", className: "bg-[#5865F2] text-white hover:bg-[#4752c4]" },
-  google: { name: "Google", className: "bg-white text-neutral-900 hover:bg-neutral-200" },
-  kakao: { name: "Kakao", className: "bg-[#FEE500] text-black/85 hover:bg-[#e6cf00]" },
-  x: { name: "X", className: "bg-black text-white ring-1 ring-neutral-700 hover:bg-neutral-900" },
-  twitter: { name: "X", className: "bg-black text-white ring-1 ring-neutral-700 hover:bg-neutral-900" },
-  "custom:line": { name: "LINE", className: "bg-[#06C755] text-white hover:bg-[#05b14c]" },
+// Button name per sign-in provider. The buttons are all the same quiet style: the one
+// bright thing on the page is the "Make your tier list" action, not the sign-in.
+const PROVIDER_NAME: Record<string, string> = {
+  discord: "Discord", google: "Google", kakao: "Kakao", x: "X", twitter: "X", "custom:line": "LINE",
 };
 
 // What most players in each region already have an account with goes first.
@@ -38,7 +35,7 @@ function orderFor(locale: Locale): Provider[] {
 }
 
 function providerName(p: string) {
-  return PROVIDER_STYLE[p]?.name ?? p.replace(/^custom:/, "");
+  return PROVIDER_NAME[p] ?? p.replace(/^custom:/, "");
 }
 
 function SignInButtons({ onError }: { onError: (message: string) => void }) {
@@ -48,8 +45,9 @@ function SignInButtons({ onError }: { onError: (message: string) => void }) {
   const button = (p: Provider) => (
     <button
       key={p}
+      type="button"
       onClick={() => signInWith(p).catch((e) => onError(errorText(e, t)))}
-      className={`whitespace-nowrap rounded-lg px-3 py-2 font-semibold ${PROVIDER_STYLE[p]?.className ?? "bg-neutral-200 text-neutral-900"}`}
+      className={`${BTN_SECONDARY} ${BTN_MD}`}
     >
       {t("account.signInWith", { provider: providerName(p) })}
     </button>
@@ -59,7 +57,7 @@ function SignInButtons({ onError }: { onError: (message: string) => void }) {
     <div className="flex flex-col items-end gap-2">
       {button(first)}
       {rest.length > 0 && !open && (
-        <button onClick={() => setOpen(true)} className="text-xs text-neutral-400 underline-offset-2 hover:underline">
+        <button type="button" onClick={() => setOpen(true)} className="flex min-h-6 items-center text-xs text-ink-400 underline-offset-2 hover:text-ink-100 hover:underline">
           {t("account.signInOther")}
         </button>
       )}
@@ -102,44 +100,49 @@ export function useAccount() {
   return { session, signedIn, profile, setProfile, loaded: ready && loaded };
 }
 
+const NAV_LINK = "flex h-9 items-center text-ink-300 transition-colors hover:text-ink-100";
+
 export default function AccountBar({ account }: { account: ReturnType<typeof useAccount> }) {
   const [authError, setAuthError] = useState<string | null>(null);
   const { t } = useI18n();
   useEffect(() => setAuthError(readAuthError()), []);
 
-  if (demoMode || !account.loaded) return null;
+  if (demoMode) return null;
+  // Hold the sign-in button's space while the session loads, so the header doesn't grow and
+  // push the page down once it arrives.
+  if (!account.loaded) return <div className="h-9 w-40" aria-hidden />;
   const { signedIn, profile } = account;
 
-  const players = <Link href="/players" className="text-neutral-300 hover:text-white">{t("players.link")}</Link>;
+  const players = <Link href="/players" className={NAV_LINK}>{t("players.link")}</Link>;
 
   return (
     <div className="flex flex-col items-end gap-2 text-sm">
       {signedIn ? (
-        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
+        <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1">
           {players}
           {profile && (
-            <Link href={`/u/${profile.username}`} className="flex items-center gap-2 font-semibold text-emerald-300 hover:underline">
+            <Link href={`/u/${profile.username}`} className="flex h-9 items-center gap-2 font-medium text-ink-100 hover:underline">
               {profile.avatar_url && (
                 // eslint-disable-next-line @next/next/no-img-element -- Discord CDN, no optimisation needed
-                <img src={profile.avatar_url} alt="" className="h-6 w-6 rounded-full" />
+                <img src={profile.avatar_url} alt="" width={24} height={24} className="h-6 w-6 rounded-full" />
               )}
               @{profile.username}
             </Link>
           )}
-          {profile && <Link href="/following" className="text-neutral-300 hover:text-white">{t("follow.pageLink")}</Link>}
-          <button onClick={signOut} className="text-neutral-400 hover:text-white">{t("account.signOut")}</button>
+          {profile && <Link href="/following" className={NAV_LINK}>{t("follow.pageLink")}</Link>}
+          <button type="button" onClick={signOut} className={NAV_LINK}>{t("account.signOut")}</button>
         </div>
       ) : (
-        <div className="flex items-start gap-3">
-          <span className="pt-2">{players}</span>
+        <div className="flex flex-wrap items-start justify-end gap-x-4 gap-y-2">
+          {players}
           <SignInButtons onError={setAuthError} />
         </div>
       )}
       {authError && (
-        <div className="max-w-sm rounded-lg bg-red-950 p-3 text-left text-red-200">
+        <div className={`${ERROR} max-w-sm text-left`}>
           <p>{t("account.signInFailed", { error: authError })}</p>
           {/already|exists|linked/i.test(authError) && (
-            <button onClick={signInFresh} className="mt-2 underline">
+            <button type="button" onClick={signInFresh} className="mt-2 flex min-h-6 items-center underline">
               {t("account.signInInstead")}
             </button>
           )}
@@ -171,19 +174,27 @@ export function PickUsername({ session, onDone }: { session: Session; onDone: (p
   }
 
   return (
-    <form onSubmit={save} className="space-y-3 rounded-xl border border-emerald-500/40 bg-emerald-500/5 p-4">
-      <p className="font-semibold">{t("account.pickTitle")}</p>
-      <p className="text-sm text-neutral-400">{t("account.pickNote", { username: username || "your-name" })}</p>
+    <form onSubmit={save} className={`${PANEL} space-y-3 p-4`}>
+      <p className="font-medium">{t("account.pickTitle")}</p>
+      <p className="text-sm leading-5 text-ink-300">{t("account.pickNote", { username: username || "your-name" })}</p>
       <div className="flex flex-wrap gap-2">
+        <label className="sr-only" htmlFor="username">{t("account.pickTitle")}</label>
         <input
+          id="username"
+          name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value.toLowerCase())}
           placeholder={t("account.usernamePlaceholder")}
-          className="w-56 rounded-lg border border-neutral-700 bg-neutral-900 p-2.5"
+          autoComplete="username"
+          autoCapitalize="none"
+          spellCheck={false}
+          maxLength={20}
+          required
+          className={`${INPUT} w-56`}
         />
-        <button className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-neutral-950 hover:bg-emerald-400">{t("account.save")}</button>
+        <button className={`${BTN_PRIMARY} ${BTN_MD} h-10`}>{t("account.save")}</button>
       </div>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-red-300">{error}</p>}
     </form>
   );
 }

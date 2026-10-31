@@ -4,17 +4,18 @@ import { useEffect, useState } from "react";
 import { getFollowing, type FollowedPlayer } from "@/lib/follows";
 import { demoMode } from "@/lib/supabase";
 import { getGame } from "@/lib/games";
-import { gameName, rankName } from "@/lib/i18n/games";
+import { gameName } from "@/lib/i18n/games";
 import { GameProvider } from "@/components/GameContext";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
-import AccountBar, { useAccount } from "@/components/Account";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useAccount } from "@/components/Account";
+import SiteHeader from "@/components/SiteHeader";
 import PlayerAvatar from "@/components/PlayerAvatar";
 import ProfileTag from "@/components/ProfileTag";
 import TierRows from "@/components/TierRows";
 import LikeButton, { useLikes } from "@/components/LikeButton";
-import { SITE_NAME } from "@/lib/site";
+import { VotedAs } from "@/components/RankChip";
+import { ERROR } from "@/components/ui";
 
 // The latest public list from each player you follow.
 export default function FollowingView() {
@@ -31,69 +32,61 @@ export default function FollowingView() {
   }, [me]);
 
   return (
-    <div className="mx-auto min-h-screen max-w-4xl space-y-8 px-4 py-8">
-      <div className="flex items-start justify-between gap-4">
-        <Link href="/" className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">← {SITE_NAME}</Link>
-        <div className="flex flex-wrap items-start justify-end gap-3">
-          <LanguageSwitcher />
-          <AccountBar account={account} />
-        </div>
-      </div>
-      <h1 className="text-3xl font-black tracking-tight">{t("following.title")}</h1>
+    <div className="mx-auto min-h-dvh max-w-4xl space-y-8 px-4 pb-8 pt-2">
+      <SiteHeader account={account} back />
+      <main className="space-y-8">
+      <h1 className="text-3xl font-medium tracking-tight">{t("following.title")}</h1>
       {demoMode ? (
-        <p className="text-neutral-400">{t("following.demoOnly")}</p>
+        <p className="text-ink-300">{t("following.demoOnly")}</p>
       ) : error ? (
-        <p className="rounded-lg bg-red-950 p-3 text-sm text-red-300">{error}</p>
+        <p className={ERROR}>{error}</p>
       ) : !account.loaded || (me && players === null) ? (
-        <p className="text-neutral-400">{t("profile.loading")}</p>
+        <p className="text-ink-300">{t("profile.loading")}</p>
       ) : !me ? (
-        <p className="text-neutral-400">{t("following.signedOut")}</p>
+        <p className="text-ink-300">{t("following.signedOut")}</p>
       ) : players!.length === 0 ? (
-        <p className="text-neutral-400">{t("following.empty")}</p>
+        <p className="text-ink-300">{t("following.empty")}</p>
       ) : (
-        players!.map(({ profile, latest }) => (
-          <section key={profile.id} className="space-y-3 border-t border-neutral-800 pt-6">
-            <Link href={`/u/${profile.username}`} className="flex items-center gap-3 hover:underline">
-              <PlayerAvatar profile={profile} className="h-10 w-10 text-sm" />
-              <span className="font-semibold">{profile.display_name || profile.username}</span>
-              <span className="text-sm text-neutral-400">@{profile.username}</span>
-              <ProfileTag tag={profile.tag} />
-            </Link>
-            {latest ? (
-              <>
-                <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400">
-                  <span>
-                    {(() => {
-                      const game = getGame(latest.game);
-                      return (
-                        <>
-                          {game ? gameName(game, t) : latest.game} · {t("profile.patch", { patch: latest.patch })} ·{" "}
-                          {t("profile.votedAs", { rank: game ? rankName(game, latest.claimed_rank, t) : latest.claimed_rank })}
-                        </>
-                      );
-                    })()}
-                    {latest.verification === "approved" && <span className="ml-1 font-semibold text-lime-400">{t("profile.verified")}</span>}
-                  </span>
-                  <LikeButton
-                    listId={latest.id}
-                    count={likes.count(latest)}
-                    liked={likes.isLiked(latest)}
-                    me={me}
-                    signedIn={account.signedIn}
-                    own={false}
-                    onChange={(now) => likes.set(latest, now)}
-                  />
-                </div>
-                <GameProvider id={latest.game}>
-                  <TierRows placements={latest.placements} />
-                </GameProvider>
-              </>
-            ) : (
-              <p className="text-sm text-neutral-500">{t("following.noList")}</p>
-            )}
-          </section>
-        ))
+        players!.map(({ profile, latest }) => {
+          const game = latest ? getGame(latest.game) : undefined;
+          return (
+            <section key={profile.id} className="space-y-3 border-t border-line pt-6">
+              <Link href={`/u/${profile.username}`} className="flex min-h-10 items-center gap-3 hover:underline">
+                <PlayerAvatar profile={profile} px={40} className="h-10 w-10 text-sm" />
+                <span className="font-medium">{profile.display_name || profile.username}</span>
+                <span className="text-sm text-ink-300">@{profile.username}</span>
+                <ProfileTag tag={profile.tag} />
+              </Link>
+              {latest ? (
+                <>
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-ink-300">
+                    <span>
+                      {game ? gameName(game, t) : latest.game} · <span className="font-mono text-xs">{t("profile.patch", { patch: latest.patch })}</span> ·{" "}
+                      {game ? <VotedAs game={game} rankId={latest.claimed_rank} /> : t("profile.votedAs", { rank: latest.claimed_rank })}
+                      {latest.verification === "approved" && <span className="ml-1 text-emerald-300">{t("profile.verified")}</span>}
+                    </span>
+                    <LikeButton
+                      listId={latest.id}
+                      count={likes.count(latest)}
+                      liked={likes.isLiked(latest)}
+                      me={me}
+                      signedIn={account.signedIn}
+                      own={false}
+                      onChange={(now) => likes.set(latest, now)}
+                    />
+                  </div>
+                  <GameProvider id={latest.game}>
+                    <TierRows placements={latest.placements} />
+                  </GameProvider>
+                </>
+              ) : (
+                <p className="text-sm text-ink-400">{t("following.noList")}</p>
+              )}
+            </section>
+          );
+        })
       )}
+      </main>
     </div>
   );
 }

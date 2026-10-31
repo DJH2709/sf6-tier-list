@@ -28,6 +28,8 @@ const zh: Messages = {
   "home.step2.text": "把每个角色放进 S 到 D。大约两分钟。",
   "home.step3.title": "按段位比较",
   "home.step3.text": "看看初级和顶尖玩家对同一批角色的看法有何不同。",
+  "home.previewExample": "示例排位。每个段位有 {min} 位玩家投票后，将显示真实平均值。",
+  "home.previewLive": "{patch} 版本的社区平均",
   "home.onProfile": "你的榜单已显示在个人主页上。",
   "home.viewAndShare": "查看并分享",
   "home.savedPrivate": "已保存。你的榜单不会显示在个人主页上，但仍会计入社区结果。",

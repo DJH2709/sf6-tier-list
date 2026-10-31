@@ -28,6 +28,8 @@ const en = {
   "home.step2.text": "Place every character from S to D. Takes about two minutes.",
   "home.step3.title": "Compare by rank",
   "home.step3.text": "See how Beginner and Elite players disagree about the same cast.",
+  "home.previewExample": "Example placements. Real averages appear once {min} players at each rank have voted.",
+  "home.previewLive": "Community averages for patch {patch}",
   "home.onProfile": "Your list is on your profile.",
   "home.viewAndShare": "View and share it",
   "home.savedPrivate": "Saved. Your list is hidden from your profile, but it still counts in the community results.",

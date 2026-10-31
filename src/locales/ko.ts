@@ -28,6 +28,8 @@ const ko: Messages = {
   "home.step2.text": "모든 캐릭터를 S부터 D까지 배치하세요. 2분 정도 걸립니다.",
   "home.step3.title": "랭크별 비교",
   "home.step3.text": "초보와 최상위 플레이어가 같은 캐릭터를 얼마나 다르게 보는지 확인하세요.",
+  "home.previewExample": "예시 배치입니다. 각 랭크에서 {min}명이 투표하면 실제 평균이 표시됩니다.",
+  "home.previewLive": "패치 {patch}의 커뮤니티 평균",
   "home.onProfile": "리스트가 프로필에 올라갔습니다.",
   "home.viewAndShare": "보기 및 공유",
   "home.savedPrivate": "저장했습니다. 리스트는 프로필에 표시되지 않지만 커뮤니티 결과에는 반영됩니다.",
