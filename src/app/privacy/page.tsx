@@ -4,7 +4,7 @@ import LegalPage from "@/components/LegalPage";
 import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: `Privacy · ${SITE_NAME}`,
+  title: "Privacy",
   description: `What ${SITE_NAME} stores about you, who can see it, and how to delete your account.`,
 };
 
