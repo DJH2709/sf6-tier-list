@@ -173,7 +173,7 @@ const en = {
   "category.characters": "characters",
 
   "error.usernameTaken": "That username is taken.",
-  "error.usernameFormat": "Use 3 to 20 lowercase letters, numbers or underscores.",
+  "error.usernameFormat": "Use 3 to 20 letters, numbers or underscores (_). No spaces or other symbols.",
   "error.alreadySubmitted": "You've already submitted a list for this patch. Reload the page to edit it.",
   "error.unreachable": "Couldn't reach the server. Check your connection, or try with ad blockers off.",
   "error.dbBehind": "The site is being updated. Please try again in a few minutes.",

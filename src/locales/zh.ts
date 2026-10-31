@@ -173,7 +173,7 @@ const zh: Messages = {
   "category.characters": "角色",
 
   "error.usernameTaken": "该用户名已被使用。",
-  "error.usernameFormat": "请使用 3 到 20 个小写字母、数字或下划线。",
+  "error.usernameFormat": "请使用 3 到 20 个字母、数字或下划线（_），不能有空格或其他符号。",
   "error.alreadySubmitted": "你已经提交过本版本的榜单。刷新页面即可编辑。",
   "error.unreachable": "无法连接服务器。请检查网络，或关闭广告拦截器后重试。",
   "error.dbBehind": "网站正在更新，请几分钟后再试。",

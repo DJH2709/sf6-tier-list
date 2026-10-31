@@ -1,6 +1,6 @@
 // A stand-in for Supabase's HTTP API in front of PGlite, so the site's own src/lib code can be
 // tested through the real supabase-js client. It covers only the calls the site makes:
-// anonymous sign-up, sign-out, rpc calls, and table reads with eq/in filters, an order and one
+// anonymous sign-up, sign-out, rpc calls, and table reads with eq/in/ilike filters, an order and one
 // level of embedding (tier_lists -> tier_placements). Requests run as the player in the bearer
 // token with the same role Supabase would use, so grants and row policies apply.
 import { as, newUser } from "./supabase.mjs";
@@ -99,6 +99,10 @@ export function fakeSupabase(db) {
           } else if (v.startsWith("eq.")) {
             params.push(v.slice(3));
             where.push(`t.${ident(k)}::text = $${params.length}`);
+          } else if (v.startsWith("ilike.")) {
+            // PostgREST lets * stand for %.
+            params.push(v.slice(6).replace(/\*/g, "%"));
+            where.push(`t.${ident(k)}::text ilike $${params.length}`);
           } else if (v.startsWith("in.(")) {
             params.push(v.slice(4, -1).split(",").map((s) => s.replace(/^"|"$/g, "")));
             where.push(`t.${ident(k)}::text = any($${params.length})`);

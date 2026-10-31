@@ -4,7 +4,7 @@ import type { Provider, Session } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
 
 export type { Profile, PublicList } from "./profiles";
-import { PROFILE_COLUMNS, type Profile } from "./profiles";
+import { PROFILE_COLUMNS, USERNAME_PATTERN, type Profile } from "./profiles";
 
 export function useSession() {
   const [session, setSession] = useState<Session | null>(null);
@@ -80,7 +80,7 @@ export async function getProfileById(id: string): Promise<Profile | null> {
 export function suggestUsername(session: Session) {
   const meta = session.user.user_metadata ?? {};
   const raw = String(meta.preferred_username ?? meta.user_name ?? meta.name ?? meta.full_name ?? "");
-  return raw.toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 20);
+  return raw.replace(/[^A-Za-z0-9_]/g, "").slice(0, 20);
 }
 
 // Discord's avatar for this account, if the sign-in gave us one. Only cdn.discordapp.com
@@ -92,6 +92,8 @@ export function discordAvatar(session: Session): string | null {
 
 export async function createProfile(username: string, displayName: string, avatarUrl: string | null) {
   if (!supabase) throw new Error("Profiles need Supabase.");
+  // Checked here too so the player gets the plain message before anything is sent.
+  if (!USERNAME_PATTERN.test(username)) throw new Error("error.usernameFormat");
   const { error } = await supabase
     .from("profiles")
     .insert({ username, display_name: displayName || null, avatar_url: avatarUrl });

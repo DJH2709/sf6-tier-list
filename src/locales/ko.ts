@@ -173,7 +173,7 @@ const ko: Messages = {
   "category.characters": "캐릭터",
 
   "error.usernameTaken": "이미 사용 중인 이름입니다.",
-  "error.usernameFormat": "영어 소문자, 숫자, 밑줄로 3~20자를 입력하세요.",
+  "error.usernameFormat": "영문자, 숫자, 밑줄(_)로 3~20자를 입력하세요. 공백이나 다른 기호는 쓸 수 없습니다.",
   "error.alreadySubmitted": "이 패치의 리스트를 이미 제출했습니다. 수정하려면 페이지를 새로 고치세요.",
   "error.unreachable": "서버에 연결할 수 없습니다. 연결 상태를 확인하거나 광고 차단기를 끄고 다시 시도하세요.",
   "error.dbBehind": "사이트를 업데이트하는 중입니다. 몇 분 뒤에 다시 시도해 주세요.",

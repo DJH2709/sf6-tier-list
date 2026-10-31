@@ -23,7 +23,7 @@ automatically, so a migration that breaks one of those fails the tests before an
 
 ## Go live with Supabase (free tier)
 
-1. Create a Supabase project, then run `supabase/schema.sql`, `supabase/002_profiles.sql`, `supabase/003_edit_lists.sql`, `supabase/004_save_list.sql`, `supabase/005_games.sql`, `supabase/006_follows_likes.sql`, `supabase/007_delete_account.sql` and `supabase/008_validate_lists.sql` in its SQL editor, in that order. Until `008` is run, saves still work but a signed-in browser can also write to the list tables directly, skipping the checks in `save_list()`.
+1. Create a Supabase project, then run `supabase/schema.sql`, `supabase/002_profiles.sql`, `supabase/003_edit_lists.sql`, `supabase/004_save_list.sql`, `supabase/005_games.sql`, `supabase/006_follows_likes.sql`, `supabase/007_delete_account.sql`, `supabase/008_validate_lists.sql` and `supabase/009_username_capitals.sql` in its SQL editor, in that order. Until `008` is run, saves still work but a signed-in browser can also write to the list tables directly, skipping the checks in `save_list()`. Until `009` is run, usernames with capital letters are refused.
 2. Under Authentication, turn on anonymous sign-ins.
 3. Copy `.env.example` to `.env.local` and fill in the project URL and publishable key.
 4. Deploy to Vercel with the same settings.

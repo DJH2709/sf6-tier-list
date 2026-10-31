@@ -174,7 +174,7 @@ const ja: Messages = {
   "category.characters": "キャラクター",
 
   "error.usernameTaken": "そのユーザー名は使われています。",
-  "error.usernameFormat": "小文字の英字・数字・アンダースコアで3〜20文字にしてください。",
+  "error.usernameFormat": "英字・数字・アンダースコア（_）で3〜20文字にしてください。スペースや他の記号は使えません。",
   "error.alreadySubmitted": "このパッチのリストはすでに投稿済みです。編集するにはページを再読み込みしてください。",
   "error.unreachable": "サーバーに接続できませんでした。通信環境をご確認いただくか、広告ブロッカーを無効にしてお試しください。",
   "error.dbBehind": "サイトを更新中です。数分後にもう一度お試しください。",

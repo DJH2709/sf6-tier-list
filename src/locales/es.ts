@@ -177,7 +177,7 @@ const es: Messages = {
   "category.characters": "personajes",
 
   "error.usernameTaken": "Ese nombre de usuario ya está en uso.",
-  "error.usernameFormat": "Usa de 3 a 20 letras minúsculas, números o guiones bajos.",
+  "error.usernameFormat": "Usa de 3 a 20 letras, números o guiones bajos (_). Sin espacios ni otros símbolos.",
   "error.alreadySubmitted": "Ya enviaste una lista para este parche. Recarga la página para editarla.",
   "error.unreachable": "No se pudo conectar con el servidor. Revisa tu conexión o prueba sin bloqueadores de anuncios.",
   "error.dbBehind": "El sitio se está actualizando. Vuelve a intentarlo en unos minutos.",
