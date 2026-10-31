@@ -55,6 +55,7 @@ const es: Messages = {
   "make.allPlaced": "Ya están todos. Toca o arrastra a cualquier personaje para moverlo.",
   "make.rosterEmpty": "Ya están todos. Suelta un personaje aquí para sacarlo.",
   "make.dragHelp": "Pulsa para elegir este personaje y luego pulsa una fila para colocarlo. Con ratón o en pantalla táctil también puedes arrastrar.",
+  "make.orderHint": "Para ordenar una fila, arrastra un personaje encima de otro y se pondrá delante. El orden se ve en tu lista; los resultados de la comunidad solo usan la fila.",
   "make.startOver": "Empezar de nuevo",
   "make.step3": "Enviar",
   "make.showOnProfile": "Mostrar en mi perfil (/u/{username}). Desmárcalo para que sea privada; igual cuenta en los resultados.",

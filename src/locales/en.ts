@@ -53,6 +53,7 @@ const en = {
   "make.allPlaced": "All placed. Tap or drag any character to move them.",
   "make.rosterEmpty": "All placed. Drop a character here to take them out.",
   "make.dragHelp": "Press to select this character, then press a tier row to place them. With a mouse or touch you can also drag.",
+  "make.orderHint": "To order a tier, drag a character onto another one and it goes in front. The order shows on your list; community results only use the tier.",
   "make.startOver": "Start over",
   "make.step3": "Submit",
   "make.showOnProfile": "Show on my profile (/u/{username}). Untick to keep it private; it still counts in the results.",

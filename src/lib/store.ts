@@ -2,7 +2,17 @@
 import { effectiveBand, CATEGORY, type Band, type Game, type Verification } from "./games";
 import { explain, missingConfig, supabase } from "./supabase";
 
-export type Placements = Record<string, number>; // item id -> score 1..5
+// item id -> score 1..5. Key order is the player's order within each tier (see moveTo in
+// src/components/make-list/placements.ts); results ignore it.
+export type Placements = Record<string, number>;
+export type PlacementRow = { item_id: string; score: number; sort_index?: number | null };
+
+// Rows from tier_placements back into a Placements object, in the player's saved order. Lists
+// saved before ordering existed have no sort_index and keep the order the database gives.
+export function toPlacements(rows: PlacementRow[]): Placements {
+  const order = (r: PlacementRow) => r.sort_index ?? Number.MAX_SAFE_INTEGER;
+  return Object.fromEntries([...rows].sort((a, b) => order(a) - order(b)).map((r) => [r.item_id, r.score]));
+}
 export type BandResult = { band: Band; item_id: string; avg_score: number; votes: number; lists: number };
 export type MyList = {
   id: string;
@@ -35,7 +45,7 @@ type ListRow = {
   proof_url: string | null;
   verification: Verification;
   is_public: boolean;
-  tier_placements: { item_id: string; score: number }[];
+  tier_placements: PlacementRow[];
 };
 
 // Lists this player has submitted for a game, newest first. Empty for someone who has never voted.
@@ -55,7 +65,7 @@ export async function getMyLists(game: Game): Promise<MyList[]> {
   if (!session.session) return [];
   const { data, error } = await supabase
     .from("tier_lists")
-    .select("id, patch, claimed_rank, proof_url, verification, is_public, tier_placements(item_id, score)")
+    .select("id, patch, claimed_rank, proof_url, verification, is_public, tier_placements(item_id, score, sort_index)")
     .eq("user_id", session.session.user.id)
     .eq("game", game.id)
     .eq("category", CATEGORY)
@@ -68,7 +78,7 @@ export async function getMyLists(game: Game): Promise<MyList[]> {
     proofUrl: l.proof_url,
     verification: l.verification,
     isPublic: l.is_public,
-    placements: Object.fromEntries(l.tier_placements.map((p) => [p.item_id, p.score])),
+    placements: toPlacements(l.tier_placements),
   }));
 }
 
@@ -97,6 +107,7 @@ export async function submitList(game: Game, rank: string, placements: Placement
     p_proof_url: proofUrl || null,
     p_is_public: isPublic,
     p_placements: placements,
+    p_order: Object.keys(placements),
   });
   if (error) throw error.code === "23505" ? new Error("error.alreadySubmitted") : explain(error);
   return { updated: !!updated };

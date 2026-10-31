@@ -21,3 +21,19 @@ export function keepKnown(characters: Character[], placements: Placements): Plac
   const known = new Set(characters.map((c) => c.id));
   return Object.fromEntries(Object.entries(placements).filter(([id]) => known.has(id)));
 }
+
+// A list's order is the order of its keys (insertion order, which JSON, sessionStorage and the
+// database's sort_index all keep). Each tier row shows its characters in that order.
+//
+// Puts `id` into tier `score`, just before `beforeId` when that character is in the same tier,
+// otherwise at the end of the tier. Moving a character onto its own tier with no target leaves
+// the list as it is, so tapping the row it's already in doesn't shuffle it to the end.
+export function moveTo(placements: Placements, id: string, score: number, beforeId?: string | null): Placements {
+  if (beforeId === id) return placements;
+  const target = beforeId && placements[beforeId] === score ? beforeId : null;
+  if (!target && placements[id] === score) return placements;
+  const rest = Object.entries(placements).filter(([k]) => k !== id);
+  const at = target ? rest.findIndex(([k]) => k === target) : rest.length;
+  rest.splice(at, 0, [id, score]);
+  return Object.fromEntries(rest);
+}
