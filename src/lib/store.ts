@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { effectiveBand, GAME, CATEGORY, CURRENT_PATCH, type Band, type Verification } from "./sf6";
+import { effectiveBand, CATEGORY, type Band, type Game, type Verification } from "./games";
 
 export type Placements = Record<string, number>; // item id -> score 1..5
 export type BandResult = { band: Band; item_id: string; avg_score: number; votes: number; lists: number };
@@ -29,14 +29,15 @@ export const configFound = { url: !!url, key: !!key };
 // Vercel sets NEXT_PUBLIC_VERCEL_ENV. A deployed site with no Supabase settings must not
 // quietly fall back to demo mode, or votes vanish without anyone noticing.
 export const missingConfig = demoMode && !!process.env.NEXT_PUBLIC_VERCEL_ENV;
-const DEMO_KEY = "sf6-demo-lists";
+// One key per game. SF6's is the key used before there were other games.
+const demoKey = (game: Game) => `${game.id}-demo-lists`;
 
 // Lists saved before patches were stored have no patch; treat them as the current one.
 type DemoList = { patch?: string; rank: string; placements: Placements; isPublic?: boolean };
 
-function readDemo(): DemoList[] {
+function readDemo(game: Game): DemoList[] {
   try {
-    return JSON.parse(localStorage.getItem(DEMO_KEY) ?? "[]");
+    return JSON.parse(localStorage.getItem(demoKey(game)) ?? "[]");
   } catch {
     return [];
   }
@@ -47,6 +48,10 @@ function readDemo(): DemoList[] {
 function explain(error: { message: string; code?: string }) {
   if (/fetch/i.test(error.message)) {
     return new Error(`Couldn't reach Supabase at ${url}. Check the URL setting in Vercel, and try with ad blockers off.`);
+  }
+  // save_list refuses a rank that isn't on the game's ladder in game_ranks.
+  if (error.code === "22023") {
+    return new Error("The database doesn't know that rank yet. Run the latest file in supabase/ in the Supabase SQL editor (see README).");
   }
   // Missing column, permission or function: the site is ahead of the database.
   if (error.code === "42703" || error.code === "42501" || error.code === "PGRST202") {
@@ -65,12 +70,12 @@ type ListRow = {
   tier_placements: { item_id: string; score: number }[];
 };
 
-// Lists this player has submitted, newest first. Empty for someone who has never voted.
-export async function getMyLists(): Promise<MyList[]> {
+// Lists this player has submitted for a game, newest first. Empty for someone who has never voted.
+export async function getMyLists(game: Game): Promise<MyList[]> {
   if (!supabase) {
-    return readDemo().map((l, i) => ({
+    return readDemo(game).map((l, i) => ({
       id: `demo-${i}`,
-      patch: l.patch ?? CURRENT_PATCH,
+      patch: l.patch ?? game.patch,
       rank: l.rank,
       proofUrl: null,
       verification: "none",
@@ -84,7 +89,7 @@ export async function getMyLists(): Promise<MyList[]> {
     .from("tier_lists")
     .select("id, patch, claimed_rank, proof_url, verification, is_public, tier_placements(item_id, score)")
     .eq("user_id", session.session.user.id)
-    .eq("game", GAME)
+    .eq("game", game.id)
     .eq("category", CATEGORY)
     .order("created_at", { ascending: false });
   if (error) throw explain(error);
@@ -101,13 +106,13 @@ export async function getMyLists(): Promise<MyList[]> {
 
 // Saves the player's list for the current patch, replacing the one they already have.
 // Returns whether an existing list was replaced.
-export async function submitList(rank: string, placements: Placements, proofUrl?: string, isPublic = true) {
+export async function submitList(game: Game, rank: string, placements: Placements, proofUrl?: string, isPublic = true) {
   if (missingConfig) throw new Error("Votes can't be saved: this deployment has no Supabase settings.");
   if (!supabase) {
     // Demo mode keeps one list per patch in this browser, like one per account.
-    const others = readDemo().filter((l) => (l.patch ?? CURRENT_PATCH) !== CURRENT_PATCH);
-    const updated = others.length < readDemo().length;
-    localStorage.setItem(DEMO_KEY, JSON.stringify([{ patch: CURRENT_PATCH, rank, placements, isPublic }, ...others]));
+    const others = readDemo(game).filter((l) => (l.patch ?? game.patch) !== game.patch);
+    const updated = others.length < readDemo(game).length;
+    localStorage.setItem(demoKey(game), JSON.stringify([{ patch: game.patch, rank, placements, isPublic }, ...others]));
     return { updated };
   }
   const { data: session } = await supabase.auth.getSession();
@@ -117,33 +122,33 @@ export async function submitList(rank: string, placements: Placements, proofUrl?
   }
   // One database call, so a failed save can't leave the list half replaced.
   const { data: updated, error } = await supabase.rpc("save_list", {
-    p_game: GAME,
+    p_game: game.id,
     p_category: CATEGORY,
-    p_patch: CURRENT_PATCH,
+    p_patch: game.patch,
     p_rank: rank,
     p_proof_url: proofUrl || null,
     p_is_public: isPublic,
     p_placements: placements,
   });
-  if (error) throw error.code === "23505" ? new Error("You've already submitted a list for this patch. Reload the page to edit it.") : explain(error);
+  if (error) throw error.code === "23505" ? new Error("error.alreadySubmitted") : explain(error);
   return { updated: !!updated };
 }
 
-export async function getResults(): Promise<BandResult[]> {
+export async function getResults(game: Game): Promise<BandResult[]> {
   if (supabase) {
     const { data, error } = await supabase
       .from("band_results")
       .select("band, item_id, avg_score, votes, lists")
-      .eq("game", GAME)
+      .eq("game", game.id)
       .eq("category", CATEGORY)
-      .eq("patch", CURRENT_PATCH);
+      .eq("patch", game.patch);
     if (error) throw explain(error);
     return data as BandResult[];
   }
   const totals = new Map<string, BandResult>();
-  const lists = readDemo().filter((l) => (l.patch ?? CURRENT_PATCH) === CURRENT_PATCH);
+  const lists = readDemo(game).filter((l) => (l.patch ?? game.patch) === game.patch);
   for (const list of lists) {
-    const band = effectiveBand(list.rank, "none");
+    const band = effectiveBand(game, list.rank, "none");
     for (const [item_id, score] of Object.entries(list.placements)) {
       const k = `${band}:${item_id}`;
       const r = totals.get(k) ?? { band, item_id, avg_score: 0, votes: 0, lists: 0 };
@@ -152,6 +157,6 @@ export async function getResults(): Promise<BandResult[]> {
       totals.set(k, r);
     }
   }
-  for (const r of totals.values()) r.lists = lists.filter((l) => effectiveBand(l.rank, "none") === r.band).length;
+  for (const r of totals.values()) r.lists = lists.filter((l) => effectiveBand(game, l.rank, "none") === r.band).length;
   return [...totals.values()];
 }
