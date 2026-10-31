@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getFollowing, type FollowedPlayer } from "@/lib/follows";
-import { demoMode } from "@/lib/store";
+import { demoMode } from "@/lib/supabase";
 import { getGame } from "@/lib/games";
 import { gameName, rankName } from "@/lib/i18n/games";
 import { GameProvider } from "@/components/GameContext";

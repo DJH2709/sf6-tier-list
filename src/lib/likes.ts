@@ -1,5 +1,5 @@
 // Likes on other players' public lists, one per player per list (supabase/006_follows_likes.sql).
-import { supabase } from "./store";
+import { supabase } from "./supabase";
 
 // Which of these lists I've liked.
 export async function getMyLikes(me: string, listIds: string[]): Promise<Set<string>> {

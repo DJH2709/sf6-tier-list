@@ -2,7 +2,7 @@
 import { useState } from "react";
 import MakeList from "@/components/MakeList";
 import Results from "@/components/Results";
-import { configFound, demoMode, missingConfig } from "@/lib/store";
+import { configFound, demoMode, missingConfig } from "@/lib/supabase";
 import { DEFAULT_GAME, GAMES, getGame } from "@/lib/games";
 import { gameName, rankName } from "@/lib/i18n/games";
 import { GameProvider } from "@/components/GameContext";
