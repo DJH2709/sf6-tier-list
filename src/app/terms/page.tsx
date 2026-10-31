@@ -4,7 +4,7 @@ import LegalPage from "@/components/LegalPage";
 import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: `Terms · ${SITE_NAME}`,
+  title: "Terms",
   description: `The ground rules for using ${SITE_NAME}.`,
 };
 

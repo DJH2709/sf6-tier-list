@@ -4,8 +4,6 @@ import type { Messages } from "./en";
 const zh: Messages = {
   "site.title": "格斗游戏 社区强度榜",
   "site.description": "由社区投票的格斗游戏角色强度榜，按玩家段位分开统计。",
-  "site.brand": "强度榜",
-  "site.gameBrand": "{game} 强度榜",
   "site.gameTitle": "{game} 社区强度榜",
   "site.gameDescription": "由社区投票的{game}角色强度榜，按玩家段位分开统计。",
   "site.footer": "粉丝制作的非官方网站，与 {owner} 无关，也未获其认可。游戏和角色名称归各自权利人所有。",
@@ -144,7 +142,7 @@ const zh: Messages = {
   "follow.pickUsername": "请先在首页设置用户名，才能关注玩家和点赞。",
   "follow.updateFailed": "更新失败，请重试。",
   "following.title": "关注",
-  "following.metaTitle": "关注 · 街霸6 社区强度榜",
+  "following.metaTitle": "关注",
   "following.demoOnly": "关注功能只在正式网站上可用。",
   "following.signedOut": "请在顶部登录，并在首页设置用户名，即可关注玩家。",
   "following.empty": "你还没有关注任何人。在玩家主页点击关注，就能在这里看到他们的强度榜。",
@@ -160,7 +158,7 @@ const zh: Messages = {
 
   "players.link": "玩家",
   "players.title": "玩家",
-  "players.metaTitle": "玩家 · 街霸6 社区强度榜",
+  "players.metaTitle": "玩家",
   "players.mostLiked": "最多赞",
   "players.newest": "最新",
   "players.empty": "还没有玩家。登录并设置用户名，成为第一位吧。",

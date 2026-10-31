@@ -17,6 +17,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
 import type { MessageKey } from "@/locales/en";
+import { SITE_NAME } from "@/lib/site";
 
 export default function ProfileView({ username }: { username: string }) {
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined);
@@ -46,7 +47,7 @@ export default function ProfileView({ username }: { username: string }) {
   return (
     <div className="mx-auto min-h-screen max-w-4xl space-y-8 px-4 py-8">
       <div className="flex items-start justify-between gap-4">
-        <Link href="/" className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">← {t("site.brand")}</Link>
+        <Link href="/" className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">← {SITE_NAME}</Link>
         <div className="flex flex-wrap items-start justify-end gap-3">
           <LanguageSwitcher />
           <AccountBar account={account} />

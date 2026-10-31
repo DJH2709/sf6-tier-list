@@ -10,6 +10,7 @@ import Link from "next/link";
 import AccountBar, { PickUsername, useAccount } from "@/components/Account";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useI18n } from "@/lib/i18n/client";
+import { SITE_NAME } from "@/lib/site";
 
 const STEPS = [
   { title: "home.step1.title", text: "home.step1.text" },
@@ -72,7 +73,7 @@ export default function GameHome({ gameId }: { gameId: string }) {
 
       <header className="border-b border-neutral-800 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.16),transparent_60%)]">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 pt-4">
-          <span className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">{t("site.gameBrand", { game: game.short.toUpperCase() })}</span>
+          <span className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">{SITE_NAME}</span>
           <div className="flex flex-wrap items-start justify-end gap-3">
             <LanguageSwitcher />
             <AccountBar account={account} />

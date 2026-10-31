@@ -4,8 +4,6 @@ import type { Messages } from "./en";
 const ko: Messages = {
   "site.title": "격투 게임 커뮤니티 티어 리스트",
   "site.description": "커뮤니티가 투표한 격투 게임 티어 리스트, 플레이어 랭크별로 나눠서 보기.",
-  "site.brand": "티어 리스트",
-  "site.gameBrand": "{game} 티어 리스트",
   "site.gameTitle": "{game} 커뮤니티 티어 리스트",
   "site.gameDescription": "커뮤니티가 투표한 {game} 티어 리스트, 플레이어 랭크별로 나눠서 보기.",
   "site.footer": "팬이 만든 비공식 사이트입니다. {owner}와(과) 관련이 없으며 승인받지 않았습니다. 게임 및 캐릭터 이름은 각 권리자에게 있습니다.",
@@ -144,7 +142,7 @@ const ko: Messages = {
   "follow.pickUsername": "팔로우와 좋아요를 하려면 홈에서 사용자 이름을 정하세요.",
   "follow.updateFailed": "업데이트하지 못했습니다. 다시 시도하세요.",
   "following.title": "팔로잉",
-  "following.metaTitle": "팔로잉 · 스파6 커뮤니티 티어 리스트",
+  "following.metaTitle": "팔로잉",
   "following.demoOnly": "팔로우는 실제 사이트에서만 작동합니다.",
   "following.signedOut": "플레이어를 팔로우하려면 위에서 로그인한 뒤 홈에서 사용자 이름을 정하세요.",
   "following.empty": "아직 아무도 팔로우하지 않았습니다. 플레이어 프로필에서 팔로우하면 여기에서 티어 리스트를 볼 수 있습니다.",
@@ -160,7 +158,7 @@ const ko: Messages = {
 
   "players.link": "플레이어",
   "players.title": "플레이어",
-  "players.metaTitle": "플레이어 · 스파6 커뮤니티 티어 리스트",
+  "players.metaTitle": "플레이어",
   "players.mostLiked": "좋아요 많은 순",
   "players.newest": "최신순",
   "players.empty": "아직 플레이어가 없습니다. 로그인하고 사용자 이름을 정해 첫 번째가 되어 보세요.",

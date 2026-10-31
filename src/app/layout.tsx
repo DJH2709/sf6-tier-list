@@ -3,10 +3,15 @@ import "./globals.css";
 import { HTML_LANG } from "@/lib/i18n/config";
 import { getLocale, getT } from "@/lib/i18n/server";
 import { I18nProvider } from "@/lib/i18n/client";
+import { SITE_NAME } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
-  return { title: t("site.title"), description: t("site.description") };
+  return {
+    // Page titles get " · LobbyTier" added, e.g. "Tekken 8 Community Tier List · LobbyTier".
+    title: { default: `${SITE_NAME} · ${t("site.title")}`, template: `%s · ${SITE_NAME}` },
+    description: t("site.description"),
+  };
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

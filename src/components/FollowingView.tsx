@@ -14,6 +14,7 @@ import PlayerAvatar from "@/components/PlayerAvatar";
 import ProfileTag from "@/components/ProfileTag";
 import TierRows from "@/components/TierRows";
 import LikeButton, { useLikes } from "@/components/LikeButton";
+import { SITE_NAME } from "@/lib/site";
 
 // The latest public list from each player you follow.
 export default function FollowingView() {
@@ -32,7 +33,7 @@ export default function FollowingView() {
   return (
     <div className="mx-auto min-h-screen max-w-4xl space-y-8 px-4 py-8">
       <div className="flex items-start justify-between gap-4">
-        <Link href="/" className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">← {t("site.brand")}</Link>
+        <Link href="/" className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">← {SITE_NAME}</Link>
         <div className="flex flex-wrap items-start justify-end gap-3">
           <LanguageSwitcher />
           <AccountBar account={account} />
