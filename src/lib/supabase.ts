@@ -20,19 +20,20 @@ export const configFound = { url: !!url, key: !!key };
 export const missingConfig = demoMode && !!process.env.NEXT_PUBLIC_VERCEL_ENV;
 
 // Turns a database error into one that says what to fix.
+// Turns a Supabase error into one of our own messages. The detail (which setting, which SQL
+// file) goes to the console for whoever runs the site; the person sees a plain sentence.
 export function explain(error: { message: string; code?: string }) {
   // "Failed to fetch" means the browser never reached Supabase: a wrong URL setting,
-  // a paused project or an ad blocker. Say which address it tried.
+  // a paused project or an ad blocker.
   if (/fetch/i.test(error.message)) {
-    return new Error(`Couldn't reach Supabase at ${url}. Check the URL setting in Vercel, and try with ad blockers off.`);
+    console.error(`Couldn't reach Supabase at ${url}. Check the URL setting in Vercel, and try with ad blockers off.`, error);
+    return new Error("error.unreachable");
   }
-  // save_list refuses a rank that isn't on the game's ladder in game_ranks.
-  if (error.code === "22023") {
-    return new Error("The database doesn't know that rank yet. Run the latest file in supabase/ in the Supabase SQL editor (see README).");
-  }
-  // Missing column, permission or function: the site is ahead of the database.
-  if (error.code === "42703" || error.code === "42501" || error.code === "PGRST202") {
-    return new Error("The database is behind the site. Run the latest file in supabase/ in the Supabase SQL editor (see README).");
+  // 22023: save_list refused the rank or the placements. Missing column, permission or
+  // function: the site is ahead of the database.
+  if (error.code === "22023" || error.code === "42703" || error.code === "42501" || error.code === "PGRST202") {
+    console.error("The database is behind the site. Run the latest file in supabase/ in the Supabase SQL editor (see README).", error);
+    return new Error("error.dbBehind");
   }
   return error;
 }

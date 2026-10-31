@@ -113,7 +113,7 @@ const ko: Messages = {
   "account.deleting": "삭제 중...",
   "account.deleted": "계정이 삭제되었습니다.",
   "account.deleteFailed": "계정을 삭제하지 못했습니다. 다시 시도하거나 아래 연락처로 문의해 주세요.",
-  "account.deleteNotReady": "계정 삭제 기능이 아직 켜져 있지 않습니다. Supabase SQL 편집기에서 supabase/007_delete_account.sql 을 실행하세요.",
+  "account.deleteNotReady": "지금은 계정 삭제를 이용할 수 없습니다. 아래 링크에서 이슈를 남겨 주시면 저희가 삭제해 드립니다.",
   "footer.privacy": "개인정보 처리방침",
   "footer.terms": "이용약관",
 
@@ -175,6 +175,14 @@ const ko: Messages = {
   "error.usernameTaken": "이미 사용 중인 이름입니다.",
   "error.usernameFormat": "영어 소문자, 숫자, 밑줄로 3~20자를 입력하세요.",
   "error.alreadySubmitted": "이 패치의 리스트를 이미 제출했습니다. 수정하려면 페이지를 새로 고치세요.",
+  "error.unreachable": "서버에 연결할 수 없습니다. 연결 상태를 확인하거나 광고 차단기를 끄고 다시 시도하세요.",
+  "error.dbBehind": "사이트를 업데이트하는 중입니다. 몇 분 뒤에 다시 시도해 주세요.",
+  "page.errorTitle": "문제가 생겼습니다.",
+  "page.errorBody": "페이지에서 복구할 수 없는 문제가 발생했습니다. 입력하신 내용이 저희 쪽에서 사라지지는 않았습니다.",
+  "page.retry": "다시 시도",
+  "page.notFoundTitle": "페이지를 찾을 수 없습니다.",
+  "page.notFoundBody": "이 링크는 존재하지 않는 곳을 가리킵니다. 플레이어가 사용자 이름을 바꿨거나 주소가 잘못되었을 수 있습니다.",
+  "page.home": "홈으로 돌아가기",
 };
 
 export default ko;

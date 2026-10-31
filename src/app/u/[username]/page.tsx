@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import ProfileView from "@/components/ProfileView";
 import { getProfileByUsername } from "@/lib/profiles";
 import { getT } from "@/lib/i18n/server";
@@ -24,5 +25,14 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function ProfilePage({ params }: Params) {
   const { username } = await params;
+  // A username nobody has gets a real 404. If the database can't be reached from the server,
+  // the page still renders and the browser shows its own message.
+  let profile;
+  try {
+    profile = await getProfileByUsername(username);
+  } catch {
+    profile = undefined;
+  }
+  if (profile === null) notFound();
   return <ProfileView username={username} />;
 }

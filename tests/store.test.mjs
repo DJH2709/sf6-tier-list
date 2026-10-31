@@ -1,6 +1,6 @@
 // src/lib/store.ts and the account deletion in src/lib/account.ts, through the real supabase-js
 // client, with its HTTP calls answered by the real SQL files in PGlite (tests/db/).
-import { test, before } from "node:test";
+import { mock, test, before } from "node:test";
 import assert from "node:assert/strict";
 import { freshDatabase, saveList, newUser } from "./db/supabase.mjs";
 import { fakeSupabase, FAKE_KEY, FAKE_URL } from "./db/fake-supabase.mjs";
@@ -70,8 +70,16 @@ test("getResults returns this patch's band averages, including other players' vo
   assert.ok(!results.some((r) => r.item_id === "ken" && r.band === "beginner"), "older patch left out");
 });
 
-test("a rank the database doesn't know gives an error that says what to do", async () => {
-  await assert.rejects(store.submitList(sf6, "not_a_rank", fullList(0)), /doesn't know that rank/);
+test("a rank the database doesn't know gives a translated error, with the detail in the console", async () => {
+  const log = mock.method(console, "error", () => {});
+  try {
+    // The message is a translation key (shown through errorText); the SQL error itself only goes to the console.
+    await assert.rejects(store.submitList(sf6, "not_a_rank", fullList(0)), { message: "error.dbBehind" });
+    assert.ok(log.mock.callCount() >= 1);
+    assert.match(String(log.mock.calls[0].arguments[0]), /database is behind the site/);
+  } finally {
+    log.mock.restore();
+  }
 });
 
 test("a bad score is refused and the saved list is kept as it was", async () => {

@@ -128,3 +128,11 @@ only for now, with the site name coming from `src/lib/site.ts`. The "Delete my a
 player's `auth.users` row; profiles, lists, placements, follows and likes all cascade from it.
 Run that file once or the button says the database is behind the site. Google's OAuth consent
 screen needs the privacy URL, and optionally the terms URL, before the app can be published.
+
+## Backups
+
+Supabase's free plan keeps no backups, so `.github/workflows/backup.yml` takes one every Sunday
+(and on demand from the Actions tab): a `pg_dump` of the site's tables and sign-in accounts, a
+restore test into a fresh Postgres, then AES-256 encryption and upload as a 90-day artifact. It
+needs two repository secrets, `SUPABASE_DB_URL` (the session-pooler connection string) and
+`BACKUP_PASSPHRASE`. Restore steps are at the top of the workflow file.
