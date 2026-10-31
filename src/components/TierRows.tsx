@@ -33,7 +33,6 @@ type RowProps = Props & {
 };
 
 function Row({ tier, ids, over, rowRef, onRowClick, onCharacterClick, selected, detail, droppable }: RowProps) {
-  const Tile = droppable ? DraggableTile : CharacterTile;
   const { t } = useI18n();
   return (
     <div
@@ -50,15 +49,25 @@ function Row({ tier, ids, over, rowRef, onRowClick, onCharacterClick, selected, 
         {tier.label}
       </div>
       <div className="flex flex-1 flex-wrap content-start gap-1.5 p-2">
-        {ids.map((id) => (
-          <Tile
-            key={id}
-            id={id}
-            selected={selected === id}
-            detail={detail?.(id)}
-            onClick={onCharacterClick && (() => onCharacterClick(id))}
-          />
-        ))}
+        {ids.map((id) =>
+          droppable ? (
+            <DraggableTile
+              key={id}
+              id={id}
+              selected={selected === id}
+              onClick={onCharacterClick && (() => onCharacterClick(id))}
+              dropTarget
+            />
+          ) : (
+            <CharacterTile
+              key={id}
+              id={id}
+              selected={selected === id}
+              detail={detail?.(id)}
+              onClick={onCharacterClick && (() => onCharacterClick(id))}
+            />
+          ),
+        )}
         {onRowClick && ids.length === 0 && (
           <span className="self-center text-xs text-ink-400">{t(droppable ? "tiers.tapOrDrop" : "tiers.tapToPlace")}</span>
         )}
@@ -72,6 +81,7 @@ function DroppableRow(props: RowProps) {
   return <Row {...props} rowRef={setNodeRef} over={isOver} />;
 }
 
+// Each row lists its characters in the order of the placements' keys (the player's order).
 export default function TierRows(props: Props) {
   const { placements, droppable } = props;
   return (

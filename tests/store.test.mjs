@@ -108,3 +108,10 @@ test("deleteAccount says so when the database doesn't have the function yet", as
     await db.exec("alter function delete_my_account_later() rename to delete_my_account");
   }
 });
+
+test("a list comes back in the order it was saved in, not alphabetical or database order", async () => {
+  const placements = Object.fromEntries(Object.entries(fullList(0)).reverse());
+  await store.submitList(sf6, "gold", placements);
+  const [mine] = await store.getMyLists(sf6);
+  assert.deepEqual(Object.keys(mine.placements), Object.keys(placements));
+});

@@ -82,7 +82,8 @@ export function fakeSupabase(db) {
       if (rpc) {
         const args = Object.entries(body ?? {});
         const sql = `select ${ident(rpc[1])}(${args.map(([k], i) => `${ident(k)} => $${i + 1}`).join(", ")}) as result`;
-        const params = args.map(([, v]) => (v !== null && typeof v === "object" ? JSON.stringify(v) : v));
+        // PostgREST turns a JSON array into a Postgres array (text[] etc.) and an object into jsonb.
+        const params = args.map(([, v]) => (v !== null && typeof v === "object" && !Array.isArray(v) ? JSON.stringify(v) : v));
         const { rows } = await as(db, user, sql, params);
         return reply(200, rows[0].result ?? null);
       }

@@ -53,6 +53,7 @@ const zh: Messages = {
   "make.allPlaced": "已全部放好。点击或拖动任意角色即可移动。",
   "make.rosterEmpty": "已全部放好。把角色拖到这里可将其移出。",
   "make.dragHelp": "按下选中角色，再按某一档即可放置。使用鼠标或触屏也可以拖动。",
+  "make.orderHint": "要在同一档内排序，把角色拖到另一个角色上，它就会排到前面。顺序会显示在你的榜单上；社区结果只看档位。",
   "make.startOver": "重新开始",
   "make.step3": "提交",
   "make.showOnProfile": "在我的个人主页 (/u/{username}) 上显示。取消勾选即为私密，但仍会计入结果。",

@@ -2,14 +2,23 @@
 import { useState } from "react";
 import {
   DndContext, DragOverlay, MouseSensor, TouchSensor, pointerWithin, useSensor, useSensors,
-  type DragEndEvent, type DragStartEvent,
+  type CollisionDetection, type DragEndEvent, type DragStartEvent,
 } from "@dnd-kit/core";
 import type { Placements } from "@/lib/store";
 import TierRows, { scoreFromDropId } from "../TierRows";
 import CharacterTile from "../CharacterTile";
+import { idFromTileDropId } from "../DraggableTile";
 import Roster from "./Roster";
 import { useGame } from "../GameContext";
 import { useI18n } from "@/lib/i18n/client";
+
+// The pointer is over a tile and its row at once. The tile wins, so the character is dropped in
+// front of that tile; over a row's empty space it goes to the end of the row.
+const tilesFirst: CollisionDetection = (args) => {
+  const hits = pointerWithin(args);
+  const tiles = hits.filter((h) => idFromTileDropId(h.id) !== null);
+  return tiles.length ? tiles : hits;
+};
 
 // Shows a translated sentence with the {name} part in bold, wherever the language puts it.
 function Highlighted({ text, name }: { text: string; name: string }) {
@@ -21,7 +30,8 @@ type Props = {
   placements: Placements;
   selected: string | null;
   onSelect: (id: string) => void;
-  onPlace: (id: string, score: number) => void;
+  // beforeId: put the character just before this one in the row (from a drop on its tile).
+  onPlace: (id: string, score: number, beforeId?: string) => void;
   onUnplace: (id: string) => void;
   onStartOver: () => void;
 };
@@ -51,8 +61,10 @@ export default function PlaceCharacters({ placements, selected, onSelect, onPlac
   function onDragEnd(e: DragEndEvent) {
     setDragging(null);
     const id = String(e.active.id);
-    const score = scoreFromDropId(e.over?.id);
-    if (score !== null) onPlace(id, score);
+    const beforeId = idFromTileDropId(e.over?.id);
+    const score = beforeId ? placements[beforeId] : scoreFromDropId(e.over?.id);
+    if (beforeId === id) return;
+    if (score != null) onPlace(id, score, beforeId ?? undefined);
     else if (e.over?.id === "roster" && id in placements) onUnplace(id);
   }
 
@@ -76,7 +88,7 @@ export default function PlaceCharacters({ placements, selected, onSelect, onPlac
       <DndContext
         id="tier-dnd"
         sensors={sensors}
-        collisionDetection={pointerWithin}
+        collisionDetection={tilesFirst}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         onDragCancel={() => setDragging(null)}
@@ -94,6 +106,7 @@ export default function PlaceCharacters({ placements, selected, onSelect, onPlac
             onCharacterClick={onSelect}
             droppable
           />
+          {placedCount > 1 && <p className="text-xs text-ink-400">{t("make.orderHint")}</p>}
           <Roster ids={unplaced.map((c) => c.id)} selected={selected} onSelect={onSelect} />
         </div>
         {/* pointer-events-none so the mouseup lands on the row underneath. A disabled button in the

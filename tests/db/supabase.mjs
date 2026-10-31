@@ -60,8 +60,10 @@ export async function as(db, user, sql, params = []) {
 }
 
 // The call submitList() in src/lib/store.ts makes.
-export function saveList(db, user, { game = "sf6", category = "characters", patch, rank, proofUrl = null, isPublic = true, placements }) {
-  return as(db, user, "select save_list($1, $2, $3, $4, $5, $6, $7) as updated", [
-    game, category, patch, rank, proofUrl, isPublic, JSON.stringify(placements),
-  ]).then((r) => r.rows[0].updated);
+// Leave order out to call it the way the site did before 013_order_in_tier.sql.
+export function saveList(db, user, { game = "sf6", category = "characters", patch, rank, proofUrl = null, isPublic = true, placements, order }) {
+  const args = [game, category, patch, rank, proofUrl, isPublic, JSON.stringify(placements)];
+  if (order) args.push(order);
+  const slots = args.map((_, i) => `$${i + 1}`).join(", ");
+  return as(db, user, `select save_list(${slots}) as updated`, args).then((r) => r.rows[0].updated);
 }

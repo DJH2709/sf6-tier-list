@@ -116,3 +116,33 @@ test("a private list is hidden from other players but its owner still sees it", 
   assert.equal(await count(viewer), 1);
   assert.equal(await count(null), 1);
 });
+
+// The player's order inside each tier, as stored.
+async function storedOrder(user) {
+  const { rows } = await db.query(
+    `select p.item_id, p.sort_index from tier_placements p join tier_lists l on l.id = p.list_id
+     where l.user_id = $1 order by p.item_id`,
+    [user.id],
+  );
+  return Object.fromEntries(rows.map((r) => [r.item_id, r.sort_index]));
+}
+
+test("the order the player dragged characters into is saved, and saving again replaces it", async () => {
+  const u = await newUser(db);
+  await saveList(db, u, { patch: PATCH, rank: "gold", placements: { ryu: 5, luke: 5, jamie: 1 }, order: ["luke", "ryu", "jamie"] });
+  assert.deepEqual(await storedOrder(u), { luke: 0, ryu: 1, jamie: 2 });
+  await saveList(db, u, { patch: PATCH, rank: "gold", placements: { ryu: 5, luke: 5 }, order: ["ryu", "luke"] });
+  assert.deepEqual(await storedOrder(u), { ryu: 0, luke: 1 });
+});
+
+test("a save without an order (the site before ordering) still works and stores no order", async () => {
+  const u = await newUser(db);
+  assert.equal(await saveList(db, u, { patch: PATCH, rank: "gold", placements: { ryu: 5, luke: 3 } }), false);
+  assert.deepEqual(await storedOrder(u), { luke: null, ryu: null });
+});
+
+test("an order longer than any roster is refused", async () => {
+  const u = await newUser(db);
+  const order = Array.from({ length: 151 }, (_, i) => `c${i}`);
+  await assert.rejects(saveList(db, u, { patch: PATCH, rank: "gold", placements: { ryu: 3 }, order }), (e) => e.code === "22023");
+});
