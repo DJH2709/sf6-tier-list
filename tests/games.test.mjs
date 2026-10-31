@@ -82,12 +82,14 @@ test("save_list's placement cap fits every roster", () => {
 });
 
 // 012 and 013 are what the live database gets for the new games, so they must say what games.json says.
-for (const [file, ids] of [["012_overwatch_siege.sql", ["overwatch", "siege"]], ["013_clash_royale.sql", ["clashroyale"]]]) {
-  test(`${file} matches games.json`, () => {
-    const sql = readFileSync(`supabase/${file}`, "utf8");
-    const rows = [...sql.matchAll(/\('(\w+)', '(\w+)', '(\w+)', (true|false)\)/g)].map((m) => m.slice(1).join(" "));
+for (const [files, ids] of [[["012_overwatch_siege.sql", "015_overwatch_emerald_clash_ranked.sql"], ["overwatch", "siege"]], [["015_overwatch_emerald_clash_ranked.sql"], ["clashroyale"]]]) {
+  test(`${files.join(" + ")} match games.json`, () => {
+    const sql = files.map((f) => readFileSync(`supabase/${f}`, "utf8")).join("\n");
+    // 015 restates some of 012's rows, so compare the distinct rows for these games.
+    const rows = [...new Set([...sql.matchAll(/\('(\w+)', '(\w+)', '(\w+)', (true|false)\)/g)]
+      .map((m) => m.slice(1).join(" ")).filter((r) => ids.includes(r.split(" ")[0])))];
     const want = games.filter((g) => ids.includes(g.id))
       .flatMap((g) => g.ranks.map((r) => `${g.id} ${r.id} ${r.band} ${!!r.needsProof}`));
-    assert.deepEqual(rows, want);
+    assert.deepEqual([...rows].sort(), [...want].sort());
   });
 }

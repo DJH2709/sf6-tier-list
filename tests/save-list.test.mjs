@@ -158,3 +158,14 @@ test("an order longer than any roster is refused", async () => {
   const order = Array.from({ length: 251 }, (_, i) => `c${i}`);
   await assert.rejects(saveList(db, u, { patch: PATCH, rank: "gold", placements: { ryu: 3 }, order }), (e) => e.code === "22023");
 });
+
+test("after every migration, the live ladders for the new games are exactly games.json's", async () => {
+  const { games } = JSON.parse(readFileSync("src/lib/games.json", "utf8"));
+  for (const id of ["overwatch", "siege", "clashroyale"]) {
+    const { rows } = await db.query("select rank_id, band, needs_proof from game_ranks where game = $1 order by rank_id", [id]);
+    const want = games.find((g) => g.id === id).ranks
+      .map((r) => ({ rank_id: r.id, band: r.band, needs_proof: !!r.needsProof }))
+      .sort((a, b) => (a.rank_id < b.rank_id ? -1 : 1));
+    assert.deepEqual(rows, want, id);
+  }
+});
