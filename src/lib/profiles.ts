@@ -1,6 +1,7 @@
 // Public profile reads. No "use client", so server code (page metadata, link preview
 // images) can use them as well as the browser.
-import { supabase, type Placements } from "./store";
+import { supabase } from "./supabase";
+import type { Placements } from "./store";
 
 // Tags are set by the site owner in Supabase, never by the player.
 export type ProfileTag = "pro" | "influencer";

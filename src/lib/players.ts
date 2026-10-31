@@ -1,6 +1,6 @@
 // The Players page: profiles with their like, follower and list counts.
 // Counted in the browser, which is fine while the site has hundreds of profiles, not thousands.
-import { supabase } from "./store";
+import { supabase } from "./supabase";
 import { PROFILE_COLUMNS, type Profile } from "./profiles";
 
 export type PlayerSummary = { profile: Profile; createdAt: string; likes: number; followers: number; lists: number };

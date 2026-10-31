@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { Provider, Session } from "@supabase/supabase-js";
-import { supabase } from "./store";
+import { supabase } from "./supabase";
 
 export type { Profile, PublicList } from "./profiles";
 import { PROFILE_COLUMNS, type Profile } from "./profiles";

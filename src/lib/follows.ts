@@ -1,5 +1,5 @@
 // Following other players. Both sides need a profile (supabase/006_follows.sql).
-import { supabase } from "./store";
+import { supabase } from "./supabase";
 import { LIST_COLUMNS, PROFILE_COLUMNS, toPublicList, type Profile, type PublicList } from "./profiles";
 
 export type FollowCounts = { followers: number; following: number };

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getListsFor, getProfileByUsername, type Profile, type PublicList } from "@/lib/profiles";
-import { demoMode } from "@/lib/store";
+import { demoMode } from "@/lib/supabase";
 import { getGame } from "@/lib/games";
 import { gameName, rankName } from "@/lib/i18n/games";
 import TierRows from "@/components/TierRows";
