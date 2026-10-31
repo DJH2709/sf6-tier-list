@@ -44,6 +44,8 @@ const ja: Messages = {
 
   "make.editing": "パッチ {patch} で投稿したリストを編集中です。保存すると上書きされます。",
   "make.newPatch": "新しいパッチです。パッチ {patch} のリストから始まるので、変わったところだけ動かして投稿してください。",
+  "make.howTo": "あなたのランク帯で、それぞれがどれだけ強いと思うかで振り分けてください。感覚で大丈夫です。初心者も含め、どのランクの票も同じく数えます。",
+  "make.rankNote": "今いるランクを選んでください。{first}も{last}と同じく数えます。",
   "make.step1": "今のランク",
   "make.chooseRank": "ランクを選択",
   "make.proofLabel": "{site}へのリンク",

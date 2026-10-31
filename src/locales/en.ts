@@ -43,6 +43,8 @@ const en = {
 
   "make.editing": "You're editing the list you submitted for patch {patch}. Saving replaces it.",
   "make.newPatch": "New patch. This starts from your patch {patch} list, so move what's changed and submit.",
+  "make.howTo": "Rank the roster by how strong you think each pick is at your rank. Gut feel is fine, and every rank counts, beginners included.",
+  "make.rankNote": "Pick where you play now. {first} counts as much as {last}.",
   "make.step1": "Your current rank",
   "make.chooseRank": "Choose your rank",
   "make.proofLabel": "Link to your {site}",

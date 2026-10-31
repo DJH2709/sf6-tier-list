@@ -29,6 +29,9 @@ export default function RankPicker({ rank, onRank, proofUrl, onProofUrl, approve
         <option value="">{t("make.chooseRank")}</option>
         {game.ranks.map((r) => <option key={r.id} value={r.id}>{rankName(game, r.id, t)}</option>)}
       </select>
+      <p className="text-sm leading-5 text-ink-300">
+        {t("make.rankNote", { first: rankName(game, game.ranks[0].id, t), last: rankName(game, game.ranks[game.ranks.length - 1].id, t) })}
+      </p>
       {game.rankHint && <p className="text-sm leading-5 text-ink-300">{game.rankHint}</p>}
       {needsProof && (
         <label className="block space-y-1 text-sm">

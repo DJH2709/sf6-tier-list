@@ -43,6 +43,8 @@ const zh: Messages = {
 
   "make.editing": "你正在编辑版本 {patch} 提交的榜单。保存后会覆盖原榜单。",
   "make.newPatch": "新版本。已从你版本 {patch} 的榜单开始，只需调整有变化的角色再提交。",
+  "make.howTo": "按你觉得每一项在你的段位有多强来排位。凭感觉就行，每个段位都算数，新手也一样。",
+  "make.rankNote": "选你现在所在的段位。{first}和{last}一样算数。",
   "make.step1": "你当前的段位",
   "make.chooseRank": "选择段位",
   "make.proofLabel": "你的{site}链接",

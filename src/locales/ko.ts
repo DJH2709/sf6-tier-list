@@ -43,6 +43,8 @@ const ko: Messages = {
 
   "make.editing": "패치 {patch}에 제출한 리스트를 수정 중입니다. 저장하면 덮어씁니다.",
   "make.newPatch": "새 패치입니다. 패치 {patch} 리스트에서 시작하니 바뀐 부분만 옮기고 제출하세요.",
+  "make.howTo": "내 랭크에서 각각 얼마나 강하다고 생각하는지로 배치하세요. 감으로 해도 괜찮고, 초보자를 포함해 모든 랭크가 반영됩니다.",
+  "make.rankNote": "지금 플레이하는 랭크를 고르세요. {first}부터 {last}까지 모두 똑같이 반영됩니다.",
   "make.step1": "현재 랭크",
   "make.chooseRank": "랭크 선택",
   "make.proofLabel": "{site} 링크",

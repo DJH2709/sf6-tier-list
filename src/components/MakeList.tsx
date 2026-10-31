@@ -144,6 +144,8 @@ export default function MakeList({ profile, onSubmitted }: Props) {
 
   return (
     <div className="space-y-8">
+      {/* Players asked whether this is win rate and whether low ranks may vote, so say it up front. */}
+      <p className="max-w-prose text-base leading-6 text-ink-100">{t("make.howTo")}</p>
       {existing && (
         <p className={NOTE}>
           {t("make.editing", { patch: game.patch })}

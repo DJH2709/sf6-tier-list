@@ -45,6 +45,8 @@ const es: Messages = {
 
   "make.editing": "Estás editando la lista que enviaste para el parche {patch}. Al guardar, se reemplaza.",
   "make.newPatch": "Parche nuevo. Empiezas con tu lista del parche {patch}: mueve lo que cambió y envíala.",
+  "make.howTo": "Ordena el elenco según lo fuerte que creas que es cada uno en tu rango. Vale ir por intuición, y todos los rangos cuentan, también los principiantes.",
+  "make.rankNote": "Elige el rango en el que juegas ahora. {first} cuenta igual que {last}.",
   "make.step1": "Tu rango actual",
   "make.chooseRank": "Elige tu rango",
   "make.proofLabel": "Enlace a tu perfil de {site}",
