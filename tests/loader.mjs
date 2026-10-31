@@ -12,8 +12,17 @@ export async function resolve(specifier, context, next) {
   if (url) {
     for (const ext of ["", ".ts", ".tsx", "/index.ts"]) {
       const candidate = url + ext;
-      if (existsSync(fileURLToPath(candidate)) && !candidate.endsWith("/")) return next(candidate, context);
+      if (!existsSync(fileURLToPath(candidate)) || candidate.endsWith("/")) continue;
+      return next(candidate, context);
     }
   }
   return next(specifier, context);
+}
+
+// The site's .ts files are ES modules (saying so saves Node guessing, and warning), and it
+// imports JSON the bundler way, without `with { type: "json" }`.
+export async function load(url, context, next) {
+  if (url.startsWith(src.href) && url.endsWith(".ts")) return next(url, { ...context, format: "module-typescript" });
+  if (url.startsWith(src.href) && url.endsWith(".json")) return next(url, { ...context, importAttributes: { type: "json" } });
+  return next(url, context);
 }

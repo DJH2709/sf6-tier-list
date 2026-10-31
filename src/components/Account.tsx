@@ -6,7 +6,7 @@ import {
   AUTH_PROVIDERS, createProfile, discordAvatar, getProfileById, signInFresh, signInWith, signOut, suggestUsername, updateAvatar,
   useSession, type Profile,
 } from "@/lib/account";
-import { demoMode } from "@/lib/store";
+import { demoMode } from "@/lib/supabase";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText, type Locale } from "@/lib/i18n/config";
 
