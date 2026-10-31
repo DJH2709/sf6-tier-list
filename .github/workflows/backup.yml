@@ -1,0 +1,84 @@
+# Weekly encrypted backup of the live database, with a restore test every time.
+#
+# Supabase's free plan keeps no backups, so this is the only copy. Needs two repository
+# secrets (Settings -> Secrets and variables -> Actions):
+#   SUPABASE_DB_URL     the "Session pooler" connection string from the Supabase Connect
+#                       dialog, with the database password filled in
+#   BACKUP_PASSPHRASE   a long random passphrase; the backup is useless without it
+#
+# To restore: download the artifact, then
+#   openssl enc -d -aes-256-cbc -pbkdf2 -in backup.tar.enc -out backup.tar -pass pass:'<passphrase>'
+#   tar xf backup.tar
+#   pg_restore -d "<new database URL>" --no-owner --no-privileges public.dump
+#   pg_restore -d "<new database URL>" --data-only auth.dump      # sign-in accounts
+name: Database backup
+
+on:
+  schedule:
+    - cron: "0 3 * * 0" # Sundays 03:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      restore:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: restore
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      RESTORE_URL: postgres://postgres:restore@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PostgreSQL 17 client tools
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -fsSo /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client-17
+          pg_dump --version
+
+      - name: Check the secrets are set
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          test -n "$SUPABASE_DB_URL" || { echo "::error::SUPABASE_DB_URL secret is missing"; exit 1; }
+          test "${#BACKUP_PASSPHRASE}" -ge 20 || { echo "::error::BACKUP_PASSPHRASE secret is missing or shorter than 20 characters"; exit 1; }
+
+      - name: Dump the site's tables and the sign-in accounts
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          pg_dump "$SUPABASE_DB_URL" --format=custom --no-owner --no-privileges --schema=public --file=public.dump
+          pg_dump "$SUPABASE_DB_URL" --format=custom --data-only --table=auth.users --table=auth.identities --file=auth.dump
+          psql "$SUPABASE_DB_URL" -Atq -f scripts/row-counts.sql > live-counts.txt
+          ls -l public.dump auth.dump
+          echo "Live row counts:"; cat live-counts.txt
+
+      - name: Restore the dump into an empty database and compare row counts
+        run: scripts/restore-check.sh public.dump live-counts.txt "$RESTORE_URL"
+
+      - name: Encrypt
+        env:
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          tar cf backup.tar public.dump auth.dump live-counts.txt
+          openssl enc -aes-256-cbc -pbkdf2 -salt -in backup.tar -out backup.tar.enc -pass env:BACKUP_PASSPHRASE
+          rm -f backup.tar public.dump auth.dump
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ github.run_id }}
+          path: backup.tar.enc
+          retention-days: 90
+          if-no-files-found: error

@@ -13,6 +13,7 @@ import { useGame } from "./GameContext";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
 import { rankName } from "@/lib/i18n/games";
+import { clearDraft, isEmptyDraft, loadDraft, saveDraft } from "@/lib/draft";
 
 function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
@@ -85,13 +86,36 @@ export default function MakeList({ profile, onSubmitted }: Props) {
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
   );
 
+  // The first run of the draft-saving effect is the initial render, which must not be saved.
+  const firstSave = useRef(true);
+
+  // Unsaved work from earlier in this tab (Back button, a reload, a detour to a profile) comes
+  // back first and counts as the player's own edits, so the saved list can't overwrite it.
+  useEffect(() => {
+    const draft = loadDraft(game.id, game.patch);
+    if (draft && !isEmptyDraft(draft)) {
+      const known = new Set(CHARACTERS.map((c) => c.id));
+      const kept = Object.fromEntries(Object.entries(draft.placements).filter(([id, score]) => known.has(id) && Number.isInteger(score) && score >= 1 && score <= 5));
+      touched.current = true;
+      setPlacements(kept);
+      setSelected(CHARACTERS.find((c) => !(c.id in kept))?.id ?? null);
+      setRank(game.ranks.some((r) => r.id === draft.rank) ? draft.rank : "");
+      setProofUrl(draft.proofUrl);
+      setIsPublic(draft.isPublic);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     getMyLists(game).then((lists) => {
-      if (touched.current) return;
       const current = lists.find((l) => l.patch === game.patch);
       const previous = lists.find((l) => l.patch !== game.patch);
       const from = current ?? previous;
       if (!from) return;
+      // The player already has a list for this patch, so the button says "Update" even while
+      // a draft or their own edits are on screen.
+      if (current) setExisting(current);
+      if (touched.current) return;
       // Characters that joined since the old list stay unplaced.
       const known = new Set(CHARACTERS.map((c) => c.id));
       const kept = Object.fromEntries(Object.entries(from.placements).filter(([id]) => known.has(id)));
@@ -100,12 +124,22 @@ export default function MakeList({ profile, onSubmitted }: Props) {
       setRank(from.rank);
       setProofUrl(from.proofUrl ?? "");
       setIsPublic(from.isPublic);
-      if (current) setExisting(current);
-      else setBasedOn(from.patch);
+      if (!current) setBasedOn(from.patch);
     }, (e) => setStatus({ text: errorText(e, t), error: true }));
     // Runs once per game (the page remounts on a new game); t only changes the wording of an error.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Keep the draft in step with the form.
+  useEffect(() => {
+    if (firstSave.current) {
+      firstSave.current = false;
+      return;
+    }
+    const draft = { placements, rank, proofUrl, isPublic };
+    if (isEmptyDraft(draft)) clearDraft(game.id, game.patch);
+    else saveDraft(game.id, game.patch, draft);
+  }, [placements, rank, proofUrl, isPublic, game.id, game.patch]);
 
   const unplaced = CHARACTERS.filter((c) => !(c.id in placements));
   const placedCount = CHARACTERS.length - unplaced.length;
@@ -150,6 +184,7 @@ export default function MakeList({ profile, onSubmitted }: Props) {
     try {
       const { updated } = await submitList(game, rank, placements, needsProof ? proofUrl : undefined, isPublic);
       setStatus({ text: t(updated ? "make.updated" : "make.thanks") });
+      clearDraft(game.id, game.patch);
       setExisting((e) => e ?? { id: "", patch: game.patch, rank, proofUrl: proofUrl || null, verification: "none", isPublic, placements });
       setBasedOn(null);
       onSubmitted({ isPublic, updated });

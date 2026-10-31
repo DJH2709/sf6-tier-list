@@ -113,7 +113,7 @@ const en = {
   "account.deleting": "Deleting...",
   "account.deleted": "Your account has been deleted.",
   "account.deleteFailed": "Couldn't delete your account. Try again, or get in touch (see below).",
-  "account.deleteNotReady": "Account deletion isn't switched on yet. Run supabase/007_delete_account.sql in the Supabase SQL editor.",
+  "account.deleteNotReady": "Account deletion isn't available right now. Open an issue (link below) and we'll delete it for you.",
   "footer.privacy": "Privacy",
   "footer.terms": "Terms",
 
@@ -175,6 +175,14 @@ const en = {
   "error.usernameTaken": "That username is taken.",
   "error.usernameFormat": "Use 3 to 20 lowercase letters, numbers or underscores.",
   "error.alreadySubmitted": "You've already submitted a list for this patch. Reload the page to edit it.",
+  "error.unreachable": "Couldn't reach the server. Check your connection, or try with ad blockers off.",
+  "error.dbBehind": "The site is being updated. Please try again in a few minutes.",
+  "page.errorTitle": "Something went wrong.",
+  "page.errorBody": "The page hit a problem it couldn't recover from. Nothing you entered was lost on our side.",
+  "page.retry": "Try again",
+  "page.notFoundTitle": "Page not found.",
+  "page.notFoundBody": "That link doesn't go anywhere. The player may have changed their username, or the address is mistyped.",
+  "page.home": "Back to the home page",
 };
 
 export default en;

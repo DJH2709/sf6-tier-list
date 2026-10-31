@@ -113,7 +113,7 @@ const zh: Messages = {
   "account.deleting": "正在删除...",
   "account.deleted": "你的账号已删除。",
   "account.deleteFailed": "无法删除账号。请重试，或通过下方方式联系我们。",
-  "account.deleteNotReady": "账号删除功能尚未开启。请在 Supabase SQL 编辑器中运行 supabase/007_delete_account.sql。",
+  "account.deleteNotReady": "目前无法删除账号。请通过下方链接提交 issue，我们会为你删除。",
   "footer.privacy": "隐私政策",
   "footer.terms": "使用条款",
 
@@ -175,6 +175,14 @@ const zh: Messages = {
   "error.usernameTaken": "该用户名已被使用。",
   "error.usernameFormat": "请使用 3 到 20 个小写字母、数字或下划线。",
   "error.alreadySubmitted": "你已经提交过本版本的榜单。刷新页面即可编辑。",
+  "error.unreachable": "无法连接服务器。请检查网络，或关闭广告拦截器后重试。",
+  "error.dbBehind": "网站正在更新，请几分钟后再试。",
+  "page.errorTitle": "出了点问题。",
+  "page.errorBody": "页面遇到了无法恢复的问题。你输入的内容不会在我们这边丢失。",
+  "page.retry": "重试",
+  "page.notFoundTitle": "找不到页面。",
+  "page.notFoundBody": "这个链接没有指向任何内容。玩家可能改了用户名，或者地址输错了。",
+  "page.home": "返回首页",
 };
 
 export default zh;

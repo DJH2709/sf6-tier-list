@@ -48,10 +48,12 @@ export function translator(locale: Locale): Translate {
   };
 }
 
-// Library code throws errors whose message is a key, e.g. new Error("error.usernameTaken").
-// Anything else (a Supabase message) is shown as it is.
+// Library code throws errors whose message is a key, e.g. new Error("error.usernameTaken"),
+// and those are translated. Anything else (a Supabase message, a TypeError) is never shown:
+// it could carry table names or SQL, so it goes to the console and the person sees the fallback.
 export function errorText(e: unknown, t: Translate, fallback: MessageKey = "make.error") {
   const message = e instanceof Error ? e.message : typeof e === "string" ? e : "";
-  if (!message) return t(fallback);
-  return message in en ? t(message as MessageKey) : message;
+  if (message in en) return t(message as MessageKey);
+  if (e) console.error(e);
+  return t(fallback);
 }
