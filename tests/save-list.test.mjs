@@ -47,7 +47,7 @@ test("a bad save changes nothing, so a list is never left half replaced", async 
     [{ rank: "gold", placements: { ryu: 0 } }, "23514"], // score below 1
     [{ rank: "gold", placements: { "Ryu!": 3 } }, "23514"], // item id format
     [{ rank: "not_a_rank", placements: { ryu: 3 } }, "22023"],
-    [{ rank: "gold", placements: Object.fromEntries(Array.from({ length: 151 }, (_, i) => [`c${i}`, 3])) }, "22023"],
+    [{ rank: "gold", placements: Object.fromEntries(Array.from({ length: 251 }, (_, i) => [`c${i}`, 3])) }, "22023"],
     [{ game: "Not A Game", rank: "gold", placements: { ryu: 3 } }, "22023"], // no ladder for it
     [{ patch: "next week", rank: "gold", placements: { ryu: 3 } }, "23514"],
     [{ rank: "gold", proofUrl: "javascript:alert(1)", placements: { ryu: 3 } }, "23514"],
@@ -143,6 +143,6 @@ test("a save without an order (the site before ordering) still works and stores 
 
 test("an order longer than any roster is refused", async () => {
   const u = await newUser(db);
-  const order = Array.from({ length: 151 }, (_, i) => `c${i}`);
+  const order = Array.from({ length: 251 }, (_, i) => `c${i}`);
   await assert.rejects(saveList(db, u, { patch: PATCH, rank: "gold", placements: { ryu: 3 }, order }), (e) => e.code === "22023");
 });

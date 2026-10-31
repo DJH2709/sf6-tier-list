@@ -1,5 +1,6 @@
--- Run after 012_overwatch_siege.sql (or after 011_tekken_bands.sql if 012 isn't run yet; they
--- don't touch the same things). Lets players order characters inside a tier.
+-- Run after 013_clash_royale.sql. Lets players order characters inside a tier.
+-- Both files replace save_list; this one keeps 013's 250-placement cap. If 013 is ever run
+-- again after this, run this file again too, or there will be two save_list functions.
 --
 -- Adds tier_placements.sort_index (0 = first in the list, read left to right, S row first).
 -- It is only for showing a player's own list in the order they dragged it into. Community
@@ -10,7 +11,7 @@
 -- default, so the site as it is now (which doesn't send it) keeps saving while this runs.
 -- Safe to run more than once.
 alter table tier_placements add column if not exists sort_index smallint
-  check (sort_index is null or sort_index between 0 and 149);
+  check (sort_index is null or sort_index between 0 and 249);
 
 drop function if exists save_list(text, text, text, text, text, boolean, jsonb);
 drop function if exists save_list(text, text, text, text, text, boolean, jsonb, text[]);
@@ -42,9 +43,9 @@ begin
   if p_placements is null or jsonb_typeof(p_placements) <> 'object' then
     raise exception 'placements must be an object' using errcode = '22023';
   end if;
-  -- Every roster so far is under 100 characters; this stops a list of thousands of made-up ids.
-  if (select count(*) from jsonb_object_keys(p_placements)) > 150
-     or coalesce(cardinality(p_order), 0) > 150 then
+  -- Clash Royale has 184 cards; this still stops a list of thousands of made-up ids.
+  if (select count(*) from jsonb_object_keys(p_placements)) > 250
+     or coalesce(cardinality(p_order), 0) > 250 then
     raise exception 'too many placements' using errcode = '22023';
   end if;
 
