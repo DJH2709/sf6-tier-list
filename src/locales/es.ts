@@ -169,6 +169,7 @@ const es: Messages = {
 
   "footer.privacy": "Privacidad",
   "footer.terms": "Términos",
+  "footer.feedback": "Comentarios",
 
   "share.button": "Compartir",
   "share.copied": "Enlace copiado",

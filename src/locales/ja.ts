@@ -117,6 +117,7 @@ const ja: Messages = {
   "account.deleteNotReady": "現在アカウント削除をご利用いただけません。下のリンクから Issue を作成していただければ、こちらで削除します。",
   "footer.privacy": "プライバシー",
   "footer.terms": "利用規約",
+  "footer.feedback": "フィードバック",
 
   "profile.demoOnly": "プロフィールは公開サイトでのみ使えます。",
   "profile.loading": "読み込み中...",

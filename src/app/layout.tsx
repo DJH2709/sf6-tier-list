@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { geistMono, geistSans } from "./fonts";
 import "./globals.css";
 import { HTML_LANG } from "@/lib/i18n/config";
@@ -23,6 +24,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang={HTML_LANG[locale]} className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="bg-ink-900 text-ink-100 antialiased selection:bg-emerald-500/30">
         <I18nProvider initial={locale}>{children}</I18nProvider>
+        {/* Vercel Web Analytics: page views and referrers, no cookies. Turn it on in the Vercel dashboard. */}
+        <Analytics />
       </body>
     </html>
   );
