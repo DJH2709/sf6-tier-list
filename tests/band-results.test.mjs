@@ -128,3 +128,22 @@ test("demo mode's tallyBands() gives the same numbers as band_results", async ()
   assert.ok(rows.length > 0);
   assert.deepEqual(sorted(tallyBands(sf6, lists)), sorted(rows));
 });
+
+test("011 splits Tekken 8: Garyu counts below Fujin, Eliminator with the low ranks", async () => {
+  const t8 = GAMES.find((g) => g.id === "tekken8");
+  const old = { eliminator: "intermediate", garyu: "advanced", battle_ruler: "advanced" };
+  for (const [rank, band] of Object.entries(old)) {
+    await db.query("update game_ranks set band = $1 where game = 'tekken8' and rank_id = $2", [band, rank]);
+  }
+  const item = t8.characters[0].id;
+  for (const [rank, score] of [["eliminator", 1], ["garyu", 3], ["battle_ruler", 3], ["fujin", 5]]) {
+    await vote(rank, { [item]: score }, { game: "tekken8" });
+  }
+  assert.equal((await results(PATCH, "tekken8"))[`advanced:${item}`].votes, 3, "old ladder: Garyu sits with Fujin");
+  await db.exec(readFileSync("supabase/011_tekken_bands.sql", "utf8"));
+  const r = await results(PATCH, "tekken8");
+  assert.equal(r[`beginner:${item}`].avg_score, 1);
+  assert.equal(r[`intermediate:${item}`].votes, 2);
+  assert.equal(r[`advanced:${item}`].votes, 1);
+  assert.equal(r[`advanced:${item}`].avg_score, 5);
+});
