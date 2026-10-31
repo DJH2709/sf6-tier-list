@@ -5,7 +5,7 @@ import type { Profile } from "@/lib/account";
 import Step from "./make-list/Step";
 import RankPicker from "./make-list/RankPicker";
 import PlaceCharacters from "./make-list/PlaceCharacters";
-import { keepKnown, nextUnplaced, startingList } from "./make-list/placements";
+import { keepKnown, moveTo, nextUnplaced, startingList } from "./make-list/placements";
 import { useGame } from "./GameContext";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
@@ -89,9 +89,9 @@ export default function MakeList({ profile, onSubmitted }: Props) {
   const unplacedCount = CHARACTERS.filter((c) => !(c.id in placements)).length;
   const needsProof = game.ranks.find((r) => r.id === rank)?.needsProof;
 
-  function place(id: string, score: number) {
+  function place(id: string, score: number, beforeId?: string) {
     touched.current = true;
-    const next = { ...placements, [id]: score };
+    const next = moveTo(placements, id, score, beforeId);
     setPlacements(next);
     setSelected(nextUnplaced(CHARACTERS, next));
   }

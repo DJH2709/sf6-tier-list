@@ -1,7 +1,7 @@
 // Public profile reads. No "use client", so server code (page metadata, link preview
 // images) can use them as well as the browser.
 import { supabase } from "./supabase";
-import type { Placements } from "./store";
+import { toPlacements, type PlacementRow, type Placements } from "./store";
 
 // Tags are set by the site owner in Supabase, never by the player.
 export type ProfileTag = "pro" | "influencer";
@@ -56,10 +56,10 @@ export async function getListsFor(userId: string): Promise<PublicList[]> {
 }
 
 export const LIST_COLUMNS =
-  "id, game, category, patch, claimed_rank, verification, is_public, created_at, tier_placements(item_id, score), list_likes(count)";
+  "id, game, category, patch, claimed_rank, verification, is_public, created_at, tier_placements(item_id, score, sort_index), list_likes(count)";
 
 type ListRow = Omit<PublicList, "placements" | "likes"> & {
-  tier_placements: { item_id: string; score: number }[];
+  tier_placements: PlacementRow[];
   list_likes: { count: number }[];
 };
 export function toPublicList(l: ListRow): PublicList {
@@ -71,7 +71,7 @@ export function toPublicList(l: ListRow): PublicList {
     claimed_rank: l.claimed_rank,
     verification: l.verification,
     is_public: l.is_public,
-    placements: Object.fromEntries(l.tier_placements.map((p) => [p.item_id, p.score])),
+    placements: toPlacements(l.tier_placements),
     likes: l.list_likes[0]?.count ?? 0,
   };
 }
