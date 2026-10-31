@@ -6,8 +6,6 @@ import type { Messages } from "./en";
 const es: Messages = {
   "site.title": "Tier lists de juegos de pelea por la comunidad",
   "site.description": "Tier lists de juegos de pelea votadas por la comunidad y separadas por rango.",
-  "site.brand": "TIER LISTS",
-  "site.gameBrand": "TIER LIST DE {game}",
   "site.gameTitle": "Tier list de {game} por la comunidad",
   "site.gameDescription": "Tier lists de {game} votadas por la comunidad y separadas por rango.",
   "site.footer": "Un proyecto de fans. No está afiliado ni respaldado por {owner}. Los nombres de juegos y personajes pertenecen a sus dueños.",
@@ -145,7 +143,7 @@ const es: Messages = {
   "follow.pickUsername": "Elige un nombre de usuario en la página de inicio para seguir a jugadores y dar me gusta a listas.",
   "follow.updateFailed": "No se pudo actualizar. Inténtalo de nuevo.",
   "following.title": "Siguiendo",
-  "following.metaTitle": "Siguiendo · Tier list de SF6 por la comunidad",
+  "following.metaTitle": "Siguiendo",
   "following.demoOnly": "Seguir solo funciona en el sitio publicado.",
   "following.signedOut": "Inicia sesión arriba y elige un nombre de usuario en la página de inicio para seguir a jugadores.",
   "following.empty": "Todavía no sigues a nadie. Abre el perfil de un jugador y pulsa Seguir para ver sus listas aquí.",
@@ -161,7 +159,7 @@ const es: Messages = {
 
   "players.link": "Jugadores",
   "players.title": "Jugadores",
-  "players.metaTitle": "Jugadores · Tier list de SF6 por la comunidad",
+  "players.metaTitle": "Jugadores",
   "players.mostLiked": "Más gustados",
   "players.newest": "Más nuevos",
   "players.empty": "Todavía no hay jugadores. Inicia sesión y elige un nombre de usuario para ser el primero.",
