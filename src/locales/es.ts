@@ -110,6 +110,13 @@ const es: Messages = {
   "account.usernamePlaceholder": "usuario",
   "account.save": "Guardar",
   "account.saveFailed": "No se pudo guardar.",
+  "account.delete": "Eliminar mi cuenta",
+  "account.deleteConfirm": "¿Eliminar tu cuenta? Tu perfil, tus tier lists, tus me gusta y tus seguidos se borrarán para siempre. No se puede deshacer.",
+  "account.deleteSignIn": "Primero inicia sesión en la página principal y luego vuelve aquí para eliminar tu cuenta.",
+  "account.deleting": "Eliminando...",
+  "account.deleted": "Tu cuenta ha sido eliminada.",
+  "account.deleteFailed": "No se pudo eliminar tu cuenta. Inténtalo de nuevo o contáctanos (ver abajo).",
+  "account.deleteNotReady": "La eliminación de cuentas aún no está activada. Ejecuta supabase/007_delete_account.sql en el editor SQL de Supabase.",
 
   "profile.demoOnly": "Los perfiles solo funcionan en el sitio publicado.",
   "profile.loading": "Cargando...",
@@ -159,6 +166,9 @@ const es: Messages = {
   "players.newest": "Más nuevos",
   "players.empty": "Todavía no hay jugadores. Inicia sesión y elige un nombre de usuario para ser el primero.",
   "players.noLists": "Sin lista pública",
+
+  "footer.privacy": "Privacidad",
+  "footer.terms": "Términos",
 
   "share.button": "Compartir",
   "share.copied": "Enlace copiado",
