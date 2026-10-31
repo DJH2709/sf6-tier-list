@@ -11,7 +11,7 @@ function englishName(game: Game, id: string) {
 // Characters without a portrait in public/characters/<game> get a quiet initials badge. The
 // tier row already carries the colour, so the badge doesn't need its own.
 function initialsOf(name: string) {
-  const words = name.split(/[\s.\-]+/).filter(Boolean);
+  const words = name.split(/[\s.\-()]+/).filter(Boolean);
   return (words.length > 1 ? words[0][0] + words[1][0] : name.slice(0, 2)).toUpperCase();
 }
 

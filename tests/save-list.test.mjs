@@ -1,6 +1,7 @@
 // Saving a tier list, run against the real supabase/*.sql files (see tests/db/supabase.mjs).
 import { test, before } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { freshDatabase, newUser, saveList, as } from "./db/supabase.mjs";
 
 const PATCH = "2026-10";
@@ -47,7 +48,7 @@ test("a bad save changes nothing, so a list is never left half replaced", async 
     [{ rank: "gold", placements: { ryu: 0 } }, "23514"], // score below 1
     [{ rank: "gold", placements: { "Ryu!": 3 } }, "23514"], // item id format
     [{ rank: "not_a_rank", placements: { ryu: 3 } }, "22023"],
-    [{ rank: "gold", placements: Object.fromEntries(Array.from({ length: 151 }, (_, i) => [`c${i}`, 3])) }, "22023"],
+    [{ rank: "gold", placements: Object.fromEntries(Array.from({ length: 251 }, (_, i) => [`c${i}`, 3])) }, "22023"],
     [{ game: "Not A Game", rank: "gold", placements: { ryu: 3 } }, "22023"], // no ladder for it
     [{ patch: "next week", rank: "gold", placements: { ryu: 3 } }, "23514"],
     [{ rank: "gold", proofUrl: "javascript:alert(1)", placements: { ryu: 3 } }, "23514"],
@@ -56,6 +57,17 @@ test("a bad save changes nothing, so a list is never left half replaced", async 
     await assert.rejects(saveList(db, u, { patch: PATCH, ...input }), (e) => e.code === code, JSON.stringify(input));
   }
   assert.deepEqual(await stored(u), before);
+});
+
+test("a full Clash Royale list (cards, evolutions and heroes) fits under the placement cap", async () => {
+  const { games } = JSON.parse(readFileSync("src/lib/games.json", "utf8"));
+  const cr = games.find((g) => g.id === "clashroyale");
+  const slug = (n) => n.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const placements = Object.fromEntries(cr.characters.map((n) => [slug(n), 3]));
+  assert.ok(Object.keys(placements).length > 150);
+  const u = await newUser(db);
+  await saveList(db, u, { game: "clashroyale", patch: PATCH, rank: "ultimate_champion", placements });
+  assert.equal(Object.keys((await stored(u))[0].placements).length, cr.characters.length);
 });
 
 test("players can only write through save_list, and only to their own list", async () => {
