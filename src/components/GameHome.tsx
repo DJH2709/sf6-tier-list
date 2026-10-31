@@ -165,6 +165,10 @@ export default function GameHome({ gameId }: { gameId: string }) {
       <footer className="border-t border-neutral-800 px-4 py-8 text-center text-xs text-neutral-500">
         {t("site.footer", { owner: game.owner })}
         {t("site.machineTranslated") && <span className="mt-2 block">{t("site.machineTranslated")}</span>}
+        <span className="mt-2 block space-x-3">
+          <Link href="/privacy" className="underline-offset-2 hover:text-neutral-300 hover:underline">{t("footer.privacy")}</Link>
+          <Link href="/terms" className="underline-offset-2 hover:text-neutral-300 hover:underline">{t("footer.terms")}</Link>
+        </span>
       </footer>
     </div>
     </GameProvider>

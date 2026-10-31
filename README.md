@@ -18,7 +18,7 @@ With no settings it runs in demo mode and saves votes in your browser only.
 
 ## Go live with Supabase (free tier)
 
-1. Create a Supabase project, then run `supabase/schema.sql`, `supabase/002_profiles.sql`, `supabase/003_edit_lists.sql`, `supabase/004_save_list.sql` and `supabase/005_games.sql` in its SQL editor, in that order.
+1. Create a Supabase project, then run `supabase/schema.sql`, `supabase/002_profiles.sql`, `supabase/003_edit_lists.sql`, `supabase/004_save_list.sql`, `supabase/005_games.sql`, `supabase/006_follows_likes.sql`, `supabase/007_delete_account.sql` and `supabase/008_validate_lists.sql` in its SQL editor, in that order. Until `008` is run, saves still work but a signed-in browser can also write to the list tables directly, skipping the checks in `save_list()`.
 2. Under Authentication, turn on anonymous sign-ins.
 3. Copy `.env.example` to `.env.local` and fill in the project URL and publishable key.
 4. Deploy to Vercel with the same settings.
@@ -116,3 +116,12 @@ Pro and Influencer tags are set by hand, never by the player: in the Supabase ta
 Drop one image per character into `public/characters/<game id>/`, named by the character id
 (`sf6/ryu.png`, `sf6/chun-li.png`, `tekken8/jin-kazama.webp`). See `public/characters/README.md` for the
 copyright note. Characters without an image show coloured initials.
+
+## Privacy, terms and account deletion
+
+`/privacy` says what the site stores and `/terms` sets the ground rules; both are plain English
+only for now, with the site name coming from `src/lib/site.ts`. The "Delete my account" button on
+`/privacy` calls `delete_my_account()` from `supabase/007_delete_account.sql`, which deletes the
+player's `auth.users` row; profiles, lists, placements, follows and likes all cascade from it.
+Run that file once or the button says the database is behind the site. Google's OAuth consent
+screen needs the privacy URL, and optionally the terms URL, before the app can be published.
