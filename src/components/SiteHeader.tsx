@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { SITE_NAME } from "@/lib/site";
 import AccountBar, { type useAccount } from "./Account";
 import LanguageSwitcher from "./LanguageSwitcher";
+import LogoMark from "./LogoMark";
 
 type Props = { account: ReturnType<typeof useAccount>; back?: boolean };
 
@@ -12,8 +13,9 @@ type Props = { account: ReturnType<typeof useAccount>; back?: boolean };
 export default function SiteHeader({ account, back }: Props) {
   return (
     <header className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2 py-2.5 sm:flex sm:min-h-14 sm:items-start sm:justify-between">
-      <Link href="/" className="flex h-9 shrink-0 items-center gap-2 text-base font-medium tracking-tight text-ink-100">
+      <Link href="/" className="flex h-9 shrink-0 items-center gap-2 text-base font-semibold tracking-tight text-ink-100">
         {back && <ArrowLeft size={16} strokeWidth={1.5} className="text-ink-400" aria-hidden />}
+        <LogoMark size={18} />
         {SITE_NAME}
       </Link>
       <div className="contents sm:flex sm:items-start sm:gap-4">

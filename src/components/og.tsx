@@ -28,10 +28,14 @@ export function OgCard({ title, subtitle, game, rows }: Props) {
           <div style={{ display: "flex", fontSize: 24, color: INK.muted }}>{subtitle}</div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 26, fontWeight: 500 }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 3, width: 30 }}>
-            <div style={{ height: 6, width: 30, borderRadius: 2, background: TIER_HEX.S }} />
-            <div style={{ height: 6, width: 22, borderRadius: 2, background: TIER_HEX.A }} />
-            <div style={{ height: 6, width: 14, borderRadius: 2, background: TIER_HEX.B }} />
+          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            {[1, 2, 3].map((n, row) => (
+              <div key={n} style={{ display: "flex", gap: 3 }}>
+                {Array.from({ length: n }, (_, i) => (
+                  <div key={i} style={{ width: 9, height: 9, borderRadius: 2, background: TIER_HEX["SAB"[row]] }} />
+                ))}
+              </div>
+            ))}
           </div>
           {SITE_NAME}
         </div>
