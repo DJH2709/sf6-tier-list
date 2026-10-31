@@ -7,6 +7,14 @@
 
 -- Shape checks on the columns the browser supplies. Ranks are checked against game_ranks in
 -- save_list, so they aren't repeated here.
+-- Safe to run more than once: each rule is dropped before it is added.
+alter table tier_lists
+  drop constraint if exists tier_lists_game_format,
+  drop constraint if exists tier_lists_category_format,
+  drop constraint if exists tier_lists_patch_format,
+  drop constraint if exists tier_lists_proof_url_format;
+alter table tier_placements
+  drop constraint if exists tier_placements_item_format;
 alter table tier_lists
   add constraint tier_lists_game_format check (game ~ '^[a-z0-9]{1,20}$'),
   add constraint tier_lists_category_format check (category ~ '^[a-z]{1,20}$'),
