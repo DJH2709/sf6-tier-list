@@ -4,13 +4,14 @@ import "./globals.css";
 import { HTML_LANG } from "@/lib/i18n/config";
 import { getLocale, getT } from "@/lib/i18n/server";
 import { I18nProvider } from "@/lib/i18n/client";
-import { SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
   return {
     metadataBase: new URL(SITE_URL),
-    title: t("site.title"),
+    // Page titles get " · LobbyTier" added, e.g. "Tekken 8 Community Tier List · LobbyTier".
+    title: { default: `${SITE_NAME} · ${t("site.title")}`, template: `%s · ${SITE_NAME}` },
     description: t("site.description"),
     twitter: { card: "summary_large_image" },
   };

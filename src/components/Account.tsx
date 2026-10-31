@@ -20,6 +20,7 @@ const PROVIDER_NAME: Record<string, string> = {
 // What most players in each region already have an account with goes first.
 const PREFERRED: Record<Locale, string[]> = {
   en: ["discord", "google"],
+  es: ["discord", "google"],
   ja: ["x", "twitter", "custom:line", "google"],
   ko: ["kakao", "google"],
   zh: ["google"],

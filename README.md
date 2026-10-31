@@ -1,4 +1,6 @@
-# Fighting Game Community Tier Lists
+# LobbyTier
+
+Community tier lists at https://lobbytier.com.
 
 Tier lists for ten fighting games, voted by the community and split by player rank.
 Street Fighter 6 is at `/`; the others are at `/tekken8`, `/smash`, `/mk1`, `/ggst`,
@@ -87,7 +89,7 @@ signing in another way get coloured initials.
 
 ## Languages
 
-The site is in English, Japanese, Korean and Simplified Chinese. It follows the browser's
+The site is in English, Spanish, Japanese, Korean and Simplified Chinese. It follows the browser's
 language until someone picks one in the switcher, which is remembered in a cookie. UI text lives
 in `src/locales/`: add new text to `en.ts`, and other languages show English for it until it's
 translated. `npm run i18n:check` lists what each language is missing. Character names use
