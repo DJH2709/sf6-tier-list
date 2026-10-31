@@ -116,7 +116,7 @@ const es: Messages = {
   "account.deleting": "Eliminando...",
   "account.deleted": "Tu cuenta ha sido eliminada.",
   "account.deleteFailed": "No se pudo eliminar tu cuenta. Inténtalo de nuevo o contáctanos (ver abajo).",
-  "account.deleteNotReady": "La eliminación de cuentas aún no está activada. Ejecuta supabase/007_delete_account.sql en el editor SQL de Supabase.",
+  "account.deleteNotReady": "La eliminación de cuentas no está disponible ahora mismo. Abre una incidencia (enlace abajo) y la eliminaremos por ti.",
 
   "profile.demoOnly": "Los perfiles solo funcionan en el sitio publicado.",
   "profile.loading": "Cargando...",
@@ -179,6 +179,15 @@ const es: Messages = {
   "error.usernameTaken": "Ese nombre de usuario ya está en uso.",
   "error.usernameFormat": "Usa de 3 a 20 letras minúsculas, números o guiones bajos.",
   "error.alreadySubmitted": "Ya enviaste una lista para este parche. Recarga la página para editarla.",
+  "error.unreachable": "No se pudo conectar con el servidor. Revisa tu conexión o prueba sin bloqueadores de anuncios.",
+  "error.dbBehind": "El sitio se está actualizando. Vuelve a intentarlo en unos minutos.",
+
+  "page.errorTitle": "Algo salió mal.",
+  "page.errorBody": "La página tuvo un problema del que no pudo recuperarse. No se perdió nada de lo que enviaste.",
+  "page.retry": "Intentar de nuevo",
+  "page.notFoundTitle": "Página no encontrada.",
+  "page.notFoundBody": "Ese enlace no lleva a ninguna parte. Puede que el jugador haya cambiado su nombre de usuario o que la dirección esté mal escrita.",
+  "page.home": "Volver al inicio",
 };
 
 export default es;
