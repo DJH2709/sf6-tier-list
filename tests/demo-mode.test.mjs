@@ -28,17 +28,17 @@ test("one list per patch: the second save replaces the first", async () => {
   assert.equal(lists.length, 1);
   assert.equal(lists[0].rank, "diamond");
   assert.deepEqual(lists[0].placements, { ryu: 3 });
-  assert.deepEqual(await store.getResults(sf6), [{ band: "advanced", item_id: "ryu", avg_score: 3, votes: 1, lists: 1 }]);
+  assert.deepEqual(await store.getResults(sf6), [{ band: "intermediate", item_id: "ryu", avg_score: 3, votes: 1, lists: 1 }]);
 });
 
 test("lists from an older patch are kept but left out of the results", async () => {
   localStorage.setItem("sf6-demo-lists", JSON.stringify([
-    { patch: sf6.patch, rank: "gold", placements: { ryu: 4 } },
-    { patch: "2020-01", rank: "gold", placements: { ryu: 1 } },
+    { patch: sf6.patch, rank: "platinum", placements: { ryu: 4 } },
+    { patch: "2020-01", rank: "platinum", placements: { ryu: 1 } },
   ]));
   assert.equal((await store.getMyLists(sf6)).length, 2);
   assert.deepEqual(await store.getResults(sf6), [{ band: "intermediate", item_id: "ryu", avg_score: 4, votes: 1, lists: 1 }]);
-  assert.deepEqual(await store.submitList(sf6, "gold", { ryu: 2 }), { updated: true });
+  assert.deepEqual(await store.submitList(sf6, "platinum", { ryu: 2 }), { updated: true });
   assert.deepEqual((await store.getMyLists(sf6)).map((l) => l.patch), [sf6.patch, "2020-01"]);
 });
 
