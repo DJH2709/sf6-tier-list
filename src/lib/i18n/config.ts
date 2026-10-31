@@ -2,19 +2,20 @@ import en, { type MessageKey, type Messages } from "@/locales/en";
 import ja from "@/locales/ja";
 import ko from "@/locales/ko";
 import zh from "@/locales/zh";
+import es from "@/locales/es";
 
 // To add a language: create src/locales/<code>.ts typed as Messages, then add it here.
-export const LOCALES = ["en", "ja", "ko", "zh"] as const;
+export const LOCALES = ["en", "es", "ja", "ko", "zh"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 export const LOCALE_COOKIE = "locale";
 
 // Each language names itself, so people can find theirs whatever the page is showing.
-export const LOCALE_NAMES: Record<Locale, string> = { en: "English", ja: "日本語", ko: "한국어", zh: "简体中文" };
+export const LOCALE_NAMES: Record<Locale, string> = { en: "English", es: "Español", ja: "日本語", ko: "한국어", zh: "简体中文" };
 // The value for <html lang>, which picks the right CJK glyphs in system fonts.
-export const HTML_LANG: Record<Locale, string> = { en: "en", ja: "ja", ko: "ko", zh: "zh-Hans" };
+export const HTML_LANG: Record<Locale, string> = { en: "en", es: "es", ja: "ja", ko: "ko", zh: "zh-Hans" };
 
-const MESSAGES: Record<Locale, Messages> = { en, ja, ko, zh };
+const MESSAGES: Record<Locale, Messages> = { en, es, ja, ko, zh };
 
 export function isLocale(value: unknown): value is Locale {
   return typeof value === "string" && (LOCALES as readonly string[]).includes(value);
