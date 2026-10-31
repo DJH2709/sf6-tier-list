@@ -4,6 +4,7 @@ import { deleteAccount, useSession } from "@/lib/account";
 import { demoMode } from "@/lib/supabase";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
+import { BTN_DANGER, BTN_MD } from "./ui";
 
 // The "Delete my account" button on /privacy. Works for anyone with a session, anonymous
 // voters included: their random account and list go too.
@@ -14,8 +15,8 @@ export default function DeleteAccount() {
   const [error, setError] = useState("");
 
   if (demoMode || !ready) return null;
-  if (state === "done") return <p className="font-semibold text-emerald-300">{t("account.deleted")}</p>;
-  if (!session) return <p className="text-neutral-400">{t("account.deleteSignIn")}</p>;
+  if (state === "done") return <p className="font-medium text-emerald-300">{t("account.deleted")}</p>;
+  if (!session) return <p className="text-ink-300">{t("account.deleteSignIn")}</p>;
 
   async function remove() {
     if (!window.confirm(t("account.deleteConfirm"))) return;
@@ -32,14 +33,10 @@ export default function DeleteAccount() {
 
   return (
     <div className="space-y-2">
-      <button
-        onClick={remove}
-        disabled={state === "busy"}
-        className="rounded-lg border border-red-500/60 px-4 py-2 font-semibold text-red-300 hover:bg-red-950 disabled:opacity-50"
-      >
+      <button type="button" onClick={remove} disabled={state === "busy"} className={`${BTN_DANGER} ${BTN_MD}`}>
         {state === "busy" ? t("account.deleting") : t("account.delete")}
       </button>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-sm text-red-300">{error}</p>}
     </div>
   );
 }

@@ -8,33 +8,31 @@ function englishName(game: Game, id: string) {
   return game.characters.find((c) => c.id === id)?.name ?? id;
 }
 
-// Characters without a portrait in public/characters/<game> get a stable colour and initials.
-function badge(name: string) {
+// Characters without a portrait in public/characters/<game> get a quiet initials badge. The
+// tier row already carries the colour, so the badge doesn't need its own.
+function initialsOf(name: string) {
   const words = name.split(/[\s.\-]+/).filter(Boolean);
-  const initials = (words.length > 1 ? words[0][0] + words[1][0] : name.slice(0, 2)).toUpperCase();
-  let hash = 0;
-  for (const ch of name) hash = (hash * 31 + ch.charCodeAt(0)) % 360;
-  return { initials, colour: `hsl(${hash} 55% 38%)` };
+  return (words.length > 1 ? words[0][0] + words[1][0] : name.slice(0, 2)).toUpperCase();
 }
 
 const PORTRAITS = portraits as Record<string, string>;
 
-export function Portrait({ id, size = "h-7 w-7" }: { id: string; size?: string }) {
+// `px` is the rendered size in pixels, so the image has width and height before it loads.
+export function Portrait({ id, size = "h-7 w-7", px = 28 }: { id: string; size?: string; px?: number }) {
   const game = useGame();
   const name = englishName(game, id);
   const src = PORTRAITS[`${game.id}/${id}`];
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element -- static files, no optimisation needed
-    return <img src={src} alt="" className={`${size} shrink-0 rounded object-cover`} />;
+    return <img src={src} alt="" width={px} height={px} loading="lazy" className={`${size} shrink-0 rounded object-cover`} />;
   }
-  const { initials, colour } = badge(name);
   return (
     <span
-      className={`flex ${size} shrink-0 items-center justify-center rounded text-[11px] font-bold text-white`}
-      style={{ backgroundColor: colour }}
+      className={`flex ${size} shrink-0 items-center justify-center rounded bg-ink-600 text-[11px] font-medium leading-none text-ink-300`}
+      title={name}
       aria-hidden
     >
-      {initials}
+      {initialsOf(name)}
     </span>
   );
 }
@@ -64,15 +62,15 @@ export default function CharacterTile({ id, selected, detail, onClick, buttonRef
         onClick();
       }}
       disabled={!onClick && !dragProps}
-      className={`flex items-center gap-2 rounded-md border bg-neutral-900 py-1 pl-1 pr-2.5 text-sm transition
-        ${selected ? "border-emerald-500 ring-2 ring-emerald-500/60" : "border-neutral-700"}
-        ${onClick ? "hover:border-neutral-500 active:scale-95" : "cursor-default"}
+      className={`flex min-h-9 items-center gap-2 rounded-md border bg-ink-700 py-1 pl-1 pr-2.5 text-sm transition-colors
+        ${selected ? "border-emerald-500 ring-1 ring-emerald-500/50" : "border-line-strong"}
+        ${onClick ? "hover:border-ink-400 active:scale-[0.98]" : "cursor-default"}
         ${dragProps ? "touch-manipulation cursor-grab active:cursor-grabbing" : ""}
         ${dragging ? "opacity-30" : ""}`}
     >
       <Portrait id={id} />
       <span className="whitespace-nowrap font-medium">{nameOf(id, game)}</span>
-      {detail && <span className="text-xs tabular-nums text-neutral-400">{detail}</span>}
+      {detail && <span className="font-mono text-xs tabular-nums text-ink-300">{detail}</span>}
     </button>
   );
 }

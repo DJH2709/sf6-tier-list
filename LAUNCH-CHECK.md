@@ -81,7 +81,7 @@ Residual risks noted for the final verdict (not blockers): `proof_url` and `user
 ## Section 7: Tests  (run 2026-10-31 on this branch)
 
 - [PASS] 7.1 Unit tests for core logic. `npm test` → 36 pass, 0 fail: game data vs SQL (`tests/games.test.mjs`), error display (`errors.test.mjs`), security headers from the real `next.config.ts` (`headers.test.mjs`), drafts (`draft.test.mjs`), language detection. Tests import the site's TypeScript directly through `tests/loader.mjs` (Node 22 type stripping, `@/` alias). **Was a gap:** nothing ran the tests automatically; `.github/workflows/ci.yml` now runs lint, `tsc`, tests, the translation check, `npm audit --omit=dev --audit-level=high` and a production build on every push and PR.
-- [MANUAL] 7.2 End-to-end tests on the production build. The behaviour checks in this file (sign-in button rendering, XSS pages, 404s, Back/draft, headers) were run with ad-hoc Playwright scripts against `next build` + a fake Supabase REST server, not as a committed suite. PR #22 (thread "Add tests for saving, voting and deletion") adds the committed suite: PGlite tests that run the real `supabase/*.sql` for `save_list`, `band_results` and `delete_my_account`, plus a workflow that runs them on every PR; this item passes when #22 merges and its workflow is green. Sign-up/log-in are Supabase-hosted OAuth redirects and can't be driven headlessly without real provider accounts; no payments exist.
+- [PASS] 7.2 End-to-end tests on the production build. **Closed 2026-10-31 09:08 UTC: PR #22 merged with its workflow green (70 tests in `npm test`, run by `.github/workflows/ci.yml` on every PR).** Earlier note: The behaviour checks in this file (sign-in button rendering, XSS pages, 404s, Back/draft, headers) were run with ad-hoc Playwright scripts against `next build` + a fake Supabase REST server, not as a committed suite. PR #22 (thread "Add tests for saving, voting and deletion") adds the committed suite: PGlite tests that run the real `supabase/*.sql` for `save_list`, `band_results` and `delete_my_account`, plus a workflow that runs them on every PR; this item passes when #22 merges and its workflow is green. Sign-up/log-in are Supabase-hosted OAuth redirects and can't be driven headlessly without real provider accounts; no payments exist.
 - [PASS] 7.3 Every FAIL fixed in sections 1–6 has a test: 1.x `npm audit` (CI step) · 4.1 input validation: SQL assertions recorded in 4.1 and 8.3, committed as PGlite tests in PR #22 (see 7.2), plus `Results` roster filter is exercised in 4.3's run · 4.4 headers: `tests/headers.test.mjs` · 5.1 raw error text: `tests/errors.test.mjs` (fails on the old code) · 6.3 drafts: `tests/draft.test.mjs` + the Playwright run in 6.3.
 
 ## Section 8: Attack pass  (run 2026-10-31 on this branch; production build + local Postgres with 001–008)
@@ -99,13 +99,13 @@ Residual risks noted for the final verdict (not blockers): `proof_url` and `user
 
 ## Final verdict  (2026-10-31 01:15 UTC, branch of PR #21 on top of main `3553a17`)
 
-**NOT READY TO LAUNCH — two open items, neither a code change:**
+**NOT READY TO LAUNCH — one open item, not a code change (updated 2026-10-31 09:40 UTC):**
 
 1. **5.4 Backups (MANUAL, Danny).** The workflow and restore test are built and proven locally; it becomes PASS when the two repository secrets are set and one run of `Database backup` is green. Until then the site has no copy of its database.
-2. **7.2 End-to-end tests (MANUAL, PR #22).** The committed PGlite/e2e suite is in PR #22 from the tests thread; PASS when it merges with its workflow green.
+2. ~~7.2 End-to-end tests~~ PASS since 09:08 UTC: PR #22 merged, CI green.
 
 Everything else: sections 1–8 PASS or N/A with evidence above. Five failures were found and fixed during the check: 1.x `npm audit` high (postcss override), 4.1 unchecked direct table writes, 4.4 no security headers, 5.1 raw error text on screen, 6.3 Back wiping an unsaved list. Fixes are merged (#20) or in PR #21 (CI green: lint, types, 36 tests, translations, audit, build).
 
 Residual risks accepted for a hobby launch, to revisit after real users arrive: `'unsafe-inline'` scripts in the CSP; `proof_url`/`user_id` readable on public lists via the anon key; `band_results` shows exact averages for bands with few lists; vote stuffing limited only by Supabase's 30 anonymous sign-ins per hour per IP (issue #7); no durable audit trail of admin edits made in the Supabase table editor; legal pages English-only; ICO fee and Supabase region to be confirmed by Danny.
 
-When 5.4 and 7.2 close, change this line to **READY TO LAUNCH** and record the date.
+When 5.4 closes, change this line to **READY TO LAUNCH** and record the date.

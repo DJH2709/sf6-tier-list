@@ -31,6 +31,8 @@ const ja: Messages = {
   "home.step2.text": "全キャラをSからDに振り分けます。約2分で終わります。",
   "home.step3.title": "ランク帯ごとに比べる",
   "home.step3.text": "初級者と上級者で同じキャラの評価がどう違うかを見られます。",
+  "home.previewExample": "配置の例です。各ランク帯で{min}人が投票すると、実際の平均に切り替わります。",
+  "home.previewLive": "パッチ{patch}のみんなの平均",
   "home.onProfile": "あなたのリストはプロフィールに載っています。",
   "home.viewAndShare": "見る・シェアする",
   "home.savedPrivate": "保存しました。リストはプロフィールに表示されませんが、みんなの結果には反映されます。",

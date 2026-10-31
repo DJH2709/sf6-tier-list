@@ -30,12 +30,21 @@ const securityHeaders = [
   { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
 ];
 
+// Preview deployments (sf6-tier-list-git-*.vercel.app) must not show up in search results.
+const noindex = process.env.VERCEL_ENV && process.env.VERCEL_ENV !== "production"
+  ? [{ key: "X-Robots-Tag", value: "noindex" }]
+  : [];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Next.js 15 streams <title> and <meta> into the body for browsers and only puts them in
+  // <head> for a short list of bots. Our metadata is instant (a cookie read), so treat every
+  // visitor as that list: tags land in <head> for every crawler and link-preview fetcher.
+  htmlLimitedBots: /./,
   async headers() {
     // Dev mode needs eval for hot reloading, so the policy is production only.
     if (process.env.NODE_ENV !== "production") return [];
-    return [{ source: "/(.*)", headers: securityHeaders }];
+    return [{ source: "/(.*)", headers: [...securityHeaders, ...noindex] }];
   },
 };
 

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n/client";
+import { BTN_MD, BTN_SECONDARY } from "./ui";
 
 export default function ShareButton({ url, title }: { url: string; title: string }) {
   const [copied, setCopied] = useState(false);
@@ -22,7 +23,7 @@ export default function ShareButton({ url, title }: { url: string; title: string
   }
 
   return (
-    <button onClick={share} className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-semibold text-neutral-950 hover:bg-emerald-400">
+    <button type="button" onClick={share} className={`${BTN_SECONDARY} ${BTN_MD}`}>
       {t(copied ? "share.copied" : "share.button")}
     </button>
   );

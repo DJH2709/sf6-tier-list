@@ -1,14 +1,16 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { ThumbsUp } from "lucide-react";
 import { getPlayers, type PlayerSummary } from "@/lib/players";
 import { demoMode } from "@/lib/supabase";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
-import AccountBar, { useAccount } from "@/components/Account";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useAccount } from "@/components/Account";
+import SiteHeader from "@/components/SiteHeader";
 import PlayerAvatar from "@/components/PlayerAvatar";
 import ProfileTag from "@/components/ProfileTag";
+import { ERROR, SEGMENT, SEGMENT_ITEM, SEGMENT_OFF, SEGMENT_ON } from "@/components/ui";
 
 type Sort = "liked" | "new";
 
@@ -34,22 +36,19 @@ export default function PlayersView() {
   }, [players, sort]);
 
   return (
-    <div className="mx-auto min-h-screen max-w-4xl space-y-8 px-4 py-8">
-      <div className="flex items-start justify-between gap-4">
-        <Link href="/" className="shrink-0 whitespace-nowrap pt-1.5 text-sm font-black tracking-tight">← {t("site.brand")}</Link>
-        <div className="flex flex-wrap items-start justify-end gap-3">
-          <LanguageSwitcher />
-          <AccountBar account={account} />
-        </div>
-      </div>
+    <div className="mx-auto min-h-dvh max-w-4xl space-y-8 px-4 pb-8 pt-2">
+      <SiteHeader account={account} back />
+      <main className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h1 className="text-3xl font-black tracking-tight">{t("players.title")}</h1>
-        <nav className="inline-flex rounded-lg border border-neutral-800 bg-neutral-900 p-1">
+        <h1 className="text-3xl font-medium tracking-tight">{t("players.title")}</h1>
+        <nav className={SEGMENT} aria-label={t("players.title")}>
           {(["liked", "new"] as const).map((s) => (
             <button
               key={s}
+              type="button"
               onClick={() => setSort(s)}
-              className={`rounded-md px-3 py-1.5 text-sm font-semibold transition ${sort === s ? "bg-emerald-500 text-neutral-950" : "text-neutral-300 hover:text-white"}`}
+              aria-current={sort === s ? "true" : undefined}
+              className={`${SEGMENT_ITEM} ${sort === s ? SEGMENT_ON : SEGMENT_OFF}`}
             >
               {t(s === "liked" ? "players.mostLiked" : "players.newest")}
             </button>
@@ -57,36 +56,37 @@ export default function PlayersView() {
         </nav>
       </div>
       {demoMode ? (
-        <p className="text-neutral-400">{t("profile.demoOnly")}</p>
+        <p className="text-ink-300">{t("profile.demoOnly")}</p>
       ) : error ? (
-        <p className="rounded-lg bg-red-950 p-3 text-sm text-red-300">{error}</p>
+        <p className={ERROR}>{error}</p>
       ) : players === null ? (
-        <p className="text-neutral-400">{t("profile.loading")}</p>
+        <p className="text-ink-300">{t("profile.loading")}</p>
       ) : players.length === 0 ? (
-        <p className="text-neutral-400">{t("players.empty")}</p>
+        <p className="text-ink-300">{t("players.empty")}</p>
       ) : (
-        <ul className="divide-y divide-neutral-800 border-y border-neutral-800">
+        <ul className="divide-y divide-line border-y border-line">
           {sorted.map(({ profile, likes, followers, lists }) => (
             <li key={profile.id}>
-              <Link href={`/u/${profile.username}`} className="flex items-center gap-3 py-3 hover:bg-neutral-900/60">
-                <PlayerAvatar profile={profile} className="h-10 w-10 shrink-0 text-sm" />
+              <Link href={`/u/${profile.username}`} className="-mx-2 flex min-h-16 items-center gap-3 rounded-lg px-2 py-3 transition-colors hover:bg-ink-800">
+                <PlayerAvatar profile={profile} px={40} className="h-10 w-10 shrink-0 text-sm" />
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <span className="truncate font-semibold">{profile.display_name || profile.username}</span>
+                    <span className="truncate font-medium">{profile.display_name || profile.username}</span>
                     <ProfileTag tag={profile.tag} />
                   </span>
-                  <span className="block truncate text-sm text-neutral-400">@{profile.username}</span>
+                  <span className="block truncate text-sm text-ink-300">@{profile.username}</span>
                 </span>
-                <span className="shrink-0 text-right text-xs text-neutral-400 sm:text-sm">
-                  <span className="block">👍 {likes}</span>
+                <span className="shrink-0 space-y-0.5 text-right font-mono text-xs tabular-nums text-ink-300">
+                  <span className="flex items-center justify-end gap-1.5"><ThumbsUp size={16} strokeWidth={1.5} className="text-ink-400" aria-hidden />{likes}</span>
                   <span className="block">{t(followers === 1 ? "follow.followersOne" : "follow.followers", { count: followers })}</span>
-                  {lists === 0 && <span className="block text-neutral-500">{t("players.noLists")}</span>}
+                  {lists === 0 && <span className="block text-ink-400">{t("players.noLists")}</span>}
                 </span>
               </Link>
             </li>
           ))}
         </ul>
       )}
+      </main>
     </div>
   );
 }
