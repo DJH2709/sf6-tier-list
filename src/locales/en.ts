@@ -2,8 +2,8 @@
 // these strings until they're translated (run `npm run i18n:check` to see what's missing).
 // {name} placeholders are filled in by t("key", { name: value }).
 const en = {
-  "site.title": "Fighting Game Community Tier Lists",
-  "site.description": "Fighting game tier lists voted by the community, split by player rank.",
+  "site.title": "Community Tier Lists by Rank",
+  "site.description": "Game tier lists voted by the community, split by player rank.",
   "site.gameTitle": "{game} Community Tier List",
   "site.gameDescription": "{game} tier lists voted by the community, split by player rank.",
   "site.footer": "A fan project. Not affiliated with or endorsed by {owner}. Game and character names belong to their owners.",
@@ -60,6 +60,10 @@ const en = {
   "make.saving": "Saving...",
   "make.chooseRankFirst": "Choose your rank first",
   "make.placeMore": "Place {n} more",
+  "filter.all": "All",
+  "filter.label": "Filter by role",
+  "filter.search": "Search",
+  "make.partial": "You don't have to place everything. Place at least {n}, and leave out the ones you don't know.",
   "make.update": "Update my tier list",
   "make.submit": "Submit my tier list",
   "make.updated": "Updated.",
@@ -132,7 +136,7 @@ const en = {
   "profile.selfReported": "(self-reported)",
   "profile.hidden": "Hidden from your profile. Only you can see it.",
   "profile.metaTitle": "{name}'s tier lists",
-  "profile.metaDescription": "See how @{username} ranks their fighting game rosters, then make your own.",
+  "profile.metaDescription": "See how @{username} ranks their game rosters, then make your own.",
 
   "follow.pageLink": "Following",
   "follow.followers": "{count} followers",
@@ -158,7 +162,7 @@ const en = {
   "tag.pro": "Pro",
   "tag.proTitle": "Competes at a professional level",
   "tag.influencer": "Influencer",
-  "tag.influencerTitle": "Makes Street Fighter content",
+  "tag.influencerTitle": "Makes gaming content",
 
   "players.link": "Players",
   "players.title": "Players",

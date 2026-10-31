@@ -2,8 +2,8 @@ import type { Messages } from "./en";
 
 // Machine-assisted first pass, not yet checked by a native speaker.
 const ko: Messages = {
-  "site.title": "격투 게임 커뮤니티 티어 리스트",
-  "site.description": "커뮤니티가 투표한 격투 게임 티어 리스트, 플레이어 랭크별로 나눠서 보기.",
+  "site.title": "랭크별 커뮤니티 티어 리스트",
+  "site.description": "커뮤니티가 투표한 게임 티어 리스트, 플레이어 랭크별로 나눠서 보기.",
   "site.gameTitle": "{game} 커뮤니티 티어 리스트",
   "site.gameDescription": "커뮤니티가 투표한 {game} 티어 리스트, 플레이어 랭크별로 나눠서 보기.",
   "site.footer": "팬이 만든 비공식 사이트입니다. {owner}와(과) 관련이 없으며 승인받지 않았습니다. 게임 및 캐릭터 이름은 각 권리자에게 있습니다.",
@@ -60,6 +60,10 @@ const ko: Messages = {
   "make.saving": "저장 중...",
   "make.chooseRankFirst": "먼저 랭크를 고르세요",
   "make.placeMore": "{n}명 더 배치",
+  "filter.all": "전체",
+  "filter.label": "역할로 필터",
+  "filter.search": "검색",
+  "make.partial": "전부 배치하지 않아도 됩니다. 최소 {n}개를 배치하고 모르는 것은 빼 두세요.",
   "make.update": "티어 리스트 수정",
   "make.submit": "티어 리스트 제출",
   "make.updated": "수정했습니다.",
@@ -132,7 +136,7 @@ const ko: Messages = {
   "profile.selfReported": "(자기 신고)",
   "profile.hidden": "프로필에서 숨김. 나만 볼 수 있습니다.",
   "profile.metaTitle": "{name}의 티어 리스트",
-  "profile.metaDescription": "@{username}의 격투 게임 티어 리스트를 보고 나만의 리스트를 만들어 보세요.",
+  "profile.metaDescription": "@{username}의 티어 리스트를 보고 나만의 리스트를 만들어 보세요.",
 
   "follow.pageLink": "팔로잉",
   "follow.followers": "팔로워 {count}",
@@ -158,7 +162,7 @@ const ko: Messages = {
   "tag.pro": "프로",
   "tag.proTitle": "프로 수준으로 대회에 참가합니다",
   "tag.influencer": "인플루언서",
-  "tag.influencerTitle": "스트리트 파이터 콘텐츠를 만듭니다",
+  "tag.influencerTitle": "게임 콘텐츠를 만듭니다",
 
   "players.link": "플레이어",
   "players.title": "플레이어",

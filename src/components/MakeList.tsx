@@ -11,6 +11,7 @@ import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
 import { clearDraft, isEmptyDraft, loadDraft, saveDraft } from "@/lib/draft";
 import { BTN_LG, BTN_PRIMARY, NOTE } from "./ui";
+import { NO_FILTER, shown, type Filter } from "./RosterFilter";
 
 type Props = {
   profile: Profile | null;
@@ -18,9 +19,10 @@ type Props = {
 };
 
 export default function MakeList({ profile, onSubmitted }: Props) {
-  const { t } = useI18n();
+  const { t, nameOf } = useI18n();
   const game = useGame();
   const CHARACTERS = game.characters;
+  const [filter, setFilter] = useState<Filter>(NO_FILTER);
   const [placements, setPlacements] = useState<Placements>({});
   const [selected, setSelected] = useState<string | null>(CHARACTERS[0].id);
   const [rank, setRank] = useState("");
@@ -87,13 +89,26 @@ export default function MakeList({ profile, onSubmitted }: Props) {
   }, [placements, rank, proofUrl, isPublic, game.id, game.patch]);
 
   const unplacedCount = CHARACTERS.filter((c) => !(c.id in placements)).length;
+  // Big rosters (Clash Royale's cards) only ask for some, so nobody has to rate cards they never use.
+  const placedCount = CHARACTERS.length - unplacedCount;
+  const minPlaced = Math.min(game.minPlaced ?? CHARACTERS.length, CHARACTERS.length);
+  const stillToPlace = Math.max(0, minPlaced - placedCount);
   const needsProof = game.ranks.find((r) => r.id === rank)?.needsProof;
 
   function place(id: string, score: number, beforeId?: string) {
     touched.current = true;
     const next = moveTo(placements, id, score, beforeId);
     setPlacements(next);
-    setSelected(nextUnplaced(CHARACTERS, next));
+    // Stay inside the role or search the player picked, then carry on with the rest.
+    const visible = CHARACTERS.filter((c) => shown(game, c.id, nameOf(c.id, game), filter));
+    setSelected(nextUnplaced(visible, next) ?? nextUnplaced(CHARACTERS, next));
+  }
+
+  function changeFilter(f: Filter) {
+    setFilter(f);
+    const visible = CHARACTERS.filter((c) => shown(game, c.id, nameOf(c.id, game), f));
+    const first = nextUnplaced(visible, placements);
+    if (first) setSelected(first);
   }
 
   function unplace(id: string) {
@@ -158,7 +173,10 @@ export default function MakeList({ profile, onSubmitted }: Props) {
           onPlace={place}
           onUnplace={unplace}
           onStartOver={startOver}
+          filter={filter}
+          onFilter={changeFilter}
         />
+        {minPlaced < CHARACTERS.length && <p className="text-sm leading-5 text-ink-300">{t("make.partial", { n: minPlaced })}</p>}
       </Step>
 
       <Step n={3} title={t("make.step3")}>
@@ -170,11 +188,11 @@ export default function MakeList({ profile, onSubmitted }: Props) {
         )}
         <button
           type="button"
-          disabled={!rank || unplacedCount > 0 || saving}
+          disabled={!rank || stillToPlace > 0 || saving}
           onClick={submit}
           className={`${BTN_PRIMARY} ${BTN_LG} w-full sm:w-auto`}
         >
-          {saving ? t("make.saving") : !rank ? t("make.chooseRankFirst") : unplacedCount > 0 ? t("make.placeMore", { n: unplacedCount }) : t(existing ? "make.update" : "make.submit")}
+          {saving ? t("make.saving") : !rank ? t("make.chooseRankFirst") : stillToPlace > 0 ? t("make.placeMore", { n: stillToPlace }) : t(existing ? "make.update" : "make.submit")}
         </button>
         {status && <p className={`text-sm ${status.error ? "text-red-300" : "text-emerald-300"}`}>{status.text}</p>}
       </Step>

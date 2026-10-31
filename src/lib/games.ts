@@ -9,6 +9,10 @@ export const CATEGORY = "characters";
 export type Band = "beginner" | "intermediate" | "advanced" | "elite";
 export type Rank = { id: string; label: string; band: Band; needsProof?: boolean };
 export type Character = { id: string; name: string };
+// Optional ways to filter a roster: a hero's role, a Siege operator's side, a LoL lane. A
+// character can sit in more than one (a champion played mid and top). Filters only change what
+// is shown; every list still covers the whole roster, so votes aren't split across roles.
+export type RoleGroup = { label: string; ids: string[] };
 export type Game = {
   id: string;
   name: string;
@@ -19,19 +23,32 @@ export type Game = {
   // Where top-rank players link to prove their rank.
   proofSite: string;
   proofPlaceholder: string;
+  // Extra line under the rank picker, e.g. which of several per-role ranks to pick.
+  rankHint?: string;
+  // How many characters a list must place. Unset means all of them.
+  minPlaced?: number;
+  // Wording a publisher's fan policy asks for, shown in the footer of that game's page.
+  disclaimer?: string;
   characters: Character[];
+  roles?: RoleGroup[];
   ranks: Rank[];
 };
 
 // "Pokémon Trainer" -> "pokemon-trainer". Keep in step with slug() in tests/games.test.mjs.
 export const slug = (name: string) =>
-  name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  name.replace(/ø/gi, "o").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-export const GAMES: Game[] = data.games.map((g) => ({
+type GameData = Omit<Game, "characters" | "roles"> & { characters: string[]; roles?: Record<string, string[]> };
+
+export const GAMES: Game[] = (data.games as GameData[]).map((g) => ({
   ...g,
   characters: g.characters.map((name) => ({ id: slug(name), name })),
+  roles: g.roles && Object.entries(g.roles).map(([label, names]) => ({ label, ids: names.map(slug) })),
   ranks: g.ranks as Rank[],
 }));
+
+// Rosters this long get a search box.
+export const SEARCH_FROM = 40;
 
 export const DEFAULT_GAME = GAMES[0];
 

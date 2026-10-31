@@ -10,6 +10,7 @@ import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
 import type { MessageKey } from "@/locales/en";
 import { BTN_MD, BTN_PRIMARY, ERROR, PANEL } from "./ui";
+import RosterFilter, { NO_FILTER, shown, type Filter } from "./RosterFilter";
 
 // The community averages for a game, fetched once and shared by the hero preview and the results tab.
 export function useResults(game: Game, refreshKey: number) {
@@ -28,9 +29,10 @@ export function useResults(game: Game, refreshKey: number) {
 type Props = { results: BandResult[]; error: string; onMakeList: () => void };
 
 export default function Results({ results, error, onMakeList }: Props) {
-  const { t } = useI18n();
+  const { t, nameOf } = useI18n();
   const game = useGame();
   const [band, setBand] = useState<Band>("beginner");
+  const [filter, setFilter] = useState<Filter>(NO_FILTER);
 
   const listsIn = (b: Band) => results.find((r) => r.band === b)?.lists ?? 0;
   // Only characters on this game's roster: an id the database has never heard of can't become a tile.
@@ -38,7 +40,7 @@ export default function Results({ results, error, onMakeList }: Props) {
   // Highest average first, so order within a tier means something.
   const rows = results.filter((r) => r.band === band && roster.has(r.item_id)).sort((a, b) => b.avg_score - a.avg_score);
   const lists = listsIn(band);
-  const placements = Object.fromEntries(rows.map((r) => [r.item_id, Math.round(r.avg_score)]));
+  const placements = Object.fromEntries(rows.filter((r) => shown(game, r.item_id, nameOf(r.item_id, game), filter)).map((r) => [r.item_id, Math.round(r.avg_score)]));
   const avg = Object.fromEntries(rows.map((r) => [r.item_id, r.avg_score.toFixed(1)]));
   const bandName = t(`band.${band}` as MessageKey);
   const listCount = (n: number) => t(n === 1 ? "results.list" : "results.lists", { n });
@@ -81,6 +83,7 @@ export default function Results({ results, error, onMakeList }: Props) {
           <p className="text-sm leading-5 text-ink-300">
             {t("results.summary", { n: lists, band: bandName })}
           </p>
+          <RosterFilter game={game} filter={filter} onFilter={setFilter} />
           <TierRows placements={placements} detail={(id) => avg[id]} />
         </>
       )}

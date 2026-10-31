@@ -4,8 +4,8 @@ import type { Messages } from "./en";
 // stays in English because that's what Spanish-speaking players say.
 // Machine-assisted first pass, not yet checked by a native speaker.
 const es: Messages = {
-  "site.title": "Tier lists de juegos de pelea por la comunidad",
-  "site.description": "Tier lists de juegos de pelea votadas por la comunidad y separadas por rango.",
+  "site.title": "Tier lists de la comunidad por rango",
+  "site.description": "Tier lists de videojuegos votadas por la comunidad y separadas por rango.",
   "site.gameTitle": "Tier list de {game} por la comunidad",
   "site.gameDescription": "Tier lists de {game} votadas por la comunidad y separadas por rango.",
   "site.footer": "Un proyecto de fans. No está afiliado ni respaldado por {owner}. Los nombres de juegos y personajes pertenecen a sus dueños.",
@@ -62,6 +62,10 @@ const es: Messages = {
   "make.saving": "Guardando...",
   "make.chooseRankFirst": "Primero elige tu rango",
   "make.placeMore": "Faltan {n}",
+  "filter.all": "Todos",
+  "filter.label": "Filtrar por rol",
+  "filter.search": "Buscar",
+  "make.partial": "No hace falta colocarlos todos. Coloca al menos {n} y deja fuera los que no conozcas.",
   "make.update": "Actualizar mi tier list",
   "make.submit": "Enviar mi tier list",
   "make.updated": "Actualizada.",
@@ -132,7 +136,7 @@ const es: Messages = {
   "profile.selfReported": "(declarado)",
   "profile.hidden": "Oculta en tu perfil. Solo tú puedes verla.",
   "profile.metaTitle": "Tier lists de {name}",
-  "profile.metaDescription": "Mira cómo ordena @{username} a los personajes de sus juegos de pelea y haz la tuya.",
+  "profile.metaDescription": "Mira cómo ordena @{username} a los personajes de sus juegos y haz la tuya.",
 
   "follow.pageLink": "Siguiendo",
   "follow.followers": "{count} seguidores",
@@ -158,7 +162,7 @@ const es: Messages = {
   "tag.pro": "Pro",
   "tag.proTitle": "Compite a nivel profesional",
   "tag.influencer": "Creador",
-  "tag.influencerTitle": "Crea contenido de Street Fighter",
+  "tag.influencerTitle": "Crea contenido de videojuegos",
 
   "players.link": "Jugadores",
   "players.title": "Jugadores",
