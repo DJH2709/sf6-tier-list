@@ -2,8 +2,8 @@ import type { Messages } from "./en";
 
 // Simplified Chinese. Machine-assisted first pass, not yet checked by a native speaker.
 const zh: Messages = {
-  "site.title": "格斗游戏 社区强度榜",
-  "site.description": "由社区投票的格斗游戏角色强度榜，按玩家段位分开统计。",
+  "site.title": "按段位划分的社区强度榜",
+  "site.description": "由社区投票的游戏强度榜，按玩家段位分开统计。",
   "site.gameTitle": "{game} 社区强度榜",
   "site.gameDescription": "由社区投票的{game}角色强度榜，按玩家段位分开统计。",
   "site.footer": "粉丝制作的非官方网站，与 {owner} 无关，也未获其认可。游戏和角色名称归各自权利人所有。",
@@ -59,6 +59,10 @@ const zh: Messages = {
   "make.saving": "保存中...",
   "make.chooseRankFirst": "请先选择段位",
   "make.placeMore": "还剩 {n} 个",
+  "filter.all": "全部",
+  "filter.label": "按职责筛选",
+  "filter.search": "搜索",
+  "make.partial": "不必全部放好。至少放 {n} 个，不熟悉的可以不放。",
   "make.update": "更新我的强度榜",
   "make.submit": "提交我的强度榜",
   "make.updated": "已更新。",
@@ -131,7 +135,7 @@ const zh: Messages = {
   "profile.selfReported": "(自报)",
   "profile.hidden": "未在个人主页显示，只有你能看到。",
   "profile.metaTitle": "{name} 的强度榜",
-  "profile.metaDescription": "看看 @{username} 如何给格斗游戏角色排位，然后做一份你自己的。",
+  "profile.metaDescription": "看看 @{username} 如何给游戏角色排位，然后做一份你自己的。",
 
   "follow.pageLink": "关注",
   "follow.followers": "{count} 位粉丝",
@@ -157,7 +161,7 @@ const zh: Messages = {
   "tag.pro": "职业",
   "tag.proTitle": "职业水平的参赛选手",
   "tag.influencer": "博主",
-  "tag.influencerTitle": "制作街头霸王相关内容",
+  "tag.influencerTitle": "制作游戏相关内容",
 
   "players.link": "玩家",
   "players.title": "玩家",

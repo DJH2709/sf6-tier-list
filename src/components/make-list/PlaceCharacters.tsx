@@ -8,6 +8,7 @@ import type { Placements } from "@/lib/store";
 import TierRows, { scoreFromDropId } from "../TierRows";
 import CharacterTile from "../CharacterTile";
 import Roster from "./Roster";
+import RosterFilter, { shown, type Filter } from "../RosterFilter";
 import { useGame } from "../GameContext";
 import { useI18n } from "@/lib/i18n/client";
 
@@ -24,16 +25,21 @@ type Props = {
   onPlace: (id: string, score: number) => void;
   onUnplace: (id: string) => void;
   onStartOver: () => void;
+  filter: Filter;
+  onFilter: (f: Filter) => void;
 };
 
 // Step 2: tap a row to place the selected character, or drag characters between rows and the roster.
-export default function PlaceCharacters({ placements, selected, onSelect, onPlace, onUnplace, onStartOver }: Props) {
+export default function PlaceCharacters({ placements, selected, onSelect, onPlace, onUnplace, onStartOver, filter, onFilter }: Props) {
   const { t, nameOf } = useI18n();
   const game = useGame();
   const characters = game.characters;
   const [dragging, setDragging] = useState<string | null>(null);
   const unplaced = characters.filter((c) => !(c.id in placements));
   const placedCount = characters.length - unplaced.length;
+  // The role chips and search narrow both the roster and the rows, e.g. to rank just the tanks.
+  const visible = (id: string) => shown(game, id, nameOf(id, game), filter);
+  const visiblePlacements = Object.fromEntries(Object.entries(placements).filter(([id]) => visible(id)));
 
   // A mouse drag starts after a few pixels so plain clicks still select. On touch, a short hold
   // starts a drag and a quick swipe still scrolls the page.
@@ -87,14 +93,15 @@ export default function PlaceCharacters({ placements, selected, onSelect, onPlac
         }}
       >
         <div className="space-y-3">
+          <RosterFilter game={game} filter={filter} onFilter={onFilter} />
           <TierRows
-            placements={placements}
+            placements={visiblePlacements}
             selected={selected}
             onRowClick={(score) => { if (selected) onPlace(selected, score); }}
             onCharacterClick={onSelect}
             droppable
           />
-          <Roster ids={unplaced.map((c) => c.id)} selected={selected} onSelect={onSelect} />
+          <Roster ids={unplaced.filter((c) => visible(c.id)).map((c) => c.id)} selected={selected} onSelect={onSelect} />
         </div>
         {/* pointer-events-none so the mouseup lands on the row underneath. A disabled button in the
             overlay would swallow it and the drag would never end. */}

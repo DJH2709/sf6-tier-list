@@ -14,7 +14,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage title="Privacy notice" updated="31 October 2026">
       <p>
-        {SITE_NAME} is a fan-made hobby site where players vote on fighting game tier lists, split by rank.
+        {SITE_NAME} is a fan-made hobby site where players vote on game tier lists, split by rank.
         This page says what it stores about you, who else sees it, and how to delete it. It is written in
         plain English on purpose. If anything is unclear, ask: contact details are at the bottom.
       </p>

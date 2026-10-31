@@ -3,8 +3,8 @@ import type { Messages } from "./en";
 // Machine-assisted first pass, not yet checked by a native speaker.
 // Japanese players call a tier list キャラランク, so that's used instead of ティアリスト.
 const ja: Messages = {
-  "site.title": "格ゲー みんなのキャラランク",
-  "site.description": "格闘ゲームのキャラランクを、プレイヤーのランク帯ごとにみんなで投票。",
+  "site.title": "ランク別 みんなのキャラランク",
+  "site.description": "ゲームのキャラランクを、プレイヤーのランク帯ごとにみんなで投票。",
   "site.gameTitle": "{game} みんなのキャラランク",
   "site.gameDescription": "{game}のキャラランクを、プレイヤーのランク帯ごとにみんなで投票。",
   "site.footer": "ファンによる非公式サイトです。{owner}とは関係ありません。ゲーム名とキャラクター名は各権利者に帰属します。",
@@ -60,6 +60,10 @@ const ja: Messages = {
   "make.saving": "保存中...",
   "make.chooseRankFirst": "先にランクを選んでください",
   "make.placeMore": "あと {n} キャラ",
+  "filter.all": "すべて",
+  "filter.label": "ロールで絞り込む",
+  "filter.search": "検索",
+  "make.partial": "全部配置しなくても大丈夫です。少なくとも {n} 個配置して、知らないものは外したままにしてください。",
   "make.update": "キャラランクを更新",
   "make.submit": "キャラランクを投稿",
   "make.updated": "更新しました。",
@@ -132,7 +136,7 @@ const ja: Messages = {
   "profile.selfReported": "(自己申告)",
   "profile.hidden": "プロフィールでは非表示です。あなたにだけ見えています。",
   "profile.metaTitle": "{name} のキャラランク",
-  "profile.metaDescription": "@{username} の格ゲーキャラランクを見て、自分のも作ろう。",
+  "profile.metaDescription": "@{username} のキャラランクを見て、自分のも作ろう。",
 
   "follow.pageLink": "フォロー中",
   "follow.followers": "フォロワー {count}",
@@ -158,7 +162,7 @@ const ja: Messages = {
   "tag.pro": "プロ",
   "tag.proTitle": "プロとして大会に出場しています",
   "tag.influencer": "インフルエンサー",
-  "tag.influencerTitle": "ストリートファイターの動画や配信を作っています",
+  "tag.influencerTitle": "ゲームの動画や配信を作っています",
 
   "players.link": "プレイヤー",
   "players.title": "プレイヤー",
