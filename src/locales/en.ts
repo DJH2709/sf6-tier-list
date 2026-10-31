@@ -76,11 +76,11 @@ const en = {
   "results.summary": "Average of {n} lists from {band} players. The number is each character's average score (S = 5, D = 1). Ranks are self-reported unless proven.",
 
   "band.beginner": "Beginner",
-  "band.beginner.ranks": "Rookie to Silver",
+  "band.beginner.ranks": "Rookie to Gold",
   "band.intermediate": "Intermediate",
-  "band.intermediate.ranks": "Gold to Platinum",
+  "band.intermediate.ranks": "Platinum to Diamond",
   "band.advanced": "Advanced",
-  "band.advanced.ranks": "Diamond to High Master",
+  "band.advanced.ranks": "Master to High Master",
   "band.elite": "Elite",
   "band.elite.ranks": "Grand Master and up, proven",
 

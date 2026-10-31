@@ -76,11 +76,11 @@ const zh: Messages = {
   "results.summary": "{band}玩家 {n} 份榜单的平均结果。数字是每个角色的平均分 (S = 5，D = 1)。除非经过证明，段位均为自报。",
 
   "band.beginner": "初级",
-  "band.beginner.ranks": "新手 ~ 白银",
+  "band.beginner.ranks": "新手 ~ 黄金",
   "band.intermediate": "中级",
-  "band.intermediate.ranks": "黄金 ~ 白金",
+  "band.intermediate.ranks": "白金 ~ 钻石",
   "band.advanced": "高级",
-  "band.advanced.ranks": "钻石 ~ 高级大师",
+  "band.advanced.ranks": "大师 ~ 高级大师",
   "band.elite": "顶尖",
   "band.elite.ranks": "宗师及以上，已证明",
 

@@ -76,11 +76,11 @@ const ko: Messages = {
   "results.summary": "{band} 플레이어 리스트 {n}개의 평균입니다. 숫자는 캐릭터별 평균 점수입니다 (S = 5, D = 1). 랭크는 증명하지 않으면 자기 신고입니다.",
 
   "band.beginner": "초급",
-  "band.beginner.ranks": "루키 ~ 실버",
+  "band.beginner.ranks": "루키 ~ 골드",
   "band.intermediate": "중급",
-  "band.intermediate.ranks": "골드 ~ 플래티넘",
+  "band.intermediate.ranks": "플래티넘 ~ 다이아몬드",
   "band.advanced": "상급",
-  "band.advanced.ranks": "다이아몬드 ~ 하이 마스터",
+  "band.advanced.ranks": "마스터 ~ 하이 마스터",
   "band.elite": "최상위",
   "band.elite.ranks": "그랜드 마스터 이상, 증명 완료",
 

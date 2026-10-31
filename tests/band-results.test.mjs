@@ -2,6 +2,7 @@
 // and demo mode's tallyBands() in src/lib/store.ts, which must agree with it.
 import { test, before } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { freshDatabase, newUser, saveList, as } from "./db/supabase.mjs";
 import { tallyBands } from "@/lib/store";
 import { GAMES } from "@/lib/games";
@@ -31,7 +32,7 @@ async function vote(rank, placements, extra = {}) {
 }
 
 test("each band averages its own lists", async () => {
-  await vote("gold", { ryu: 5, luke: 2 });
+  await vote("diamond", { ryu: 5, luke: 2 });
   await vote("platinum", { ryu: 3, luke: 4 });
   await vote("iron", { ryu: 1 });
   const r = await results();
@@ -57,9 +58,34 @@ test("unproven top-rank lists count in the band below; approved ones count as el
   assert.equal((await results())["elite:ken"], undefined, "a rejected proof drops back to advanced");
 });
 
+test("SF6 Diamond counts with Platinum, not with Master; Gold counts with Silver", async () => {
+  await vote("diamond", { cammy: 5 });
+  await vote("master", { cammy: 1 });
+  await vote("high_master", { cammy: 1 });
+  await vote("gold", { cammy: 2 });
+  const r = await results();
+  assert.equal(r["intermediate:cammy"].avg_score, 5);
+  assert.equal(r["advanced:cammy"].votes, 2);
+  assert.equal(r["advanced:cammy"].avg_score, 1);
+  assert.equal(r["beginner:cammy"].avg_score, 2);
+});
+
+test("010 moves lists saved under the old SF6 bands", async () => {
+  await db.query("update game_ranks set band = 'advanced' where game = 'sf6' and rank_id = 'diamond'");
+  await db.query("update game_ranks set band = 'intermediate' where game = 'sf6' and rank_id = 'gold'");
+  await vote("diamond", { dhalsim: 4 });
+  await vote("gold", { dhalsim: 2 });
+  assert.equal((await results())["advanced:dhalsim"].votes, 1, "old ladder: Diamond sits with Master");
+  await db.exec(readFileSync("supabase/010_sf6_diamond_band.sql", "utf8"));
+  const r = await results();
+  assert.equal(r["advanced:dhalsim"], undefined);
+  assert.equal(r["intermediate:dhalsim"].avg_score, 4);
+  assert.equal(r["beginner:dhalsim"].avg_score, 2);
+});
+
 test("an edited list moves its votes instead of counting twice", async () => {
   const u = await vote("silver", { zangief: 1 });
-  await saveList(db, u, { patch: PATCH, rank: "diamond", placements: { zangief: 5 } });
+  await saveList(db, u, { patch: PATCH, rank: "master", placements: { zangief: 5 } });
   const r = await results();
   assert.equal(r["beginner:zangief"], undefined);
   assert.equal(r["advanced:zangief"].avg_score, 5);

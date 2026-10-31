@@ -78,11 +78,11 @@ const es: Messages = {
   "results.summary": "Promedio de {n} listas de jugadores de nivel {band}. El número es la puntuación media de cada personaje (S = 5, D = 1). Los rangos los declara cada jugador, salvo que estén comprobados.",
 
   "band.beginner": "Principiante",
-  "band.beginner.ranks": "Novato a Plata",
+  "band.beginner.ranks": "Novato a Oro",
   "band.intermediate": "Intermedio",
-  "band.intermediate.ranks": "Oro a Platino",
+  "band.intermediate.ranks": "Platino a Diamante",
   "band.advanced": "Avanzado",
-  "band.advanced.ranks": "Diamante a High Master",
+  "band.advanced.ranks": "Master a High Master",
   "band.elite": "Élite",
   "band.elite.ranks": "Grand Master o más, comprobado",
 

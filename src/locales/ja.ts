@@ -77,11 +77,11 @@ const ja: Messages = {
   "results.summary": "{band}のプレイヤー {n} 人のリストの平均です。数字は各キャラの平均スコア (S = 5、D = 1)。ランクは証明がない限り自己申告です。",
 
   "band.beginner": "初級",
-  "band.beginner.ranks": "ルーキー〜シルバー",
+  "band.beginner.ranks": "ルーキー〜ゴールド",
   "band.intermediate": "中級",
-  "band.intermediate.ranks": "ゴールド〜プラチナ",
+  "band.intermediate.ranks": "プラチナ〜ダイヤモンド",
   "band.advanced": "上級",
-  "band.advanced.ranks": "ダイヤモンド〜ハイマスター",
+  "band.advanced.ranks": "マスター〜ハイマスター",
   "band.elite": "トップ",
   "band.elite.ranks": "グランドマスター以上 (証明済み)",
 
