@@ -116,6 +116,7 @@ const ko: Messages = {
   "account.deleteNotReady": "지금은 계정 삭제를 이용할 수 없습니다. 아래 링크에서 이슈를 남겨 주시면 저희가 삭제해 드립니다.",
   "footer.privacy": "개인정보 처리방침",
   "footer.terms": "이용약관",
+  "footer.feedback": "피드백",
 
   "profile.demoOnly": "프로필은 실제 사이트에서만 작동합니다.",
   "profile.loading": "불러오는 중...",

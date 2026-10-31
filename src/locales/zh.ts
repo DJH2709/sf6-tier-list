@@ -116,6 +116,7 @@ const zh: Messages = {
   "account.deleteNotReady": "目前无法删除账号。请通过下方链接提交 issue，我们会为你删除。",
   "footer.privacy": "隐私政策",
   "footer.terms": "使用条款",
+  "footer.feedback": "反馈",
 
   "profile.demoOnly": "个人主页只在正式网站上可用。",
   "profile.loading": "加载中...",

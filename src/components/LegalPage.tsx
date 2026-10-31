@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { SITE_NAME } from "@/lib/site";
+import { FEEDBACK_URL, SITE_NAME } from "@/lib/site";
 
 // Shared frame for the privacy notice and the terms. Both are written in English only for
 // now, so the text is plain JSX rather than translated strings.
@@ -25,6 +25,7 @@ export default function LegalPage({ title, updated, children }: { title: string;
       <footer className="flex gap-4 border-t border-line pt-6 text-sm text-ink-400">
         <Link href="/privacy" className="flex h-6 items-center hover:text-ink-100">Privacy</Link>
         <Link href="/terms" className="flex h-6 items-center hover:text-ink-100">Terms</Link>
+        <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" className="flex h-6 items-center hover:text-ink-100">Feedback</a>
         <Link href="/" className="flex h-6 items-center hover:text-ink-100">Home</Link>
       </footer>
     </div>

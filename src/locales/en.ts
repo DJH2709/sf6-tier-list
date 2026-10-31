@@ -116,6 +116,7 @@ const en = {
   "account.deleteNotReady": "Account deletion isn't available right now. Open an issue (link below) and we'll delete it for you.",
   "footer.privacy": "Privacy",
   "footer.terms": "Terms",
+  "footer.feedback": "Feedback",
 
   "profile.demoOnly": "Profiles only work on the live site.",
   "profile.loading": "Loading...",

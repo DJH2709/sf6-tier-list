@@ -12,6 +12,7 @@ import { GameProvider } from "@/components/GameContext";
 import { PickUsername, useAccount } from "@/components/Account";
 import { useI18n } from "@/lib/i18n/client";
 import { BTN_GHOST, BTN_LG, BTN_PRIMARY, NOTE, SEGMENT, SEGMENT_ITEM, SEGMENT_OFF, SEGMENT_ON } from "@/components/ui";
+import { FEEDBACK_URL } from "@/lib/site";
 
 const STEPS = [
   { title: "home.step1.title", text: "home.step1.text" },
@@ -173,6 +174,7 @@ export default function GameHome({ gameId }: { gameId: string }) {
         <span className="mt-2 flex justify-center gap-4">
           <Link href="/privacy" className="flex h-6 items-center underline-offset-2 hover:text-ink-100 hover:underline">{t("footer.privacy")}</Link>
           <Link href="/terms" className="flex h-6 items-center underline-offset-2 hover:text-ink-100 hover:underline">{t("footer.terms")}</Link>
+          <a href={FEEDBACK_URL} target="_blank" rel="noopener noreferrer" className="flex h-6 items-center underline-offset-2 hover:text-ink-100 hover:underline">{t("footer.feedback")}</a>
         </span>
       </footer>
     </div>
