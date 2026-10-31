@@ -204,67 +204,67 @@
         {
           "id": "cavalry",
           "label": "Cavalry",
-          "band": "intermediate"
+          "band": "beginner"
         },
         {
           "id": "warrior",
           "label": "Warrior",
-          "band": "intermediate"
+          "band": "beginner"
         },
         {
           "id": "assailant",
           "label": "Assailant",
-          "band": "intermediate"
+          "band": "beginner"
         },
         {
           "id": "dominator",
           "label": "Dominator",
-          "band": "intermediate"
+          "band": "beginner"
         },
         {
           "id": "vanquisher",
           "label": "Vanquisher",
-          "band": "intermediate"
+          "band": "beginner"
         },
         {
           "id": "destroyer",
           "label": "Destroyer",
-          "band": "intermediate"
+          "band": "beginner"
         },
         {
           "id": "eliminator",
           "label": "Eliminator",
-          "band": "intermediate"
+          "band": "beginner"
         },
         {
           "id": "garyu",
           "label": "Garyu",
-          "band": "advanced"
+          "band": "intermediate"
         },
         {
           "id": "shinryu",
           "label": "Shinryu",
-          "band": "advanced"
+          "band": "intermediate"
         },
         {
           "id": "tenryu",
           "label": "Tenryu",
-          "band": "advanced"
+          "band": "intermediate"
         },
         {
           "id": "mighty_ruler",
           "label": "Mighty Ruler",
-          "band": "advanced"
+          "band": "intermediate"
         },
         {
           "id": "flame_ruler",
           "label": "Flame Ruler",
-          "band": "advanced"
+          "band": "intermediate"
         },
         {
           "id": "battle_ruler",
           "label": "Battle Ruler",
-          "band": "advanced"
+          "band": "intermediate"
         },
         {
           "id": "fujin",
