@@ -176,14 +176,14 @@ export function PickUsername({ session, onDone }: { session: Session; onDone: (p
   return (
     <form onSubmit={save} className={`${PANEL} space-y-3 p-4`}>
       <p className="font-medium">{t("account.pickTitle")}</p>
-      <p className="text-sm leading-5 text-ink-300">{t("account.pickNote", { username: username || "your-name" })}</p>
+      <p className="text-sm leading-5 text-ink-300">{t("account.pickNote", { username: username || "your_name" })}</p>
       <div className="flex flex-wrap gap-2">
         <label className="sr-only" htmlFor="username">{t("account.pickTitle")}</label>
         <input
           id="username"
           name="username"
           value={username}
-          onChange={(e) => setUsername(e.target.value.toLowerCase())}
+          onChange={(e) => setUsername(e.target.value)}
           placeholder={t("account.usernamePlaceholder")}
           autoComplete="username"
           autoCapitalize="none"

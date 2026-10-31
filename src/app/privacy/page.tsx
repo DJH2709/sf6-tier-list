@@ -59,7 +59,7 @@ export default function PrivacyPage() {
 
       <h2>What is public</h2>
       <p>
-        Your profile page (<code>/u/your-username</code>) shows your username, display name, avatar, tag, your
+        Your profile page (<code>/u/your_username</code>) shows your username, display name, avatar, tag, your
         public tier lists with the rank you voted as, your followers and following, and likes on your lists.
         Lists you untick &quot;Show on my profile&quot; for are hidden from it but still count in the results.
         Anonymous votes are never shown individually.

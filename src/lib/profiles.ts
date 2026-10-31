@@ -12,6 +12,10 @@ export type Profile = {
   avatar_url: string | null;
   tag: ProfileTag | null;
 };
+// Letters (either case), numbers and underscores, 3 to 20 long. No spaces or other symbols.
+// supabase/009_username_capitals.sql checks the same in the database.
+export const USERNAME_PATTERN = /^[A-Za-z0-9_]{3,20}$/;
+
 export const PROFILE_COLUMNS = "id, username, display_name, avatar_url, tag";
 export type PublicList = {
   id: string;
@@ -25,12 +29,15 @@ export type PublicList = {
   likes: number;
 };
 
+// Case doesn't matter: /u/dannyh finds DannyH. Anything that can't be a username is nobody,
+// which also keeps % out of the pattern below; _ is escaped so it only matches itself.
 export async function getProfileByUsername(username: string): Promise<Profile | null> {
   if (!supabase) return null;
+  if (!USERNAME_PATTERN.test(username)) return null;
   const { data, error } = await supabase
     .from("profiles")
     .select(PROFILE_COLUMNS)
-    .eq("username", username.toLowerCase())
+    .ilike("username", username.replace(/_/g, "\\_"))
     .maybeSingle();
   if (error) throw error;
   return data;
