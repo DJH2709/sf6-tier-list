@@ -22,8 +22,10 @@ export default function Results({ refreshKey, onMakeList }: { refreshKey: number
   }, [game, refreshKey]);
 
   const listsIn = (b: Band) => results.find((r) => r.band === b)?.lists ?? 0;
+  // Only characters on this game's roster: an id the database has never heard of can't become a tile.
+  const roster = new Set(game.characters.map((c) => c.id));
   // Highest average first, so order within a tier means something.
-  const rows = results.filter((r) => r.band === band).sort((a, b) => b.avg_score - a.avg_score);
+  const rows = results.filter((r) => r.band === band && roster.has(r.item_id)).sort((a, b) => b.avg_score - a.avg_score);
   const lists = listsIn(band);
   const placements = Object.fromEntries(rows.map((r) => [r.item_id, Math.round(r.avg_score)]));
   const avg = Object.fromEntries(rows.map((r) => [r.item_id, r.avg_score.toFixed(1)]));
