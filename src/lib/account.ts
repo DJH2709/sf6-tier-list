@@ -57,6 +57,19 @@ export async function signOut() {
   await supabase?.auth.signOut();
 }
 
+// Removes the player's sign-in record, which takes their profile, lists, likes and follows
+// with it (see supabase/007_delete_account.sql), then clears the session in this browser.
+export async function deleteAccount() {
+  if (!supabase) throw new Error("Deleting an account needs Supabase.");
+  const { error } = await supabase.rpc("delete_my_account");
+  if (error) {
+    // The site is ahead of the database: 007 hasn't been run yet.
+    if (error.code === "PGRST202") throw new Error("account.deleteNotReady");
+    throw error;
+  }
+  await supabase.auth.signOut();
+}
+
 export async function getProfileById(id: string): Promise<Profile | null> {
   if (!supabase) return null;
   const { data, error } = await supabase.from("profiles").select(PROFILE_COLUMNS).eq("id", id).maybeSingle();

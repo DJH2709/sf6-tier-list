@@ -42,7 +42,8 @@ export type Translate = (key: MessageKey, vars?: Vars) => string;
 export function translator(locale: Locale): Translate {
   const messages = MESSAGES[locale];
   return (key, vars) => {
-    const text = messages[key] || en[key] || key;
+    // ?? not ||: an English string that is deliberately empty (site.machineTranslated) must stay empty, not show its key.
+    const text = messages[key] ?? en[key] ?? key;
     return vars ? text.replace(/\{(\w+)\}/g, (m, name) => (name in vars ? String(vars[name]) : m)) : text;
   };
 }
