@@ -59,7 +59,7 @@ Test setup used for evidence:
 - [TODO] 5.2 Friendly error messages in the UI.
 - [TODO] 5.3 Errors, failed logins, admin actions logged without secrets/personal data.
 - [TODO] 5.4 Backups on and one restore tested.
-- [TODO] 5.5 UK GDPR/PECR: privacy notice, cookie consent, account deletion.
+- [TODO] 5.5 UK GDPR/PECR: privacy notice, cookie consent, account deletion. (Built ahead of this section in PR #19 at the coordinator's request; evidence to be recorded when section 5 runs.)
 
 ## Section 6: UX robustness
 
