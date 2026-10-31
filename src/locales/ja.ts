@@ -114,7 +114,7 @@ const ja: Messages = {
   "account.deleting": "削除中...",
   "account.deleted": "アカウントを削除しました。",
   "account.deleteFailed": "アカウントを削除できませんでした。もう一度お試しいただくか、下記からご連絡ください。",
-  "account.deleteNotReady": "アカウント削除はまだ有効になっていません。Supabase の SQL エディタで supabase/007_delete_account.sql を実行してください。",
+  "account.deleteNotReady": "現在アカウント削除をご利用いただけません。下のリンクから Issue を作成していただければ、こちらで削除します。",
   "footer.privacy": "プライバシー",
   "footer.terms": "利用規約",
 
@@ -176,6 +176,14 @@ const ja: Messages = {
   "error.usernameTaken": "そのユーザー名は使われています。",
   "error.usernameFormat": "小文字の英字・数字・アンダースコアで3〜20文字にしてください。",
   "error.alreadySubmitted": "このパッチのリストはすでに投稿済みです。編集するにはページを再読み込みしてください。",
+  "error.unreachable": "サーバーに接続できませんでした。通信環境をご確認いただくか、広告ブロッカーを無効にしてお試しください。",
+  "error.dbBehind": "サイトを更新中です。数分後にもう一度お試しください。",
+  "page.errorTitle": "問題が発生しました。",
+  "page.errorBody": "ページで復旧できない問題が起きました。入力内容がこちら側で失われることはありません。",
+  "page.retry": "もう一度試す",
+  "page.notFoundTitle": "ページが見つかりません。",
+  "page.notFoundBody": "このリンク先は存在しません。プレイヤーがユーザー名を変更したか、アドレスが間違っている可能性があります。",
+  "page.home": "ホームに戻る",
 };
 
 export default ja;

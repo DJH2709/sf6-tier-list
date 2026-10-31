@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { deleteAccount, useSession } from "@/lib/account";
-import { demoMode } from "@/lib/store";
+import { demoMode } from "@/lib/supabase";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
 
