@@ -6,3 +6,6 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lobbytier.c
 
 // The feedback form linked from every footer (a Google Form owned by Danny).
 export const FEEDBACK_URL = "https://forms.gle/61H8MuT4iDL46ksq9";
+
+// Where people write to the site (data requests, questions). A Gmail Danny made for LobbyTier.
+export const CONTACT_EMAIL = "lobbytier@gmail.com";
