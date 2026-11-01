@@ -117,6 +117,7 @@
       "proofSite": "public Overwatch career profile (overwatch.blizzard.com) or a tracker page showing your rank",
       "proofPlaceholder": "https://overwatch.blizzard.com/en-us/career/...",
       "rankHint": "Ranks are per role. Pick the rank of the role you play most.",
+      "disclaimer": "Hero images © Blizzard Entertainment, Inc. Overwatch is a trademark of Blizzard Entertainment, Inc.",
       "characters": [
         "D.Mon",
         "D.Va",
@@ -299,6 +300,7 @@
       "owner": "Ubisoft",
       "proofSite": "R6 Tracker profile (r6.tracker.network) or a screenshot showing your rank",
       "proofPlaceholder": "https://r6.tracker.network/r6siege/profile/...",
+      "disclaimer": "Operator icons are fan-redrawn versions (r6operators project). Rainbow Six Siege and its operators © Ubisoft Entertainment.",
       "characters": [
         "Sledge",
         "Thatcher",

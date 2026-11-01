@@ -66,6 +66,7 @@ const ja: Messages = {
   "filter.all": "すべて",
   "filter.label": "ロールで絞り込む",
   "filter.search": "検索",
+  "filter.picturesOnly": "画像のみ",
   "make.partial": "全部配置しなくても大丈夫です。少なくとも {n} 個配置して、知らないものは外したままにしてください。",
   "make.update": "キャラランクを更新",
   "make.submit": "キャラランクを投稿",

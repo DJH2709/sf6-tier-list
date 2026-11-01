@@ -65,6 +65,7 @@ const zh: Messages = {
   "filter.all": "全部",
   "filter.label": "按职责筛选",
   "filter.search": "搜索",
+  "filter.picturesOnly": "仅显示图片",
   "make.partial": "不必全部放好。至少放 {n} 个，不熟悉的可以不放。",
   "make.update": "更新我的强度榜",
   "make.submit": "提交我的强度榜",

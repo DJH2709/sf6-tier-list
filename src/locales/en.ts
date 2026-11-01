@@ -65,6 +65,7 @@ const en = {
   "filter.all": "All",
   "filter.label": "Filter by role",
   "filter.search": "Search",
+  "filter.picturesOnly": "Pictures only",
   "make.partial": "You don't have to place everything. Place at least {n}, and leave out the ones you don't know.",
   "make.update": "Update my tier list",
   "make.submit": "Submit my tier list",
