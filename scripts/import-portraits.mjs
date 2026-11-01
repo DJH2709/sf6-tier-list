@@ -21,9 +21,13 @@ const slug = (name) =>
 
 // Where each pack keeps a character's file, from our character id.
 const PACKS = {
-  // github.com/RoyaleAPI/cr-api-assets, cards-150/ (150x180 card art).
-  clashroyale: (dir, id) =>
-    `${dir}/cards-150/${id.replace("p-e-k-k-a", "pekka").replace(/-evo$/, "-ev1").replace(/-hero$/, "-hero-ev1")}.png`,
+  // github.com/outlierSlug/immaculate-grid-engine, frontend/public/clashroyale/icons/: Supercell's
+  // own card icons from its API asset CDN, with the evo and hero frames, kept current with new
+  // cards. Only the transparent margin is trimmed; the card art itself is untouched.
+  clashroyale: (dir, id) => ({
+    path: `${dir}/frontend/public/clashroyale/icons/${id.replace("p-e-k-k-a", "pekka")}.png`,
+    trim: true,
+  }),
   // github.com/drippinghere/overwatch-hero-icons, 2d/ (256x256 hero icons).
   overwatch: (dir, id) => [`${dir}/2d/${id}.png`, `${dir}/2d/${id.replace(/-/g, "")}.png`],
   // github.com/zerobertoo/r6operators, operators/<name>/<name>.svg (hand-redrawn badges).
@@ -110,6 +114,7 @@ for (const name of roster) {
   // 96px covers a 44px tile at 2x. fit "inside" keeps the whole picture and its shape; only packs
   // flagged above are cut square. Supercell's cards are never cut.
   const img = src.eye ? await aroundEyes(src.path, src.eye) : sharp(src.path, { density: 300 });
+  if (src.trim) img.trim();
   const resize = src.crop ? { height: 96, width: 96, fit: "cover", position: src.crop } : { height: 96, width: 96, fit: "inside" };
   await img.resize(resize).webp({ quality: 82 }).toFile(`${out}/${id}.webp`);
 }
