@@ -12,10 +12,20 @@ test("every picture folder is a game", () => {
   for (const d of dirs) assert.ok(games.some((g) => g.id === d), `public/characters/${d} is not a game id`);
 });
 
-// Only publishers whose terms allow it (see public/characters/README.md). A new folder means a
-// new permission check first.
-test("pictures only for games cleared to use them", () => {
-  assert.deepEqual(dirs.sort(), ["clashroyale", "overwatch", "siege"]);
+// Never for publishers whose rules forbid using their art as-is (see public/characters/README.md):
+// Capcom (SF6), Arc System Works (Strive), Cygames (GBVSR). A new game's folder needs a permission
+// check first, so the full list is pinned too.
+test("pictures only for games whose publishers don't forbid it", () => {
+  for (const banned of ["sf6", "ggst", "gbvsr"]) assert.ok(!dirs.includes(banned), `${banned} must not have pictures`);
+  assert.deepEqual(dirs.sort(), ["brawlhalla", "clashroyale", "cotw", "invincible", "mk1", "overwatch", "rivals2", "siege", "smash", "tekken8"]);
+});
+
+test("Capcom guest characters have no picture in other games", () => {
+  const capcom = { smash: ["ryu", "ken", "mega-man"], cotw: ["ken", "chun-li"] };
+  for (const [game, ids] of Object.entries(capcom)) {
+    const files = readdirSync(`public/characters/${game}`).map((f) => f.replace(/\.[^.]+$/, ""));
+    for (const id of ids) assert.ok(!files.includes(id), `${game}/${id} is Capcom art`);
+  }
 });
 
 for (const d of dirs) {
@@ -31,7 +41,7 @@ for (const d of dirs) {
     for (const f of files) assert.ok(statSync(`public/characters/${d}/${f}`).size < 20_000, `${d}/${f} is over 20 KB`);
   });
 
-  // Supercell asks for its disclaimer; Blizzard and Ubisoft for their copyright notice.
+  // Supercell asks for its disclaimer; the others get a copyright notice.
   test(`${d}: footer credits the owner`, () => {
     assert.ok(game.disclaimer, `${d} shows pictures but has no disclaimer`);
   });
