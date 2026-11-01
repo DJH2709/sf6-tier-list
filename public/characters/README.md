@@ -15,10 +15,11 @@ Checked 2026-11-01. The site is non-commercial; every permission below depends o
 | Clash Royale | [outlierSlug/immaculate-grid-engine](https://github.com/outlierSlug/immaculate-grid-engine) `frontend/public/clashroyale/icons/` (Supercell's own card icons from its API asset CDN, with evo and hero frames; current to 2026-10-27) | [Supercell Fan Content Policy](https://supercell.com/fan-content-policy): non-commercial fan content may display Supercell assets unmodified, with the disclaimer shown in the footer. Only the transparent margin is trimmed; never crop or edit the art (tiles use `object-contain`). |
 | Overwatch | [drippinghere/overwatch-hero-icons](https://github.com/drippinghere/overwatch-hero-icons) `2d/` (Blizzard hero icons) | Blizzard's Legal FAQ allows non-commercial fan sites to display Blizzard material, keeping the copyright notice. Revocable at any time. |
 | Rainbow Six Siege | [zerobertoo/r6operators](https://github.com/zerobertoo/r6operators) (hand-redrawn operator badges, MIT) | Grey area: Ubisoft has no fan policy for images. The MIT licence covers the redrawing, not Ubisoft's rights in the designs. Remove the folder if Ubisoft asks. |
-| Tekken 8, MK1, Smash, Brawlhalla, Rivals II, Fatal Fury, Invincible VS | [joaorb64/StreamHelperAssets](https://github.com/joaorb64/StreamHelperAssets) `games/<code>/base_files/icon/` (MK1: `portrait/`, cut square around the eyes; Fatal Fury: cut square from the top) | No published permission either way (no fan content policy found on 2026-11-01). Danny chose to use them anyway on 2026-11-01, accepting takedown risk. Remove a game's folder if its publisher asks. |
+| Tekken 8, MK1, Smash, Rivals II, Fatal Fury, Invincible VS | [joaorb64/StreamHelperAssets](https://github.com/joaorb64/StreamHelperAssets) `games/<code>/base_files/icon/` (MK1: `portrait/`, cut square around the eyes; Fatal Fury: cut square from the top) | No published permission either way (no fan content policy found on 2026-11-01). Danny chose to use them anyway on 2026-11-01, accepting takedown risk. Remove a game's folder if its publisher asks. |
+| Brawlhalla | [gfhnpkv/brawlhalla-stance-tracker](https://github.com/gfhnpkv/brawlhalla-stance-tracker) `portraits/mini/` (all legends; its README says the art is used with Blue Mammoth's permission, which covers that project, not this one) | No published fan policy. Danny chose to use it on 2026-11-01, accepting takedown risk. |
 
 Re-import after a roster change with `scripts/import-portraits.mjs` (instructions at its top).
-Characters missing from a pack (10 newer Brawlhalla legends) show their name until the pack catches up.
+Characters missing from a pack show their name until the pack catches up.
 
 ## Games and characters without pictures, on purpose
 
