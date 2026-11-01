@@ -35,11 +35,14 @@ const PACKS = {
     const name = id.replace(/-/g, "");
     return [`${dir}/operators/${name}/${name}.svg`, `${dir}/operators/${id.replace(/-/g, "_")}/${id.replace(/-/g, "_")}.svg`];
   },
+  // github.com/gfhnpkv/brawlhalla-stance-tracker, portraits/mini/ (legend portraits named like our
+  // ids). Has every legend, where TournamentStreamHelper's pack lacked the newest ten.
+  brawlhalla: (dir, id) => `${dir}/portraits/mini/${id}.png`,
 };
 
 // TournamentStreamHelper (github.com/joaorb64/StreamHelperAssets) game codes, for its
 // games/<code>/base_files/icon/ packs. Its config.json maps official names to file codenames.
-const TSH = { tekken8: "tekken8", mk1: "mk1", smash: "ssbu", brawlhalla: "bh", rivals2: "roa2", cotw: "ffcotw", invincible: "invs" };
+const TSH = { tekken8: "tekken8", mk1: "mk1", smash: "ssbu", rivals2: "roa2", cotw: "ffcotw", invincible: "invs" };
 // Our name -> TSH's name where the two differ.
 const TSH_ALIASES = {
   "Manjiro Sano": "Mikey", "Ken Ryuguji": "Draken",
