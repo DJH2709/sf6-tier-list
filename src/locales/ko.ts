@@ -65,6 +65,7 @@ const ko: Messages = {
   "filter.all": "전체",
   "filter.label": "역할로 필터",
   "filter.search": "검색",
+  "filter.picturesOnly": "이미지만",
   "make.partial": "전부 배치하지 않아도 됩니다. 최소 {n}개를 배치하고 모르는 것은 빼 두세요.",
   "make.update": "티어 리스트 수정",
   "make.submit": "티어 리스트 제출",

@@ -67,6 +67,7 @@ const es: Messages = {
   "filter.all": "Todos",
   "filter.label": "Filtrar por rol",
   "filter.search": "Buscar",
+  "filter.picturesOnly": "Solo imágenes",
   "make.partial": "No hace falta colocarlos todos. Coloca al menos {n} y deja fuera los que no conozcas.",
   "make.update": "Actualizar mi tier list",
   "make.submit": "Enviar mi tier list",

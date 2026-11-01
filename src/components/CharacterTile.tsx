@@ -2,6 +2,7 @@ import type { Game } from "@/lib/games";
 import portraits from "@/lib/portraits.json";
 import { useI18n } from "@/lib/i18n/client";
 import { useGame } from "./GameContext";
+import { usePicturesOnly } from "@/lib/tileView";
 
 // The initials badge uses the English name so it looks the same in every language.
 function englishName(game: Game, id: string) {
@@ -17,14 +18,20 @@ function initialsOf(name: string) {
 
 const PORTRAITS = portraits as Record<string, string>;
 
+export const hasPortrait = (game: Game, id: string) => `${game.id}/${id}` in PORTRAITS;
+// Whether any of this game's characters has a picture, so the "Pictures only" switch is worth showing.
+export const gameHasPortraits = (game: Game) => game.characters.some((c) => hasPortrait(game, c.id));
+
 // `px` is the rendered size in pixels, so the image has width and height before it loads.
 export function Portrait({ id, size = "h-7 w-7", px = 28 }: { id: string; size?: string; px?: number }) {
   const game = useGame();
   const name = englishName(game, id);
   const src = PORTRAITS[`${game.id}/${id}`];
   if (src) {
+    // object-contain, not cover: Clash Royale cards are taller than wide, and cropping them would
+    // alter Supercell's art, which their fan content policy doesn't allow.
     // eslint-disable-next-line @next/next/no-img-element -- static files, no optimisation needed
-    return <img src={src} alt="" width={px} height={px} loading="lazy" className={`${size} shrink-0 rounded object-cover`} />;
+    return <img src={src} alt="" width={px} height={px} loading="lazy" decoding="async" className={`${size} shrink-0 rounded object-contain`} />;
   }
   return (
     <span
@@ -51,6 +58,10 @@ type Props = {
 export default function CharacterTile({ id, selected, detail, onClick, buttonRef, dragProps, dragging }: Props) {
   const { nameOf } = useI18n();
   const game = useGame();
+  const name = nameOf(id, game);
+  // Pictures only: a bigger picture with no name, so a full list fits in one screenshot. The name
+  // stays as the tooltip and accessible label. Characters without a picture keep their name.
+  const pictureOnly = usePicturesOnly() && hasPortrait(game, id);
   return (
     <button
       ref={buttonRef}
@@ -62,15 +73,31 @@ export default function CharacterTile({ id, selected, detail, onClick, buttonRef
         onClick();
       }}
       disabled={!onClick && !dragProps}
-      className={`flex min-h-9 items-center gap-2 rounded-md border bg-ink-700 py-1 pl-1 pr-2.5 text-sm transition-colors
+      title={pictureOnly ? name : undefined}
+      aria-label={pictureOnly ? (detail ? `${name} ${detail}` : name) : undefined}
+      className={`relative flex items-center rounded-md border bg-ink-700 text-sm transition-colors
+        ${pictureOnly ? "p-0.5" : "min-h-9 gap-2 py-1 pl-1 pr-2.5"}
         ${selected ? "border-emerald-500 ring-1 ring-emerald-500/50" : "border-line-strong"}
         ${onClick ? "hover:border-ink-400 active:scale-[0.98]" : "cursor-default"}
         ${dragProps ? "touch-manipulation cursor-grab active:cursor-grabbing" : ""}
         ${dragging ? "opacity-30" : ""}`}
     >
-      <Portrait id={id} />
-      <span className="whitespace-nowrap font-medium">{nameOf(id, game)}</span>
-      {detail && <span className="font-mono text-xs tabular-nums text-ink-300">{detail}</span>}
+      {pictureOnly ? (
+        <>
+          <Portrait id={id} size="h-11 w-11" px={44} />
+          {detail && (
+            <span className="absolute -bottom-1 -right-1 rounded bg-ink-950/90 px-1 font-mono text-[10px] leading-4 tabular-nums text-ink-100">
+              {detail}
+            </span>
+          )}
+        </>
+      ) : (
+        <>
+          <Portrait id={id} />
+          <span className="whitespace-nowrap font-medium">{name}</span>
+          {detail && <span className="font-mono text-xs tabular-nums text-ink-300">{detail}</span>}
+        </>
+      )}
     </button>
   );
 }
