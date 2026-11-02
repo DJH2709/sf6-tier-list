@@ -190,6 +190,7 @@ const es: Messages = {
   "error.alreadySubmitted": "Ya enviaste una lista para este parche. Recarga la página para editarla.",
   "error.unreachable": "No se pudo conectar con el servidor. Revisa tu conexión o prueba sin bloqueadores de anuncios.",
   "error.dbBehind": "El sitio se está actualizando. Vuelve a intentarlo en unos minutos.",
+  "error.rateLimited": "Demasiados jugadores nuevos han guardado desde tu red en la última hora. Tu lista sigue aquí: inicia sesión para guardarla ya o vuelve a intentarlo más tarde.",
 
   "page.errorTitle": "Algo salió mal.",
   "page.errorBody": "La página tuvo un problema del que no pudo recuperarse. No se perdió nada de lo que enviaste.",

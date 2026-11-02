@@ -22,7 +22,13 @@ export const missingConfig = demoMode && !!process.env.NEXT_PUBLIC_VERCEL_ENV;
 // Turns a database error into one that says what to fix.
 // Turns a Supabase error into one of our own messages. The detail (which setting, which SQL
 // file) goes to the console for whoever runs the site; the person sees a plain sentence.
-export function explain(error: { message: string; code?: string }) {
+export function explain(error: { message: string; code?: string; status?: number }) {
+  // 429: Supabase's per-network limit, most often new anonymous voters per hour. Lots of people
+  // behind one address (a mobile network, a college) can reach it without doing anything wrong.
+  if (error.status === 429 || /rate limit/i.test(error.code ?? "")) {
+    console.error("Supabase rate limit reached. See Authentication -> Rate Limits in the Supabase dashboard.", error);
+    return new Error("error.rateLimited");
+  }
   // "Failed to fetch" means the browser never reached Supabase: a wrong URL setting,
   // a paused project or an ad blocker.
   if (/fetch/i.test(error.message)) {

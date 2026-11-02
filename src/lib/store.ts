@@ -82,6 +82,24 @@ export async function getMyLists(game: Game): Promise<MyList[]> {
   }));
 }
 
+// A first-time voter gets an anonymous account so their list has an owner. Supabase allows only
+// so many of these per network per hour (Authentication -> Rate Limits), so make one at most:
+// reuse the session this browser already has, and share one sign-in between overlapping saves.
+let pendingSignIn: Promise<void> | null = null;
+async function ensureSession() {
+  if (!supabase) return;
+  const { data } = await supabase.auth.getSession();
+  if (data.session) return;
+  const client = supabase;
+  pendingSignIn ??= (async () => {
+    const { error } = await client.auth.signInAnonymously();
+    if (error) throw explain(error);
+  })().finally(() => {
+    pendingSignIn = null;
+  });
+  return pendingSignIn;
+}
+
 // Saves the player's list for the current patch, replacing the one they already have.
 // Returns whether an existing list was replaced.
 export async function submitList(game: Game, rank: string, placements: Placements, proofUrl?: string, isPublic = true) {
@@ -93,11 +111,7 @@ export async function submitList(game: Game, rank: string, placements: Placement
     localStorage.setItem(demoKey(game), JSON.stringify([{ patch: game.patch, rank, placements, isPublic }, ...others]));
     return { updated };
   }
-  const { data: session } = await supabase.auth.getSession();
-  if (!session.session) {
-    const { error } = await supabase.auth.signInAnonymously();
-    if (error) throw explain(error);
-  }
+  await ensureSession();
   // One database call, so a failed save can't leave the list half replaced.
   const { data: updated, error } = await supabase.rpc("save_list", {
     p_game: game.id,
