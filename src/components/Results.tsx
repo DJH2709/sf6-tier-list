@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { bandsFor, MIN_LISTS, type Band, type Game } from "@/lib/games";
 import { getResults, type BandResult } from "@/lib/store";
+import { relativeTiers } from "@/lib/relativeTiers";
 import TierRows from "./TierRows";
 import RankChip from "./RankChip";
 import { useGame } from "./GameContext";
@@ -37,10 +38,11 @@ export default function Results({ results, error, onMakeList }: Props) {
   const listsIn = (b: Band) => results.find((r) => r.band === b)?.lists ?? 0;
   // Only characters on this game's roster: an id the database has never heard of can't become a tile.
   const roster = new Set(game.characters.map((c) => c.id));
-  // Highest average first, so order within a tier means something.
-  const rows = results.filter((r) => r.band === band && roster.has(r.item_id)).sort((a, b) => b.avg_score - a.avg_score);
+  const rows = results.filter((r) => r.band === band && roster.has(r.item_id));
   const lists = listsIn(band);
-  const placements = Object.fromEntries(rows.filter((r) => shown(game, r.item_id, nameOf(r.item_id, game), filter)).map((r) => [r.item_id, Math.round(r.avg_score)]));
+  // Tiers relative to the rest of the band, strongest first, worked out before the role filter
+  // so filtering to tanks doesn't reshuffle who is S.
+  const placements = Object.fromEntries(Object.entries(relativeTiers(rows)).filter(([id]) => shown(game, id, nameOf(id, game), filter)));
   const avg = Object.fromEntries(rows.map((r) => [r.item_id, r.avg_score.toFixed(1)]));
   const bandName = t(`band.${band}` as MessageKey);
   const listCount = (n: number) => t(n === 1 ? "results.list" : "results.lists", { n });

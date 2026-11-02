@@ -1,6 +1,7 @@
 "use client";
 import { MIN_LISTS, TIERS, type Band, type Game } from "@/lib/games";
 import type { BandResult } from "@/lib/store";
+import { relativeTiers } from "@/lib/relativeTiers";
 import { useI18n } from "@/lib/i18n/client";
 import type { MessageKey } from "@/locales/en";
 import { TIER_COLOURS } from "./TierRows";
@@ -21,8 +22,8 @@ function example(game: Game, band: Band): Record<string, number> {
 
 function live(game: Game, results: BandResult[], band: Band): Record<string, number> {
   const roster = new Set(game.characters.map((c) => c.id));
-  const rows = results.filter((r) => r.band === band && roster.has(r.item_id)).sort((a, b) => b.avg_score - a.avg_score);
-  return Object.fromEntries(rows.slice(0, MAX_TILES).map((r) => [r.item_id, Math.round(r.avg_score)]));
+  const tiers = relativeTiers(results.filter((r) => r.band === band && roster.has(r.item_id)));
+  return Object.fromEntries(Object.entries(tiers).slice(0, MAX_TILES));
 }
 
 // The hero's visual: the product itself. Beginner and Elite lists for the same roster, side by
