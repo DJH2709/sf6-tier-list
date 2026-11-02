@@ -186,6 +186,7 @@ const en = {
   "error.alreadySubmitted": "You've already submitted a list for this patch. Reload the page to edit it.",
   "error.unreachable": "Couldn't reach the server. Check your connection, or try with ad blockers off.",
   "error.dbBehind": "The site is being updated. Please try again in a few minutes.",
+  "error.rateLimited": "Too many new players have saved from your network in the last hour. Your list is still here: sign in to save it now, or try again later.",
   "page.errorTitle": "Something went wrong.",
   "page.errorBody": "The page hit a problem it couldn't recover from. Nothing you entered was lost on our side.",
   "page.retry": "Try again",

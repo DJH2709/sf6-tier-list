@@ -186,6 +186,7 @@ const zh: Messages = {
   "error.alreadySubmitted": "你已经提交过本版本的榜单。刷新页面即可编辑。",
   "error.unreachable": "无法连接服务器。请检查网络，或关闭广告拦截器后重试。",
   "error.dbBehind": "网站正在更新，请几分钟后再试。",
+  "error.rateLimited": "过去一小时内，来自你所在网络的新玩家保存次数过多。你的榜单仍在本页：登录即可立即保存，或稍后再试。",
   "page.errorTitle": "出了点问题。",
   "page.errorBody": "页面遇到了无法恢复的问题。你输入的内容不会在我们这边丢失。",
   "page.retry": "重试",

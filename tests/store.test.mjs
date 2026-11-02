@@ -115,3 +115,39 @@ test("a list comes back in the order it was saved in, not alphabetical or databa
   const [mine] = await store.getMyLists(sf6);
   assert.deepEqual(Object.keys(mine.placements), Object.keys(placements));
 });
+
+// Supabase allows a limited number of anonymous sign-ins per network per hour. The site must not
+// spend more than one per browser, and must say so plainly when the limit is hit.
+test("overlapping saves from a new visitor make only one anonymous sign-in", async () => {
+  await account.signOut();
+  const before = fake.calls.filter((c) => c.path === "/auth/v1/signup").length;
+  await Promise.all([store.submitList(sf6, "gold", fullList(0)), store.submitList(sf6, "gold", fullList(1))]);
+  assert.equal(fake.calls.filter((c) => c.path === "/auth/v1/signup").length - before, 1);
+  await store.submitList(sf6, "gold", fullList(2));
+  assert.equal(fake.calls.filter((c) => c.path === "/auth/v1/signup").length - before, 1, "an existing session is reused");
+});
+
+test("hitting Supabase's sign-in limit gives a friendly message and keeps nothing half done", async () => {
+  await account.signOut();
+  const real = globalThis.fetch;
+  const log = mock.method(console, "error", () => {});
+  globalThis.fetch = async (input, init) => {
+    const url = new URL(typeof input === "string" ? input : input.url);
+    if (url.pathname === "/auth/v1/signup") {
+      return new Response(JSON.stringify({ code: "over_request_rate_limit", message: "Request rate limit reached" }), {
+        status: 429,
+        headers: { "content-type": "application/json" },
+      });
+    }
+    return real(input, init);
+  };
+  try {
+    await assert.rejects(store.submitList(sf6, "gold", fullList(0)), { message: "error.rateLimited" });
+    assert.deepEqual(await store.getMyLists(sf6), [], "still signed out, nothing saved");
+  } finally {
+    globalThis.fetch = real;
+    log.mock.restore();
+  }
+  // Once the limit lifts, the same visitor can save.
+  assert.deepEqual(await store.submitList(sf6, "gold", fullList(0)), { updated: false });
+});
