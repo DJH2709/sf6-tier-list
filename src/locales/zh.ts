@@ -81,7 +81,7 @@ const zh: Messages = {
   "results.notEnough": "{band}玩家的投票还不够",
   "results.progress": "已有 {n} / {min} 份榜单。该段位有 {min} 位玩家投票后才会显示结果，避免一个人决定榜单。",
   "results.addYours": "加入你的强度榜",
-  "results.summary": "{band}玩家 {n} 份榜单的平均结果。数字是每个角色的平均分 (S = 5，D = 1)。除非经过证明，段位均为自报。",
+  "results.summary": "{band}玩家 {n} 份榜单的平均结果。档位是角色之间的相对比较：S 是该段位明显评价最高的，D 是明显最低的。数字是实际平均分 (S = 5，D = 1)。除非经过证明，段位均为自报。",
 
   "band.beginner": "初级",
   "band.beginner.ranks": "新手 ~ 黄金",

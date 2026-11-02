@@ -82,7 +82,7 @@ const ja: Messages = {
   "results.notEnough": "{band}のプレイヤーの投票がまだ足りません",
   "results.progress": "{min} 件中 {n} 件。このランク帯で {min} 人が投票すると結果が表示されます。一人でリストが決まらないようにするためです。",
   "results.addYours": "キャラランクを投稿する",
-  "results.summary": "{band}のプレイヤー {n} 人のリストの平均です。数字は各キャラの平均スコア (S = 5、D = 1)。ランクは証明がない限り自己申告です。",
+  "results.summary": "{band}のプレイヤー {n} 人のリストの平均です。ティアはキャラ同士の比較です。S はこの帯で明らかに評価が高いキャラ、D は明らかに低いキャラ。数字は実際の平均スコア (S = 5、D = 1)。ランクは証明がない限り自己申告です。",
 
   "band.beginner": "初級",
   "band.beginner.ranks": "ルーキー〜ゴールド",

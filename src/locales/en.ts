@@ -81,7 +81,7 @@ const en = {
   "results.notEnough": "Not enough votes from {band} players yet",
   "results.progress": "{n} of {min} lists. Results show once {min} players at this rank have voted, so one person can't decide the list.",
   "results.addYours": "Add your tier list",
-  "results.summary": "Average of {n} lists from {band} players. The number is each character's average score (S = 5, D = 1). Ranks are self-reported unless proven.",
+  "results.summary": "Average of {n} lists from {band} players. Tiers compare characters with each other: S is what this band rates clearly highest, D clearly lowest. The number is the real average score (S = 5, D = 1). Ranks are self-reported unless proven.",
 
   "band.beginner": "Beginner",
   "band.beginner.ranks": "Rookie to Gold",

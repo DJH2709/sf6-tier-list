@@ -81,7 +81,7 @@ const ko: Messages = {
   "results.notEnough": "{band} 플레이어의 투표가 아직 부족합니다",
   "results.progress": "{min}개 중 {n}개. 이 랭크에서 {min}명이 투표하면 결과가 나옵니다. 한 사람이 리스트를 정하지 못하게 하기 위해서입니다.",
   "results.addYours": "내 티어 리스트 추가",
-  "results.summary": "{band} 플레이어 리스트 {n}개의 평균입니다. 숫자는 캐릭터별 평균 점수입니다 (S = 5, D = 1). 랭크는 증명하지 않으면 자기 신고입니다.",
+  "results.summary": "{band} 플레이어 리스트 {n}개의 평균입니다. 티어는 캐릭터끼리 비교한 결과입니다: S는 이 구간에서 확실히 가장 높게, D는 확실히 가장 낮게 평가된 캐릭터입니다. 숫자는 실제 평균 점수입니다 (S = 5, D = 1). 랭크는 증명하지 않으면 자기 신고입니다.",
 
   "band.beginner": "초급",
   "band.beginner.ranks": "루키 ~ 골드",
