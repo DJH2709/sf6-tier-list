@@ -6,6 +6,8 @@ import type { Messages } from "./en";
 const es: Messages = {
   "site.title": "Tier lists de la comunidad por rango",
   "site.description": "Tier lists de videojuegos votadas por la comunidad y separadas por rango.",
+  "site.homeTitle": "Tier lists por rango: Overwatch 2, Siege, Clash Royale y más",
+  "site.homeDescription": "Tier lists votadas por jugadores y separadas por rango, para {count} juegos: Overwatch 2, Rainbow Six Siege, Clash Royale, Street Fighter 6, Tekken 8, Smash Ultimate y más. Mira qué es fuerte en tu nivel.",
   "site.gameTitle": "Tier list de {game} por rango (votos de la comunidad)",
   "site.gameDescription": "Tier list de {game} por rango. Los jugadores votan y cada rango tiene sus propios resultados, para ver qué funciona a tu nivel y no solo entre profesionales.",
   "site.footer": "Un proyecto de fans. No está afiliado ni respaldado por {owner}. Los nombres de juegos y personajes pertenecen a sus dueños.",

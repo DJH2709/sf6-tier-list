@@ -5,6 +5,8 @@ import type { Messages } from "./en";
 const ja: Messages = {
   "site.title": "ランク別 みんなのキャラランク",
   "site.description": "ゲームのキャラランクを、プレイヤーのランク帯ごとにみんなで投票。",
+  "site.homeTitle": "ランク帯別キャラランク：Overwatch 2・Siege・クラロワ ほか",
+  "site.homeDescription": "プレイヤーの投票で作る、ランク帯別のキャラランク。対応 {count} タイトル：Overwatch 2、Rainbow Six Siege、クラッシュ・ロワイヤル、ストリートファイター6、鉄拳8、スマブラSP ほか。自分のランクで何が強いかがわかります。",
   "site.gameTitle": "{game} ランク帯別キャラランク（みんなの投票）",
   "site.gameDescription": "{game}のランク帯別キャラランク。プレイヤーが投票し、ランク帯ごとに結果を表示。プロだけでなく、自分のランクで強いキャラがわかります。",
   "site.footer": "ファンによる非公式サイトです。{owner}とは関係ありません。ゲーム名とキャラクター名は各権利者に帰属します。",

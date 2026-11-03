@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
-import { DEFAULT_GAME } from "@/lib/games";
-import { gameName } from "@/lib/i18n/games";
+import { DEFAULT_GAME, getGame } from "@/lib/games";
 import { getT } from "@/lib/i18n/server";
 import { OG_SIZE, OgCard } from "@/components/og";
 
@@ -11,9 +10,10 @@ export const alt = "Community tier list split by player rank";
 
 export default async function Image() {
   const t = await getT();
-  const game = DEFAULT_GAME;
+  // Overwatch is the biggest game here, so its heroes stand in as the example roster.
+  const game = getGame("overwatch") ?? DEFAULT_GAME;
   return new ImageResponse(
-    <OgCard title={t("site.gameTitle", { game: gameName(game, t) })} subtitle={t("home.title")} game={game} />,
+    <OgCard title={t("site.title")} subtitle={t("home.title")} game={game} />,
     size,
   );
 }
