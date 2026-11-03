@@ -55,7 +55,7 @@ export default function FollowingView() {
                 <PlayerAvatar profile={profile} px={40} className="h-10 w-10 text-sm" />
                 <span className="font-medium">{profile.display_name || profile.username}</span>
                 <span className="text-sm text-ink-300">@{profile.username}</span>
-                <ProfileTag tag={profile.tag} />
+                <ProfileTag profile={profile} />
               </Link>
               {latest ? (
                 <>

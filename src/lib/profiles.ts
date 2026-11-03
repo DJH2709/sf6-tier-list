@@ -4,19 +4,22 @@ import { supabase } from "./supabase";
 import { toPlacements, type PlacementRow, type Placements } from "./store";
 
 // Tags are set by the site owner in Supabase, never by the player.
-export type ProfileTag = "pro" | "influencer";
+// "influencer" is shown as "Creator"; the stored value is kept so existing tags still work.
+export type ProfileTag = "pro" | "influencer" | "coach";
 export type Profile = {
   id: string;
   username: string;
   display_name: string | null;
   avatar_url: string | null;
   tag: ProfileTag | null;
+  // Which game the tag is for (a games.json id). Set with the tag, by the site owner.
+  tag_game: string | null;
 };
 // Letters (either case), numbers and underscores, 3 to 20 long. No spaces or other symbols.
 // supabase/009_username_capitals.sql checks the same in the database.
 export const USERNAME_PATTERN = /^[A-Za-z0-9_]{3,20}$/;
 
-export const PROFILE_COLUMNS = "id, username, display_name, avatar_url, tag";
+export const PROFILE_COLUMNS = "id, username, display_name, avatar_url, tag, tag_game";
 export type PublicList = {
   id: string;
   game: string;

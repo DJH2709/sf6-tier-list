@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "daily" as const,
     priority: g.id === DEFAULT_GAME.id ? 1 : 0.8,
   }));
-  const pages = ["/players", "/privacy", "/terms"].map((path) => ({
+  const pages = ["/games", "/players", "/privacy", "/terms"].map((path) => ({
     url: `${SITE_URL}${path}`,
     changeFrequency: "weekly" as const,
     priority: 0.5,

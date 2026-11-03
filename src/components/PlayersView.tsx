@@ -10,6 +10,7 @@ import { useAccount } from "@/components/Account";
 import SiteHeader from "@/components/SiteHeader";
 import PlayerAvatar from "@/components/PlayerAvatar";
 import ProfileTag from "@/components/ProfileTag";
+import { CONTACT_EMAIL } from "@/lib/site";
 import { ERROR, SEGMENT, SEGMENT_ITEM, SEGMENT_OFF, SEGMENT_ON } from "@/components/ui";
 
 type Sort = "liked" | "new";
@@ -72,7 +73,7 @@ export default function PlayersView() {
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                     <span className="truncate font-medium">{profile.display_name || profile.username}</span>
-                    <ProfileTag tag={profile.tag} />
+                    <ProfileTag profile={profile} />
                   </span>
                   <span className="block truncate text-sm text-ink-300">@{profile.username}</span>
                 </span>
@@ -86,6 +87,9 @@ export default function PlayersView() {
           ))}
         </ul>
       )}
+      <p className="text-sm leading-6 text-ink-400">
+        {t("players.tagAsk", { email: CONTACT_EMAIL })}
+      </p>
       </main>
     </div>
   );

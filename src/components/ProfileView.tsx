@@ -66,7 +66,7 @@ export default function ProfileView({ username }: { username: string }) {
             <PlayerAvatar profile={profile} px={80} className="mx-auto h-20 w-20 text-2xl" />
             <div className="space-y-1">
               <h1 className="text-3xl font-medium tracking-tight">
-                {profile.display_name || profile.username} <ProfileTag tag={profile.tag} />
+                {profile.display_name || profile.username} <ProfileTag profile={profile} />
               </h1>
               <p className="text-ink-300">@{profile.username}</p>
             </div>
