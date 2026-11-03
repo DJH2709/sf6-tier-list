@@ -67,6 +67,7 @@ const es: Messages = {
   "filter.all": "Todos",
   "filter.label": "Filtrar por rol",
   "filter.search": "Buscar",
+  "filter.picturesOnly": "Solo imágenes",
   "make.partial": "No hace falta colocarlos todos. Coloca al menos {n} y deja fuera los que no conozcas.",
   "make.update": "Actualizar mi tier list",
   "make.submit": "Enviar mi tier list",
@@ -82,7 +83,7 @@ const es: Messages = {
   "results.notEnough": "Todavía no hay suficientes votos de jugadores de nivel {band}",
   "results.progress": "{n} de {min} listas. Los resultados aparecen cuando {min} jugadores de este rango hayan votado, para que una sola persona no decida la lista.",
   "results.addYours": "Agrega tu tier list",
-  "results.summary": "Promedio de {n} listas de jugadores de nivel {band}. El número es la puntuación media de cada personaje (S = 5, D = 1). Los rangos los declara cada jugador, salvo que estén comprobados.",
+  "results.summary": "Promedio de {n} listas de jugadores de nivel {band}. Los tiers comparan a los personajes entre sí: S es lo que este nivel valora claramente más alto, D lo más bajo. El número es la puntuación media real (S = 5, D = 1). Los rangos los declara cada jugador, salvo que estén comprobados.",
 
   "band.beginner": "Principiante",
   "band.beginner.ranks": "Novato a Oro",
@@ -189,6 +190,7 @@ const es: Messages = {
   "error.alreadySubmitted": "Ya enviaste una lista para este parche. Recarga la página para editarla.",
   "error.unreachable": "No se pudo conectar con el servidor. Revisa tu conexión o prueba sin bloqueadores de anuncios.",
   "error.dbBehind": "El sitio se está actualizando. Vuelve a intentarlo en unos minutos.",
+  "error.rateLimited": "Demasiados jugadores nuevos han guardado desde tu red en la última hora. Tu lista sigue aquí: inicia sesión para guardarla ya o vuelve a intentarlo más tarde.",
 
   "page.errorTitle": "Algo salió mal.",
   "page.errorBody": "La página tuvo un problema del que no pudo recuperarse. No se perdió nada de lo que enviaste.",

@@ -3,6 +3,8 @@ import type { Game } from "@/lib/games";
 import { SEARCH_FROM } from "@/lib/games";
 import { useI18n } from "@/lib/i18n/client";
 import { INPUT, SEGMENT, SEGMENT_ITEM, SEGMENT_OFF, SEGMENT_ON } from "./ui";
+import { gameHasPortraits } from "./CharacterTile";
+import { setPicturesOnly, usePicturesOnly } from "@/lib/tileView";
 
 export type Filter = { role: string | null; query: string };
 export const NO_FILTER: Filter = { role: null, query: "" };
@@ -20,12 +22,29 @@ export function shown(game: Game, id: string, name: string, filter: Filter) {
   return !q || fold(name).includes(q) || id.includes(q);
 }
 
-// Role chips (Tank, Damage, Support...) and a search box for long rosters. Draws nothing for a
-// game with neither, so the fighting games look as they did.
+// Switches tiles between picture + name and picture only. Only for games that have pictures.
+function PicturesOnlySwitch() {
+  const { t } = useI18n();
+  const on = usePicturesOnly();
+  return (
+    <button
+      type="button"
+      aria-pressed={on}
+      onClick={() => setPicturesOnly(!on)}
+      className={`${SEGMENT_ITEM} border ${on ? `border-emerald-500/60 ${SEGMENT_ON}` : `border-line bg-ink-800 ${SEGMENT_OFF}`}`}
+    >
+      {t("filter.picturesOnly")}
+    </button>
+  );
+}
+
+// Role chips (Tank, Damage, Support...), a search box for long rosters and the pictures-only
+// switch. Draws nothing for a game with none of them, so those games look as they did.
 export default function RosterFilter({ game, filter, onFilter }: { game: Game; filter: Filter; onFilter: (f: Filter) => void }) {
   const { t } = useI18n();
   const search = game.characters.length >= SEARCH_FROM;
-  if (!game.roles && !search) return null;
+  const pictures = gameHasPortraits(game);
+  if (!game.roles && !search && !pictures) return null;
   const chips = [{ label: null as string | null, text: t("filter.all") }, ...(game.roles ?? []).map((r) => ({ label: r.label, text: r.label }))];
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -54,6 +73,7 @@ export default function RosterFilter({ game, filter, onFilter }: { game: Game; f
           className={`${INPUT} w-full sm:w-56`}
         />
       )}
+      {pictures && <PicturesOnlySwitch />}
     </div>
   );
 }
