@@ -35,6 +35,29 @@ const PACKS = {
     const name = id.replace(/-/g, "");
     return [`${dir}/operators/${name}/${name}.svg`, `${dir}/operators/${id.replace(/-/g, "_")}/${id.replace(/-/g, "_")}.svg`];
   },
+  // Riot's own pictures, downloaded by scripts/fetch-riot-packs.mjs. Weapons are a tab, so their
+  // folder is valorant.weapons (the key CharacterTile looks pictures up by).
+  valorant: (dir, id) => `${dir}/valorant/${id}.png`,
+  "valorant.weapons": (dir, id) => ({ path: `${dir}/valorant.weapons/${id}.png`, trim: true }),
+  lol: (dir, id) => `${dir}/lol/${id}.png`,
+  wildrift: (dir, id) => `${dir}/lol/${id}.png`,
+  // github.com/Brawlify/CDN, brawlers/borderless/<brawler id>.png: Supercell's brawler head icons.
+  // Ids from scripts/brawlstars-ids.json (checked against several fan databases and by eye).
+  brawlstars: (dir, id) => (BRAWLSTARS_IDS[id] ? `${dir}/brawlers/borderless/${BRAWLSTARS_IDS[id]}.png` : []),
+  // github.com/SiegeEngineers/aoe2techtree, img/Civs/: the game's civilization emblems.
+  // Lạc Việt is a Return of Rome civ, kept under ror/.
+  aoe2: (dir, id) => [`${dir}/img/Civs/${id}.png`, `${dir}/ror/img/Civs/${id.replace(/-/g, " ")}.png`],
+  // github.com/aoe4world/explorer, assets/flags/<civ slug>.png: the game's civilization flags.
+  aoe4: (dir, id) => `${dir}/assets/flags/${AOE4_SLUGS[id] ?? id}.png`,
+};
+
+const BRAWLSTARS_IDS = JSON.parse(readFileSync(new URL("./brawlstars-ids.json", import.meta.url), "utf8"));
+// AoE IV civ name -> aoe4world flag file, where they differ.
+const AOE4_SLUGS = {
+  "abbasid-dynasty": "abbasid", "delhi-sultanate": "delhi", "holy-roman-empire": "hre", "house-of-lancaster": "lancaster",
+  "jeanne-d-arc": "jeannedarc", "jin-dynasty": "jindynasty", "knights-templar": "templar", "macedonian-dynasty": "macedonian",
+  "order-of-the-dragon": "orderofthedragon", "sengoku-daimyo": "sengoku", "tughlaq-dynasty": "tughlaq", "zhu-xi-s-legacy": "zhuxi",
+  "golden-horde": "goldenhorde",
 };
 
 // TournamentStreamHelper (github.com/joaorb64/StreamHelperAssets) game codes, for its
@@ -98,7 +121,10 @@ if (!PACKS[game] || !dir) {
 }
 
 const data = JSON.parse(readFileSync("src/lib/games.json", "utf8"));
-const roster = data.games.find((g) => g.id === game).characters;
+// "valorant.weapons" is the weapons tab of Valorant.
+const [gameId, tab] = game.split(".");
+const entry = data.games.find((g) => g.id === gameId);
+const roster = tab ? entry.tabs[tab].characters : entry.characters;
 const out = `public/characters/${game}`;
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
