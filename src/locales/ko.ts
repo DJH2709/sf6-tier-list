@@ -4,8 +4,8 @@ import type { Messages } from "./en";
 const ko: Messages = {
   "site.title": "랭크별 커뮤니티 티어 리스트",
   "site.description": "커뮤니티가 투표한 게임 티어 리스트, 플레이어 랭크별로 나눠서 보기.",
-  "site.gameTitle": "{game} 커뮤니티 티어 리스트",
-  "site.gameDescription": "커뮤니티가 투표한 {game} 티어 리스트, 플레이어 랭크별로 나눠서 보기.",
+  "site.gameTitle": "{game} 랭크별 티어 리스트 (커뮤니티 투표)",
+  "site.gameDescription": "{game} 랭크별 티어 리스트. 플레이어가 투표하고 랭크마다 결과를 따로 보여 줘서, 프로 기준이 아닌 내 랭크에서 강한 캐릭터를 알 수 있습니다.",
   "site.footer": "팬이 만든 비공식 사이트입니다. {owner}와(과) 관련이 없으며 승인받지 않았습니다. 게임 및 캐릭터 이름은 각 권리자에게 있습니다.",
   "site.machineTranslated": "이 번역은 기계 번역을 바탕으로 했습니다. 어색한 표현이 있으면 알려 주세요.",
   "language.label": "언어",

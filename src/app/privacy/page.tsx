@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
 import DeleteAccount from "@/components/DeleteAccount";
 import LegalPage from "@/components/LegalPage";
-import { SITE_NAME } from "@/lib/site";
+import { CONTACT_EMAIL, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy",
   description: `What ${SITE_NAME} stores about you, who can see it, and how to delete your account.`,
 };
 
-const REPO = "https://github.com/DJH2709/sf6-tier-list";
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy notice" updated="31 October 2026">
+    <LegalPage title="Privacy notice" updated="1 November 2026">
       <p>
         {SITE_NAME} is a fan-made hobby site where players vote on game tier lists, split by rank.
         This page says what it stores about you, who else sees it, and how to delete it. It is written in
@@ -23,7 +22,8 @@ export default function PrivacyPage() {
       <p>
         {SITE_NAME} is run by an individual in the United Kingdom (GitHub:{" "}
         <a href="https://github.com/DJH2709">DJH2709</a>), not a company. It makes no money and shows no adverts.
-        For UK data protection law, that person is the controller of the data described here.
+        For UK data protection law, that person is the controller of the data described here. Contact:{" "}
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
       </p>
 
       <h2>What we store, and when</h2>
@@ -115,8 +115,8 @@ export default function PrivacyPage() {
       <h2>Your rights</h2>
       <p>
         Under UK data protection law you can ask for a copy of your data, ask for it to be corrected, or ask for it
-        to be deleted (or use the button above). To do so, or for anything else about this notice, open an issue
-        at <a href={`${REPO}/issues`}>{REPO.replace("https://", "")}/issues</a>. If you are unhappy with how your
+        to be deleted (or use the button above). To do so, or for anything else about this notice, email{" "}
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. If you are unhappy with how your
         data is handled you can complain to the UK Information Commissioner&apos;s Office at{" "}
         <a href="https://ico.org.uk/make-a-complaint/">ico.org.uk</a>.
       </p>

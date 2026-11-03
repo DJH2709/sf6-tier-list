@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
   return {
     metadataBase: new URL(SITE_URL),
-    // Page titles get " · LobbyTier" added, e.g. "Tekken 8 Community Tier List · LobbyTier".
+    // Page titles get " · LobbyTier" added, e.g. "Tekken 8 Tier List by Rank (Community Votes) · LobbyTier".
     title: { default: `${SITE_NAME} · ${t("site.title")}`, template: `%s · ${SITE_NAME}` },
     description: t("site.description"),
     twitter: { card: "summary_large_image" },

@@ -4,8 +4,8 @@
 const en = {
   "site.title": "Community Tier Lists by Rank",
   "site.description": "Game tier lists voted by the community, split by player rank.",
-  "site.gameTitle": "{game} Community Tier List",
-  "site.gameDescription": "{game} tier lists voted by the community, split by player rank.",
+  "site.gameTitle": "{game} Tier List by Rank (Community Votes)",
+  "site.gameDescription": "{game} tier list by rank. Players vote, and each rank's results show separately, so you can see what's strong at your level, not just at pro level.",
   "site.footer": "A fan project. Not affiliated with or endorsed by {owner}. Game and character names belong to their owners.",
   "site.machineTranslated": "",
   "language.label": "Language",

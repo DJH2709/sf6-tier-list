@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/LegalPage";
-import { SITE_NAME } from "@/lib/site";
+import { CONTACT_EMAIL, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of use" updated="31 October 2026">
+    <LegalPage title="Terms of use" updated="1 November 2026">
       <p>
         These are the ground rules for using {SITE_NAME}. By using the site you agree to them. They are short
         because the site is simple: you vote on tier lists, and you can show your votes on a profile.
@@ -68,7 +68,7 @@ export default function TermsPage() {
       <h2>Changes and contact</h2>
       <p>
         If these terms change, the date at the top changes with it. Questions go to{" "}
-        <a href="https://github.com/DJH2709/sf6-tier-list/issues">github.com/DJH2709/sf6-tier-list/issues</a>.
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         These terms are governed by the law of England and Wales.
       </p>
     </LegalPage>
