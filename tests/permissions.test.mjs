@@ -24,6 +24,18 @@ test("a player can't give themselves a pro or influencer tag", async () => {
   await refused(as(db, alice, "update profiles set tag = 'pro' where id = auth.uid()"), "update");
   const carl = await newUser(db);
   await refused(as(db, carl, "insert into profiles (username, tag) values ('carl', 'influencer')"), "insert");
+  await refused(as(db, alice, "update profiles set tag = 'coach' where id = auth.uid()"), "coach");
+  await refused(as(db, alice, "update profiles set tag_game = 'overwatch' where id = auth.uid()"), "tag game");
+  await refused(as(db, carl, "insert into profiles (username, tag_game) values ('carl', 'siege')"), "insert tag game");
+});
+
+test("the site owner can tag a pro, creator or coach for one game, and nothing else", async () => {
+  await db.query("update profiles set tag = 'coach', tag_game = 'siege' where username = 'bob'");
+  const { rows } = await db.query("select tag, tag_game from profiles where username = 'bob'");
+  assert.deepEqual(rows, [{ tag: "coach", tag_game: "siege" }]);
+  await assert.rejects(db.query("update profiles set tag = 'admin' where username = 'bob'"), "unknown tag");
+  await assert.rejects(db.query("update profiles set tag_game = 'Not A Game!' where username = 'bob'"), "bad game id");
+  await db.query("update profiles set tag = null, tag_game = null where username = 'bob'");
 });
 
 test("a player can't approve their own top-rank list", async () => {

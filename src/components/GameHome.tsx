@@ -6,7 +6,8 @@ import Results, { useResults } from "@/components/Results";
 import HeroPreview from "@/components/HeroPreview";
 import SiteHeader from "@/components/SiteHeader";
 import { configFound, demoMode, missingConfig } from "@/lib/supabase";
-import { DEFAULT_GAME, GAMES, getGame } from "@/lib/games";
+import { DEFAULT_GAME, GAMES, gamePath, getGame } from "@/lib/games";
+import { LayoutGrid } from "lucide-react";
 import { gameName, rankName } from "@/lib/i18n/games";
 import { GameProvider } from "@/components/GameContext";
 import { PickUsername, useAccount } from "@/components/Account";
@@ -21,13 +22,19 @@ const STEPS = [
 ] as const;
 
 // Game picker. SF6 keeps the home page address so links shared before other games still work.
+// "All games" comes first so it is on screen on a phone without scrolling the strip.
 function GamePicker({ current }: { current: string }) {
+  const { t } = useI18n();
   return (
     <nav aria-label="Games" className="-mx-4 flex gap-1 overflow-x-auto px-4 [scrollbar-width:none]">
+      <Link href="/games" className="flex h-8 shrink-0 items-center gap-1.5 rounded-md border border-line px-3 text-sm font-medium text-ink-300 transition-colors hover:text-ink-100">
+        <LayoutGrid size={14} strokeWidth={1.5} aria-hidden />
+        {t("games.link")}
+      </Link>
       {GAMES.map((g) => (
         <Link
           key={g.id}
-          href={g.id === DEFAULT_GAME.id ? "/" : `/${g.id}`}
+          href={gamePath(g)}
           aria-current={g.id === current ? "page" : undefined}
           title={g.name}
           className={`flex h-8 shrink-0 items-center rounded-md px-3 text-sm font-medium transition-colors

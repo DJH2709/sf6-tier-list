@@ -13,10 +13,16 @@ export type Character = { id: string; name: string };
 // character can sit in more than one (a champion played mid and top). Filters only change what
 // is shown; every list still covers the whole roster, so votes aren't split across roles.
 export type RoleGroup = { label: string; ids: string[] };
+// Genre tags for the games page filter. A game can have several (Smash is a fighting game and a
+// platform fighter). Labels are in the locale files as genre.<id>; tests check every game uses
+// only these.
+export const GENRES = ["fighting", "platform", "anime", "shooter", "hero", "tactical", "battleroyale", "moba", "mobile", "strategy"] as const;
+export type Genre = (typeof GENRES)[number];
 export type Game = {
   id: string;
   name: string;
   short: string;
+  genres: Genre[];
   // Bump on a balance patch or character release, so a new round of lists starts.
   patch: string;
   owner: string;
@@ -38,10 +44,11 @@ export type Game = {
 export const slug = (name: string) =>
   name.replace(/ø/gi, "o").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-type GameData = Omit<Game, "characters" | "roles"> & { characters: string[]; roles?: Record<string, string[]> };
+type GameData = Omit<Game, "characters" | "roles" | "genres"> & { genres: string[]; characters: string[]; roles?: Record<string, string[]> };
 
 export const GAMES: Game[] = (data.games as GameData[]).map((g) => ({
   ...g,
+  genres: g.genres as Genre[],
   characters: g.characters.map((name) => ({ id: slug(name), name })),
   roles: g.roles && Object.entries(g.roles).map(([label, names]) => ({ label, ids: names.map(slug) })),
   ranks: g.ranks as Rank[],
@@ -51,6 +58,23 @@ export const GAMES: Game[] = (data.games as GameData[]).map((g) => ({
 export const SEARCH_FROM = 40;
 
 export const DEFAULT_GAME = GAMES[0];
+
+export const gamePath = (g: Game) => (g.id === DEFAULT_GAME.id ? "/" : `/${g.id}`);
+
+// Lowercase, no accents or punctuation, so "rainbow six", "R6" style typing and "pokemon" match.
+const fold = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+// Games whose name, short name, id or publisher contains every word typed, in any order,
+// limited to one genre when one is picked. Used by the games page search.
+export function findGames(games: Game[], query: string, genre: Genre | null = null): Game[] {
+  const words = fold(query).split(" ").filter(Boolean);
+  return games.filter((g) => {
+    if (genre && !g.genres.includes(genre)) return false;
+    const hay = fold(`${g.name} ${g.short} ${g.id} ${g.owner}`);
+    const squashed = hay.replace(/ /g, "");
+    return words.every((w) => hay.includes(w) || squashed.includes(w));
+  });
+}
 
 export function getGame(id: string): Game | undefined {
   return GAMES.find((g) => g.id === id);
