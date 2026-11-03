@@ -5,8 +5,8 @@ import type { Messages } from "./en";
 const ja: Messages = {
   "site.title": "ランク別 みんなのキャラランク",
   "site.description": "ゲームのキャラランクを、プレイヤーのランク帯ごとにみんなで投票。",
-  "site.gameTitle": "{game} みんなのキャラランク",
-  "site.gameDescription": "{game}のキャラランクを、プレイヤーのランク帯ごとにみんなで投票。",
+  "site.gameTitle": "{game} ランク帯別キャラランク（みんなの投票）",
+  "site.gameDescription": "{game}のランク帯別キャラランク。プレイヤーが投票し、ランク帯ごとに結果を表示。プロだけでなく、自分のランクで強いキャラがわかります。",
   "site.footer": "ファンによる非公式サイトです。{owner}とは関係ありません。ゲーム名とキャラクター名は各権利者に帰属します。",
   "site.machineTranslated": "この翻訳は機械翻訳をもとにしています。おかしな表現があれば教えてください。",
   "language.label": "言語",

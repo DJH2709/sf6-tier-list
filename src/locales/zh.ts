@@ -4,8 +4,8 @@ import type { Messages } from "./en";
 const zh: Messages = {
   "site.title": "按段位划分的社区强度榜",
   "site.description": "由社区投票的游戏强度榜，按玩家段位分开统计。",
-  "site.gameTitle": "{game} 社区强度榜",
-  "site.gameDescription": "由社区投票的{game}角色强度榜，按玩家段位分开统计。",
+  "site.gameTitle": "{game} 分段位强度榜（社区投票）",
+  "site.gameDescription": "{game}分段位强度榜。玩家投票，每个段位的结果单独显示，看看在你的段位什么最强，而不只是职业选手的看法。",
   "site.footer": "粉丝制作的非官方网站，与 {owner} 无关，也未获其认可。游戏和角色名称归各自权利人所有。",
   "site.machineTranslated": "本页翻译基于机器翻译，如有不通顺的地方欢迎指出。",
   "language.label": "语言",

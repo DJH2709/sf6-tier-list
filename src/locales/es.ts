@@ -6,8 +6,8 @@ import type { Messages } from "./en";
 const es: Messages = {
   "site.title": "Tier lists de la comunidad por rango",
   "site.description": "Tier lists de videojuegos votadas por la comunidad y separadas por rango.",
-  "site.gameTitle": "Tier list de {game} por la comunidad",
-  "site.gameDescription": "Tier lists de {game} votadas por la comunidad y separadas por rango.",
+  "site.gameTitle": "Tier list de {game} por rango (votos de la comunidad)",
+  "site.gameDescription": "Tier list de {game} por rango. Los jugadores votan y cada rango tiene sus propios resultados, para ver qué funciona a tu nivel y no solo entre profesionales.",
   "site.footer": "Un proyecto de fans. No está afiliado ni respaldado por {owner}. Los nombres de juegos y personajes pertenecen a sus dueños.",
   "site.machineTranslated": "Esta traducción parte de una traducción automática. Si algo suena raro, avísanos.",
   "language.label": "Idioma",
