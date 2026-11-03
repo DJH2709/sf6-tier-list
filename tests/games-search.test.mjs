@@ -19,6 +19,9 @@ test("an empty search lists every game", () => {
 
 test("search matches names, short names and publishers, ignoring case and punctuation", () => {
   assert.deepEqual(ids("siege"), ["siege"]);
+  assert.deepEqual(ids("league of legends"), ["lol", "wildrift"]);
+  assert.deepEqual(ids("riot"), ["lol", "valorant", "wildrift"]);
+  assert.deepEqual(ids("age of empires"), ["aoe2", "aoe4"]);
   assert.deepEqual(ids("RAINBOW six"), ["siege"]);
   assert.deepEqual(ids("sf6"), ["sf6"]);
   assert.ok(ids("guilty gear strive").includes("ggst"));
@@ -35,7 +38,9 @@ test("words can come in any order and a squashed name still matches", () => {
 
 test("genre filter keeps only games with that genre, and combines with search", () => {
   assert.deepEqual(ids("", "platform").sort(), ["brawlhalla", "rivals2", "smash"]);
-  assert.deepEqual(ids("", "shooter").sort(), ["overwatch", "siege"]);
+  const shooters = ids("", "shooter");
+  assert.ok(["overwatch", "siege", "valorant"].every((id) => shooters.includes(id)));
+  assert.ok(!shooters.includes("sf6") && !shooters.includes("lol"));
   assert.deepEqual(ids("siege", "fighting"), []);
   assert.deepEqual(ids("smash", "fighting"), ["smash"]);
 });
@@ -62,10 +67,20 @@ test("every game's first tab is its characters, and other tabs are valid categor
   }
 });
 
+test("Valorant has a weapons tab with every current gun", () => {
+  const valorant = GAMES.find((g) => g.id === "valorant");
+  assert.deepEqual(valorant.tabs.map((t) => t.category), ["characters", "weapons"]);
+  const guns = withCategory(valorant, "weapons");
+  assert.equal(guns.characters.length, 20);
+  for (const name of ["Bandit", "Warden", "Vandal", "Operator"]) assert.ok(guns.characters.some((c) => c.name === name), name);
+  assert.equal(valorant.characters.length, 30, "the agents tab still has the agents");
+});
+
 test("withCategory is stable and falls back to the characters tab", () => {
   const siege = GAMES.find((g) => g.id === "siege");
-  const other = siege.tabs[1]?.category;
-  if (other) assert.equal(withCategory(siege, other), withCategory(siege, other), "same object each time");
+  const valorant = GAMES.find((g) => g.id === "valorant");
+  assert.equal(withCategory(valorant, "weapons"), withCategory(valorant, "weapons"), "same object each time");
+  assert.equal(listKey(withCategory(valorant, "weapons")), "valorant.weapons");
   assert.equal(withCategory(siege, "nonsense"), siege);
   assert.equal(withCategory(siege, CATEGORY), siege);
   assert.equal(withCategory(siege, null), siege);

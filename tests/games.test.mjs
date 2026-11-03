@@ -82,7 +82,7 @@ test("save_list's placement cap fits every roster", () => {
 });
 
 // 012 and 013 are what the live database gets for the new games, so they must say what games.json says.
-for (const [files, ids] of [[["012_overwatch_siege.sql", "015_overwatch_emerald_clash_ranked.sql"], ["overwatch", "siege"]], [["015_overwatch_emerald_clash_ranked.sql"], ["clashroyale"]]]) {
+for (const [files, ids] of [[["012_overwatch_siege.sql", "015_overwatch_emerald_clash_ranked.sql"], ["overwatch", "siege"]], [["015_overwatch_emerald_clash_ranked.sql"], ["clashroyale"]], [["017_november_games.sql"], ["lol", "valorant", "brawlstars", "marvelrivals", "mlbb", "dota2", "apex", "wildrift", "aoe2", "aoe4", "deadlock"]]]) {
   test(`${files.join(" + ")} match games.json`, () => {
     const sql = files.map((f) => readFileSync(`supabase/${f}`, "utf8")).join("\n");
     // 015 restates some of 012's rows, so compare the distinct rows for these games.
