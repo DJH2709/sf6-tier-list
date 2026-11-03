@@ -42,6 +42,7 @@ const ko: Messages = {
   "home.updatedInBrowser": "이 브라우저에서 수정했습니다. 바꾸려면 \"리스트 만들기\"를 다시 여세요.",
   "tab.results": "커뮤니티 결과",
   "tab.make": "리스트 만들기",
+  "tab.whatToRate": "평가 대상",
 
   "make.editing": "패치 {patch}에 제출한 리스트를 수정 중입니다. 저장하면 덮어씁니다.",
   "make.newPatch": "새 패치입니다. 패치 {patch} 리스트에서 시작하니 바뀐 부분만 옮기고 제출하세요.",
@@ -203,6 +204,7 @@ const ko: Messages = {
 
   "game.sf6": "스트리트 파이터 6",
   "category.characters": "캐릭터",
+  "category.weapons": "무기",
 
   "error.usernameTaken": "이미 사용 중인 이름입니다.",
   "error.usernameFormat": "영문자, 숫자, 밑줄(_)로 3~20자를 입력하세요. 공백이나 다른 기호는 쓸 수 없습니다.",

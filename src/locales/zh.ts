@@ -42,6 +42,7 @@ const zh: Messages = {
   "home.updatedInBrowser": "已在此浏览器中更新。再次打开“制作榜单”即可修改。",
   "tab.results": "社区结果",
   "tab.make": "制作榜单",
+  "tab.whatToRate": "评价对象",
 
   "make.editing": "你正在编辑版本 {patch} 提交的榜单。保存后会覆盖原榜单。",
   "make.newPatch": "新版本。已从你版本 {patch} 的榜单开始，只需调整有变化的角色再提交。",
@@ -203,6 +204,7 @@ const zh: Messages = {
 
   "game.sf6": "街头霸王6",
   "category.characters": "角色",
+  "category.weapons": "武器",
 
   "error.usernameTaken": "该用户名已被使用。",
   "error.usernameFormat": "请使用 3 到 20 个字母、数字或下划线（_），不能有空格或其他符号。",

@@ -1,5 +1,5 @@
 // Saving lists and reading results. The connection itself is in ./supabase.
-import { effectiveBand, CATEGORY, type Band, type Game, type Verification } from "./games";
+import { effectiveBand, listKey, type Band, type Game, type Verification } from "./games";
 import { explain, missingConfig, supabase } from "./supabase";
 
 // item id -> score 1..5. Key order is the player's order within each tier (see moveTo in
@@ -24,8 +24,8 @@ export type MyList = {
   placements: Placements;
 };
 
-// One key per game. SF6's is the key used before there were other games.
-const demoKey = (game: Game) => `${game.id}-demo-lists`;
+// One key per game and tab. SF6's is the key used before there were other games.
+const demoKey = (game: Game) => `${listKey(game)}-demo-lists`;
 
 // Lists saved before patches were stored have no patch; treat them as the current one.
 export type DemoList = { patch?: string; rank: string; placements: Placements; isPublic?: boolean };
@@ -68,7 +68,7 @@ export async function getMyLists(game: Game): Promise<MyList[]> {
     .select("id, patch, claimed_rank, proof_url, verification, is_public, tier_placements(item_id, score, sort_index)")
     .eq("user_id", session.session.user.id)
     .eq("game", game.id)
-    .eq("category", CATEGORY)
+    .eq("category", game.category)
     .order("created_at", { ascending: false });
   if (error) throw explain(error);
   return ((data ?? []) as ListRow[]).map((l) => ({
@@ -115,7 +115,7 @@ export async function submitList(game: Game, rank: string, placements: Placement
   // One database call, so a failed save can't leave the list half replaced.
   const { data: updated, error } = await supabase.rpc("save_list", {
     p_game: game.id,
-    p_category: CATEGORY,
+    p_category: game.category,
     p_patch: game.patch,
     p_rank: rank,
     p_proof_url: proofUrl || null,
@@ -133,7 +133,7 @@ export async function getResults(game: Game): Promise<BandResult[]> {
       .from("band_results")
       .select("band, item_id, avg_score, votes, lists")
       .eq("game", game.id)
-      .eq("category", CATEGORY)
+      .eq("category", game.category)
       .eq("patch", game.patch);
     if (error) throw explain(error);
     return data as BandResult[];

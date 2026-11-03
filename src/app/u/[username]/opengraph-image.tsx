@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { DEFAULT_GAME, getGame, TIERS } from "@/lib/games";
+import { DEFAULT_GAME, getGame, TIERS, withCategory } from "@/lib/games";
 import { getListsFor, getProfileByUsername } from "@/lib/profiles";
 import { SITE_NAME } from "@/lib/site";
 import { OG_SIZE, OgCard } from "@/components/og";
@@ -14,7 +14,7 @@ export default async function Image({ params }: { params: Promise<{ username: st
   const profile = await getProfileByUsername(username).catch(() => null);
   // Signed out, so only public lists come back. Newest first.
   const list = profile ? (await getListsFor(profile.id).catch(() => []))[0] : undefined;
-  const game = (list && getGame(list.game)) || DEFAULT_GAME;
+  const game = withCategory((list && getGame(list.game)) || DEFAULT_GAME, list?.category);
   const name = profile ? profile.display_name || profile.username : SITE_NAME;
   const rows = list
     ? Object.fromEntries(TIERS.map((tier) => [tier.score, game.characters.filter((c) => list.placements[c.id] === tier.score).map((c) => c.name)]))
