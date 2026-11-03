@@ -43,6 +43,7 @@ const ja: Messages = {
   "home.updatedInBrowser": "このブラウザで更新しました。変更するには「リストを作る」をもう一度開いてください。",
   "tab.results": "みんなの結果",
   "tab.make": "リストを作る",
+  "tab.whatToRate": "評価する対象",
 
   "make.editing": "パッチ {patch} で投稿したリストを編集中です。保存すると上書きされます。",
   "make.newPatch": "新しいパッチです。パッチ {patch} のリストから始まるので、変わったところだけ動かして投稿してください。",
@@ -204,6 +205,7 @@ const ja: Messages = {
 
   "game.sf6": "ストリートファイター6",
   "category.characters": "キャラクター",
+  "category.weapons": "武器",
 
   "error.usernameTaken": "そのユーザー名は使われています。",
   "error.usernameFormat": "英字・数字・アンダースコア（_）で3〜20文字にしてください。スペースや他の記号は使えません。",

@@ -42,6 +42,7 @@ const en = {
   "home.updatedInBrowser": "Updated in this browser. Open \"Make your list\" again to change it.",
   "tab.results": "Community results",
   "tab.make": "Make your list",
+  "tab.whatToRate": "What to rate",
 
   "make.editing": "You're editing the list you submitted for patch {patch}. Saving replaces it.",
   "make.newPatch": "New patch. This starts from your patch {patch} list, so move what's changed and submit.",
@@ -203,6 +204,7 @@ const en = {
 
   "game.sf6": "Street Fighter 6",
   "category.characters": "characters",
+  "category.weapons": "weapons",
 
   "error.usernameTaken": "That username is taken.",
   "error.usernameFormat": "Use 3 to 20 letters, numbers or underscores (_). No spaces or other symbols.",

@@ -47,3 +47,15 @@ test("broken saved data doesn't break the page", async () => {
   assert.deepEqual(await store.getMyLists(sf6), []);
   assert.deepEqual(await store.getResults(sf6), []);
 });
+
+test("a weapons list is separate from the agents list, with its own results", async () => {
+  const { GAMES, withCategory } = await import("@/lib/games");
+  const agents = GAMES.find((g) => g.id === "valorant");
+  const guns = withCategory(agents, "weapons");
+  await store.submitList(agents, "gold", { jett: 5 });
+  assert.deepEqual(await store.submitList(guns, "gold", { vandal: 5, classic: 2 }), { updated: false }, "not a replacement of the agents list");
+  assert.deepEqual((await store.getMyLists(agents))[0].placements, { jett: 5 });
+  assert.deepEqual((await store.getMyLists(guns))[0].placements, { vandal: 5, classic: 2 });
+  assert.deepEqual((await store.getResults(agents)).map((r) => r.item_id), ["jett"]);
+  assert.deepEqual((await store.getResults(guns)).map((r) => r.item_id).sort(), ["classic", "vandal"]);
+});

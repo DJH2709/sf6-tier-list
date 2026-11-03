@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import MakeList from "@/components/MakeList";
 import Results, { useResults } from "@/components/Results";
 import HeroPreview from "@/components/HeroPreview";
 import SiteHeader from "@/components/SiteHeader";
 import { configFound, demoMode, missingConfig } from "@/lib/supabase";
-import { DEFAULT_GAME, GAMES, gamePath, getGame } from "@/lib/games";
+import { CATEGORY, DEFAULT_GAME, GAMES, gamePath, getGame, withCategory } from "@/lib/games";
 import { LayoutGrid } from "lucide-react";
 import { gameName, rankName } from "@/lib/i18n/games";
 import { GameProvider } from "@/components/GameContext";
@@ -48,7 +48,23 @@ function GamePicker({ current }: { current: string }) {
 }
 
 export default function GameHome({ gameId }: { gameId: string }) {
-  const game = getGame(gameId) ?? DEFAULT_GAME;
+  const base = getGame(gameId) ?? DEFAULT_GAME;
+  // Which tab of items (characters, weapons...) is being rated. Kept in the address as ?tab= so
+  // a link to "Siege weapons" opens on weapons.
+  const [category, setCategory] = useState(CATEGORY);
+  const game = withCategory(base, category);
+  useEffect(() => {
+    const wanted = new URLSearchParams(window.location.search).get("tab");
+    if (wanted && base.tabs.some((t) => t.category === wanted)) setCategory(wanted);
+  }, [base]);
+  function pickCategory(next: string) {
+    setCategory(next);
+    setSubmitted(null);
+    const url = new URL(window.location.href);
+    if (next === CATEGORY) url.searchParams.delete("tab");
+    else url.searchParams.set("tab", next);
+    window.history.replaceState(null, "", url);
+  }
   const [tab, setTab] = useState<"make" | "results">("results");
   const [refreshKey, setRefreshKey] = useState(0);
   const [submitted, setSubmitted] = useState<{ isPublic: boolean; updated: boolean } | null>(null);
@@ -62,7 +78,7 @@ export default function GameHome({ gameId }: { gameId: string }) {
   }
 
   return (
-    <GameProvider id={game.id}>
+    <GameProvider id={game.id} category={game.category}>
     <div className="min-h-dvh">
       {missingConfig ? (
         <p className="border-b border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
@@ -152,6 +168,22 @@ export default function GameHome({ gameId }: { gameId: string }) {
             {t(submitted.updated ? "home.updatedInBrowser" : "home.savedInBrowser")}
           </p>
         )}
+        <div className="flex flex-wrap items-center gap-3">
+        {game.tabs.length > 1 && (
+          <nav className={SEGMENT} aria-label={t("tab.whatToRate")}>
+            {game.tabs.map((item) => (
+              <button
+                key={item.category}
+                type="button"
+                onClick={() => pickCategory(item.category)}
+                aria-current={item.category === game.category ? "page" : undefined}
+                className={`${SEGMENT_ITEM} ${item.category === game.category ? SEGMENT_ON : SEGMENT_OFF}`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        )}
         <nav className={SEGMENT}>
           {(["results", "make"] as const).map((name) => (
             <button
@@ -165,10 +197,12 @@ export default function GameHome({ gameId }: { gameId: string }) {
             </button>
           ))}
         </nav>
+        </div>
         {tab === "results" ? (
           <Results results={community.results} error={community.error} onMakeList={() => setTab("make")} />
         ) : (
           <MakeList
+            key={game.category}
             profile={account.profile}
             onSubmitted={(r) => { setRefreshKey((k) => k + 1); setSubmitted(r); setTab("results"); }}
           />

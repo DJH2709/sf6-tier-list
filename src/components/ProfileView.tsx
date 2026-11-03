@@ -117,7 +117,7 @@ export default function ProfileView({ username }: { username: string }) {
                     </span>
                   )}
                 </div>
-                <GameProvider id={list.game}>
+                <GameProvider id={list.game} category={list.category}>
                   <TierRows placements={list.placements} />
                 </GameProvider>
               </section>

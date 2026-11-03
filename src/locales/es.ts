@@ -44,6 +44,7 @@ const es: Messages = {
   "home.updatedInBrowser": "Actualizada en este navegador. Abre \"Haz tu lista\" otra vez para cambiarla.",
   "tab.results": "Resultados de la comunidad",
   "tab.make": "Haz tu lista",
+  "tab.whatToRate": "Qué valorar",
 
   "make.editing": "Estás editando la lista que enviaste para el parche {patch}. Al guardar, se reemplaza.",
   "make.newPatch": "Parche nuevo. Empiezas con tu lista del parche {patch}: mueve lo que cambió y envíala.",
@@ -207,6 +208,7 @@ const es: Messages = {
 
   "game.sf6": "Street Fighter 6",
   "category.characters": "personajes",
+  "category.weapons": "armas",
 
   "error.usernameTaken": "Ese nombre de usuario ya está en uso.",
   "error.usernameFormat": "Usa de 3 a 20 letras, números o guiones bajos (_). Sin espacios ni otros símbolos.",

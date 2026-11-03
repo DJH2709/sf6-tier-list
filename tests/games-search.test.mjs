@@ -19,6 +19,9 @@ test("an empty search lists every game", () => {
 
 test("search matches names, short names and publishers, ignoring case and punctuation", () => {
   assert.deepEqual(ids("siege"), ["siege"]);
+  assert.deepEqual(ids("league of legends"), ["lol", "wildrift"]);
+  assert.deepEqual(ids("riot"), ["lol", "valorant", "wildrift"]);
+  assert.deepEqual(ids("age of empires"), ["aoe2", "aoe4"]);
   assert.deepEqual(ids("RAINBOW six"), ["siege"]);
   assert.deepEqual(ids("sf6"), ["sf6"]);
   assert.ok(ids("guilty gear strive").includes("ggst"));
@@ -35,7 +38,51 @@ test("words can come in any order and a squashed name still matches", () => {
 
 test("genre filter keeps only games with that genre, and combines with search", () => {
   assert.deepEqual(ids("", "platform").sort(), ["brawlhalla", "rivals2", "smash"]);
-  assert.deepEqual(ids("", "shooter").sort(), ["overwatch", "siege"]);
+  const shooters = ids("", "shooter");
+  assert.ok(["overwatch", "siege", "valorant"].every((id) => shooters.includes(id)));
+  assert.ok(!shooters.includes("sf6") && !shooters.includes("lol"));
   assert.deepEqual(ids("siege", "fighting"), []);
   assert.deepEqual(ids("smash", "fighting"), ["smash"]);
+});
+
+// Tabs: a game can rate more than its characters (Siege weapons). Each tab is its own category.
+import { CATEGORY, listKey, withCategory } from "@/lib/games";
+
+test("every game's first tab is its characters, and other tabs are valid categories with their own items", () => {
+  for (const g of GAMES) {
+    assert.equal(g.category, CATEGORY);
+    assert.equal(g.tabs[0].category, CATEGORY, g.id);
+    for (const tab of g.tabs.slice(1)) {
+      assert.match(tab.category, /^[a-z]{1,20}$/, `${g.id}: category must pass 008's format check`);
+      const shown = withCategory(g, tab.category);
+      assert.equal(shown.category, tab.category);
+      assert.ok(shown.characters.length >= 5 && shown.characters.length <= 250, `${g.id}/${tab.category} size`);
+      const ids = shown.characters.map((c) => c.id);
+      assert.equal(new Set(ids).size, ids.length, `${g.id}/${tab.category}: two items share an id`);
+      for (const id of ids) assert.match(id, /^[a-z0-9-]{1,40}$/, `${g.id}/${tab.category}: ${id}`);
+      for (const role of shown.roles ?? []) for (const id of role.ids) assert.ok(ids.includes(id), `${g.id}/${tab.category}: role lists unknown ${id}`);
+      assert.equal(shown.ranks, g.ranks, "a tab keeps the game's rank ladder");
+      assert.notEqual(listKey(shown), listKey(g), "drafts for two tabs mustn't overwrite each other");
+    }
+  }
+});
+
+test("Valorant has a weapons tab with every current gun", () => {
+  const valorant = GAMES.find((g) => g.id === "valorant");
+  assert.deepEqual(valorant.tabs.map((t) => t.category), ["characters", "weapons"]);
+  const guns = withCategory(valorant, "weapons");
+  assert.equal(guns.characters.length, 20);
+  for (const name of ["Bandit", "Warden", "Vandal", "Operator"]) assert.ok(guns.characters.some((c) => c.name === name), name);
+  assert.equal(valorant.characters.length, 30, "the agents tab still has the agents");
+});
+
+test("withCategory is stable and falls back to the characters tab", () => {
+  const siege = GAMES.find((g) => g.id === "siege");
+  const valorant = GAMES.find((g) => g.id === "valorant");
+  assert.equal(withCategory(valorant, "weapons"), withCategory(valorant, "weapons"), "same object each time");
+  assert.equal(listKey(withCategory(valorant, "weapons")), "valorant.weapons");
+  assert.equal(withCategory(siege, "nonsense"), siege);
+  assert.equal(withCategory(siege, CATEGORY), siege);
+  assert.equal(withCategory(siege, null), siege);
+  assert.equal(listKey(siege), "siege", "old drafts and demo lists keep their key");
 });

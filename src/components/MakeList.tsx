@@ -10,6 +10,7 @@ import { useGame } from "./GameContext";
 import { useI18n } from "@/lib/i18n/client";
 import { errorText } from "@/lib/i18n/config";
 import { clearDraft, isEmptyDraft, loadDraft, saveDraft } from "@/lib/draft";
+import { listKey } from "@/lib/games";
 import { BTN_LG, BTN_PRIMARY, NOTE } from "./ui";
 import { NO_FILTER, shown, type Filter } from "./RosterFilter";
 
@@ -42,7 +43,7 @@ export default function MakeList({ profile, onSubmitted }: Props) {
   // Unsaved work from earlier in this tab (Back button, a reload, a detour to a profile) comes
   // back first and counts as the player's own edits, so the saved list can't overwrite it.
   useEffect(() => {
-    const draft = loadDraft(game.id, game.patch);
+    const draft = loadDraft(listKey(game), game.patch);
     if (draft && !isEmptyDraft(draft)) {
       const valid = Object.fromEntries(Object.entries(draft.placements).filter(([, score]) => Number.isInteger(score) && score >= 1 && score <= 5));
       const kept = keepKnown(CHARACTERS, valid);
@@ -84,9 +85,9 @@ export default function MakeList({ profile, onSubmitted }: Props) {
       return;
     }
     const draft = { placements, rank, proofUrl, isPublic };
-    if (isEmptyDraft(draft)) clearDraft(game.id, game.patch);
-    else saveDraft(game.id, game.patch, draft);
-  }, [placements, rank, proofUrl, isPublic, game.id, game.patch]);
+    if (isEmptyDraft(draft)) clearDraft(listKey(game), game.patch);
+    else saveDraft(listKey(game), game.patch, draft);
+  }, [placements, rank, proofUrl, isPublic, game]);
 
   const unplacedCount = CHARACTERS.filter((c) => !(c.id in placements)).length;
   // Big rosters (Clash Royale's cards) only ask for some, so nobody has to rate cards they never use.
@@ -131,7 +132,7 @@ export default function MakeList({ profile, onSubmitted }: Props) {
     try {
       const { updated } = await submitList(game, rank, placements, needsProof ? proofUrl : undefined, isPublic);
       setStatus({ text: t(updated ? "make.updated" : "make.thanks") });
-      clearDraft(game.id, game.patch);
+      clearDraft(listKey(game), game.patch);
       setExisting((e) => e ?? { id: "", patch: game.patch, rank, proofUrl: proofUrl || null, verification: "none", isPublic, placements });
       setBasedOn(null);
       onSubmitted({ isPublic, updated });
