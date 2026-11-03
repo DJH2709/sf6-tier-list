@@ -4,6 +4,8 @@ import type { Messages } from "./en";
 const zh: Messages = {
   "site.title": "按段位划分的社区强度榜",
   "site.description": "由社区投票的游戏强度榜，按玩家段位分开统计。",
+  "site.homeTitle": "分段位强度榜：守望先锋2、彩虹六号、皇室战争等",
+  "site.homeDescription": "玩家投票、按段位分开统计的强度榜，共 {count} 款游戏：守望先锋2、彩虹六号：围攻、皇室战争、街头霸王6、铁拳8、任天堂明星大乱斗 特别版等。看看在你的水平什么最强。",
   "site.gameTitle": "{game} 分段位强度榜（社区投票）",
   "site.gameDescription": "{game}分段位强度榜。玩家投票，每个段位的结果单独显示，看看在你的段位什么最强，而不只是职业选手的看法。",
   "site.footer": "粉丝制作的非官方网站，与 {owner} 无关，也未获其认可。游戏和角色名称归各自权利人所有。",

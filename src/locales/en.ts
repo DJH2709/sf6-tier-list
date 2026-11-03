@@ -4,6 +4,8 @@
 const en = {
   "site.title": "Community Tier Lists by Rank",
   "site.description": "Game tier lists voted by the community, split by player rank.",
+  "site.homeTitle": "Tier Lists by Rank: Overwatch 2, Siege, Clash Royale & More",
+  "site.homeDescription": "Tier lists voted by players and split by rank, for {count} games: Overwatch 2, Rainbow Six Siege, Clash Royale, Street Fighter 6, Tekken 8, Smash Ultimate and more. See what's strong at your level.",
   "site.gameTitle": "{game} Tier List by Rank (Community Votes)",
   "site.gameDescription": "{game} tier list by rank. Players vote, and each rank's results show separately, so you can see what's strong at your level, not just at pro level.",
   "site.footer": "A fan project. Not affiliated with or endorsed by {owner}. Game and character names belong to their owners.",
