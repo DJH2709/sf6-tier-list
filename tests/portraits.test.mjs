@@ -6,10 +6,16 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 const { games } = JSON.parse(readFileSync("src/lib/games.json", "utf8"));
 const slug = (name) =>
   name.replace(/ø/gi, "o").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+// A tab's pictures live in <game>.<tab>, e.g. valorant.weapons.
+const rosterOf = (dir) => {
+  const [id, tab] = dir.split(".");
+  const game = games.find((g) => g.id === id);
+  return game && (tab ? game.tabs?.[tab] && { ...game, characters: game.tabs[tab].characters } : game);
+};
 const dirs = readdirSync("public/characters", { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
 
 test("every picture folder is a game", () => {
-  for (const d of dirs) assert.ok(games.some((g) => g.id === d), `public/characters/${d} is not a game id`);
+  for (const d of dirs) assert.ok(rosterOf(d), `public/characters/${d} is not a game id or game.tab`);
 });
 
 // Never for publishers whose rules forbid using their art as-is (see public/characters/README.md):
@@ -17,7 +23,10 @@ test("every picture folder is a game", () => {
 // check first, so the full list is pinned too.
 test("pictures only for games whose publishers don't forbid it", () => {
   for (const banned of ["sf6", "ggst", "gbvsr"]) assert.ok(!dirs.includes(banned), `${banned} must not have pictures`);
-  assert.deepEqual(dirs.sort(), ["brawlhalla", "clashroyale", "cotw", "invincible", "mk1", "overwatch", "rivals2", "siege", "smash", "tekken8"]);
+  assert.deepEqual(dirs.sort(), [
+    "aoe2", "aoe4", "brawlhalla", "brawlstars", "clashroyale", "cotw", "invincible", "lol", "mk1", "overwatch", "rivals2", "siege",
+    "smash", "tekken8", "valorant", "valorant.weapons", "wildrift",
+  ]);
 });
 
 test("Capcom guest characters have no picture in other games", () => {
@@ -29,7 +38,7 @@ test("Capcom guest characters have no picture in other games", () => {
 });
 
 for (const d of dirs) {
-  const game = games.find((g) => g.id === d);
+  const game = rosterOf(d);
   const ids = new Set(game.characters.map(slug));
   const files = readdirSync(`public/characters/${d}`);
 
