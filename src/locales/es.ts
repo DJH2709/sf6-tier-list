@@ -6,7 +6,7 @@ import type { Messages } from "./en";
 const es: Messages = {
   "site.title": "Tier lists de la comunidad por rango",
   "site.description": "Tier lists de videojuegos votadas por la comunidad y separadas por rango.",
-  "site.homeTitle": "Tier lists por rango: Overwatch 2, Siege, Clash Royale y más",
+  "site.homeTitle": "Tier lists por rango: Overwatch 2, Siege y más",
   "site.homeDescription": "Tier lists votadas por jugadores y separadas por rango, para {count} juegos: Overwatch 2, Rainbow Six Siege, Clash Royale, Street Fighter 6, Tekken 8, Smash Ultimate y más. Mira qué es fuerte en tu nivel.",
   "site.gameTitle": "Tier list de {game} por rango (votos de la comunidad)",
   "site.gameDescription": "Tier list de {game} por rango. Los jugadores votan y cada rango tiene sus propios resultados, para ver qué funciona a tu nivel y no solo entre profesionales.",
@@ -21,7 +21,8 @@ const es: Messages = {
   "demo.banner": "Modo demo: los votos solo se guardan en este navegador.",
 
   "home.eyebrow": "{game} · Parche {patch}",
-  "home.title": "La tier list que cambia según tu rango",
+  "home.title": "La tier list de {game} que cambia según tu rango",
+  "home.roster": "Plantel de {game} ({count})",
   "home.intro": "Las tier lists de los pros te dicen qué gana en la cima. Esta te muestra cómo valoran el elenco los jugadores de tu nivel, con votos de la comunidad separados por rango.",
   "home.makeCta": "Haz tu tier list",
   "home.resultsCta": "Ver resultados de la comunidad",

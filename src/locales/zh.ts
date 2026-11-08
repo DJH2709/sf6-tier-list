@@ -19,7 +19,8 @@ const zh: Messages = {
   "demo.banner": "演示模式：投票只保存在此浏览器中。",
 
   "home.eyebrow": "{game} · 版本 {patch}",
-  "home.title": "随你的段位而变的强度榜",
+  "home.title": "随你的段位而变的{game}强度榜",
+  "home.roster": "{game} 角色一览（{count}）",
   "home.intro": "职业选手的强度榜告诉你顶端什么角色能赢。这里展示的是和你同段位的玩家如何评价各个角色，由社区投票、按段位区分。",
   "home.makeCta": "制作你的强度榜",
   "home.resultsCta": "查看社区结果",

@@ -13,7 +13,7 @@ export default async function Image({ params }: { params: Promise<{ game: string
   const t = await getT();
   const game = getGame((await params).game) ?? DEFAULT_GAME;
   return new ImageResponse(
-    <OgCard title={t("site.gameTitle", { game: gameName(game, t) })} subtitle={t("home.title")} game={game} />,
+    <OgCard title={t("site.gameTitle", { game: gameName(game, t) })} subtitle={t("home.title", { game: gameName(game, t) })} game={game} />,
     size,
   );
 }
