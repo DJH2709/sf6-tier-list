@@ -19,7 +19,8 @@ const ko: Messages = {
   "demo.banner": "데모 모드: 투표는 이 브라우저에만 저장됩니다.",
 
   "home.eyebrow": "{game} · 패치 {patch}",
-  "home.title": "내 랭크에 따라 달라지는 티어 리스트",
+  "home.title": "내 랭크에 따라 달라지는 {game} 티어 리스트",
+  "home.roster": "{game} 로스터 ({count})",
   "home.intro": "프로 티어 리스트는 최상위권에서 이기는 캐릭터를 알려 줍니다. 여기서는 나와 같은 랭크의 플레이어들이 캐릭터를 어떻게 평가하는지 볼 수 있습니다.",
   "home.makeCta": "내 티어 리스트 만들기",
   "home.resultsCta": "커뮤니티 결과 보기",

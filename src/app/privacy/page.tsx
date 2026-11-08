@@ -6,6 +6,7 @@ import { CONTACT_EMAIL, SITE_NAME } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Privacy",
   description: `What ${SITE_NAME} stores about you, who can see it, and how to delete your account.`,
+  alternates: { canonical: "/privacy" },
 };
 
 

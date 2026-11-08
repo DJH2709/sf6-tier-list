@@ -20,7 +20,8 @@ const ja: Messages = {
   "demo.banner": "デモモード: 投票はこのブラウザにのみ保存されます。",
 
   "home.eyebrow": "{game} · パッチ {patch}",
-  "home.title": "あなたのランク帯で変わるキャラランク",
+  "home.title": "あなたのランク帯で変わる{game}キャラランク",
+  "home.roster": "{game}のキャラ一覧（{count}）",
   "home.intro": "プロのキャラランクはトップ層で勝てるキャラを教えてくれます。ここでは、あなたと同じランク帯のプレイヤーがキャラをどう評価しているかが分かります。",
   "home.makeCta": "キャラランクを作る",
   "home.resultsCta": "みんなの結果を見る",

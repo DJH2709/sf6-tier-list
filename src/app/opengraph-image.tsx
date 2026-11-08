@@ -13,7 +13,7 @@ export default async function Image() {
   // Overwatch is the biggest game here, so its heroes stand in as the example roster.
   const game = getGame("overwatch") ?? DEFAULT_GAME;
   return new ImageResponse(
-    <OgCard title={t("site.title")} subtitle={t("home.title")} game={game} />,
+    <OgCard title={t("site.title")} subtitle={t("site.description")} game={game} />,
     size,
   );
 }

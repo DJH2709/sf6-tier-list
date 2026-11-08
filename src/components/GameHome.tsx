@@ -6,7 +6,7 @@ import Results, { useResults } from "@/components/Results";
 import HeroPreview from "@/components/HeroPreview";
 import SiteHeader from "@/components/SiteHeader";
 import { configFound, demoMode, missingConfig } from "@/lib/supabase";
-import { CATEGORY, DEFAULT_GAME, GAMES, gamePath, getGame, withCategory } from "@/lib/games";
+import { CATEGORY, DEFAULT_GAME, GAMES, gamePath, getGame, withCategory, type Game } from "@/lib/games";
 import { LayoutGrid } from "lucide-react";
 import { gameName, rankName } from "@/lib/i18n/games";
 import { GameProvider } from "@/components/GameContext";
@@ -44,6 +44,22 @@ function GamePicker({ current }: { current: string }) {
         </Link>
       ))}
     </nav>
+  );
+}
+
+// The full roster as plain text, rendered with the page so search engines see which characters
+// this list covers before any results load. Always the main roster, whatever tab is open.
+function Roster({ game }: { game: Game }) {
+  const { t, nameOf } = useI18n();
+  return (
+    <section aria-labelledby="roster-heading" className="mx-auto max-w-6xl px-4 pb-10">
+      <h2 id="roster-heading" className="mb-3 text-sm font-medium text-ink-300">
+        {t("home.roster", { game: gameName(game, t), count: game.characters.length })}
+      </h2>
+      <ul className="flex flex-wrap gap-x-3 gap-y-1 text-xs leading-5 text-ink-400">
+        {game.characters.map((c) => <li key={c.id}>{nameOf(c.id, game)}</li>)}
+      </ul>
+    </section>
   );
 }
 
@@ -109,7 +125,7 @@ export default function GameHome({ gameId }: { gameId: string }) {
               {t("home.eyebrow", { game: gameName(game, t), patch: game.patch })}
             </p>
             <h1 id="hero-heading" className="text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl lg:text-[3.5rem]">
-              {t("home.title")}
+              {t("home.title", { game: gameName(game, t) })}
             </h1>
             <p className="max-w-xl text-lg leading-7 text-ink-300">
               {t("home.intro")}
@@ -208,6 +224,8 @@ export default function GameHome({ gameId }: { gameId: string }) {
           />
         )}
       </main>
+
+      <Roster game={base} />
 
       <footer className="border-t border-line px-4 py-8 text-center text-xs leading-5 text-ink-400">
         {t("site.footer", { owner: game.owner })}
