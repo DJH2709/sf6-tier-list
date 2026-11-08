@@ -15,6 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: `${SITE_NAME} · ${t("site.title")}`, template: `%s · ${SITE_NAME}` },
     description: t("site.description"),
     twitter: { card: "summary_large_image" },
+    // Bing Webmaster Tools ownership check. Public by design; removing it un-verifies the site in Bing.
+    verification: { other: { "msvalidate.01": "0F994ACB40E4AF829B02D9A6B3453172" } },
   };
 }
 
