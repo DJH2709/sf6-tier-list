@@ -3,6 +3,7 @@ import GameHome from "@/components/GameHome";
 import { DEFAULT_GAME, GAMES } from "@/lib/games";
 import { getT } from "@/lib/i18n/server";
 import { SITE_NAME } from "@/lib/site";
+import { initialResults } from "@/lib/serverResults";
 import { JsonLd, pageMeta, websiteSchema } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -13,11 +14,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMeta("/", `${t("site.homeTitle")} · ${SITE_NAME}`, t("site.homeDescription", { count: GAMES.length }));
 }
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       <JsonLd data={websiteSchema} />
-      <GameHome gameId={DEFAULT_GAME.id} />
+      <GameHome gameId={DEFAULT_GAME.id} initialResults={await initialResults(DEFAULT_GAME)} />
     </>
   );
 }

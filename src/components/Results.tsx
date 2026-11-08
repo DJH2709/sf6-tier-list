@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { bandsFor, MIN_LISTS, type Band, type Game } from "@/lib/games";
+import { bandsFor, CATEGORY, MIN_LISTS, type Band, type Game } from "@/lib/games";
 import { getResults, type BandResult } from "@/lib/store";
 import { relativeTiers } from "@/lib/relativeTiers";
 import TierRows from "./TierRows";
@@ -14,9 +14,10 @@ import { BTN_MD, BTN_PRIMARY, ERROR, PANEL } from "./ui";
 import RosterFilter, { NO_FILTER, shown, type Filter } from "./RosterFilter";
 
 // The community averages for a game, fetched once and shared by the hero preview and the results tab.
-export function useResults(game: Game, refreshKey: number) {
+// initial: results the server already read for the main tab, so the first HTML has them.
+export function useResults(game: Game, refreshKey: number, initial: BandResult[] = []) {
   const { t } = useI18n();
-  const [results, setResults] = useState<BandResult[]>([]);
+  const [results, setResults] = useState<BandResult[]>(game.category === CATEGORY ? initial : []);
   const [error, setError] = useState("");
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import MakeList from "@/components/MakeList";
 import Results, { useResults } from "@/components/Results";
+import type { BandResult } from "@/lib/store";
 import HeroPreview from "@/components/HeroPreview";
 import SiteHeader from "@/components/SiteHeader";
 import { configFound, demoMode, missingConfig } from "@/lib/supabase";
@@ -63,7 +64,7 @@ function Roster({ game }: { game: Game }) {
   );
 }
 
-export default function GameHome({ gameId }: { gameId: string }) {
+export default function GameHome({ gameId, initialResults }: { gameId: string; initialResults?: BandResult[] }) {
   const base = getGame(gameId) ?? DEFAULT_GAME;
   // Which tab of items (characters, weapons...) is being rated. Kept in the address as ?tab= so
   // a link to "Siege weapons" opens on weapons.
@@ -86,7 +87,7 @@ export default function GameHome({ gameId }: { gameId: string }) {
   const [submitted, setSubmitted] = useState<{ isPublic: boolean; updated: boolean } | null>(null);
   const account = useAccount();
   const { t } = useI18n();
-  const community = useResults(game, refreshKey);
+  const community = useResults(game, refreshKey, initialResults);
 
   function open(next: "make" | "results") {
     setTab(next);
