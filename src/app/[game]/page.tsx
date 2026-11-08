@@ -4,6 +4,7 @@ import GameHome from "@/components/GameHome";
 import { DEFAULT_GAME, GAMES, getGame } from "@/lib/games";
 import { gameName } from "@/lib/i18n/games";
 import { getT } from "@/lib/i18n/server";
+import { initialResults } from "@/lib/serverResults";
 import { breadcrumbSchema, JsonLd, pageMeta } from "@/lib/seo";
 
 type Params = { params: Promise<{ game: string }> };
@@ -33,7 +34,7 @@ export default async function GamePage({ params }: Params) {
   return (
     <>
       <JsonLd data={breadcrumbSchema(gameName(found, t), `/${found.id}`, t("games.link"))} />
-      <GameHome gameId={id} />
+      <GameHome gameId={id} initialResults={await initialResults(found)} />
     </>
   );
 }
