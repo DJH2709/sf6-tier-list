@@ -982,7 +982,7 @@
       "genres": [
         "fighting"
       ],
-      "patch": "2026-10",
+      "patch": "2026-11",
       "owner": "Bandai Namco",
       "disclaimer": "Character images © Bandai Namco Entertainment Inc.",
       "proofSite": "player stats page (e.g. a Tekken stats site) or a screenshot showing your rank",
@@ -1029,7 +1029,8 @@
         "Fahkumram",
         "Miary Zo",
         "Kunimitsu",
-        "Bob"
+        "Bob",
+        "Roger Jr."
       ],
       "ranks": [
         {
