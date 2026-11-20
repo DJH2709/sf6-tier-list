@@ -1699,7 +1699,7 @@
       "genres": [
         "fighting"
       ],
-      "patch": "2026-10",
+      "patch": "2026-11",
       "owner": "SNK",
       "disclaimer": "Character images © SNK Corporation and the owners of each guest character.",
       "proofSite": "screenshot showing your rank (e.g. an Imgur link)",
@@ -1737,7 +1737,8 @@
         "Duck King",
         "Kim Kaphwan",
         "Manjiro Sano",
-        "Ken Ryuguji"
+        "Ken Ryuguji",
+        "Laocorn Gaudeamus"
       ],
       "ranks": [
         {
