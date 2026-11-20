@@ -534,7 +534,7 @@
         "mobile",
         "strategy"
       ],
-      "patch": "2026-10",
+      "patch": "2026-11",
       "owner": "Supercell",
       "proofSite": "RoyaleAPI profile (royaleapi.com) or a screenshot showing your league",
       "proofPlaceholder": "https://royaleapi.com/player/...",
@@ -679,6 +679,7 @@
         "Executioner (Evo)",
         "Firecracker (Evo)",
         "Furnace (Evo)",
+        "Giant (Evo)",
         "Giant Snowball (Evo)",
         "Goblin Barrel (Evo)",
         "Goblin Cage (Evo)",
@@ -691,6 +692,7 @@
         "Lumberjack (Evo)",
         "Mega Knight (Evo)",
         "Minion Horde (Evo)",
+        "Mirror (Evo)",
         "Mortar (Evo)",
         "Musketeer (Evo)",
         "P.E.K.K.A (Evo)",
@@ -980,7 +982,7 @@
       "genres": [
         "fighting"
       ],
-      "patch": "2026-10",
+      "patch": "2026-11",
       "owner": "Bandai Namco",
       "disclaimer": "Character images © Bandai Namco Entertainment Inc.",
       "proofSite": "player stats page (e.g. a Tekken stats site) or a screenshot showing your rank",
@@ -1027,7 +1029,8 @@
         "Fahkumram",
         "Miary Zo",
         "Kunimitsu",
-        "Bob"
+        "Bob",
+        "Roger Jr."
       ],
       "ranks": [
         {
@@ -1696,7 +1699,7 @@
       "genres": [
         "fighting"
       ],
-      "patch": "2026-10",
+      "patch": "2026-11",
       "owner": "SNK",
       "disclaimer": "Character images © SNK Corporation and the owners of each guest character.",
       "proofSite": "screenshot showing your rank (e.g. an Imgur link)",
@@ -1734,7 +1737,8 @@
         "Duck King",
         "Kim Kaphwan",
         "Manjiro Sano",
-        "Ken Ryuguji"
+        "Ken Ryuguji",
+        "Laocorn Gaudeamus"
       ],
       "ranks": [
         {
@@ -2736,8 +2740,10 @@
         "Piper",
         "Poco",
         "R-T",
+        "Rey",
         "Rico",
         "Rosa",
+        "Ruby",
         "Ruffs",
         "Sam",
         "Sandy",
@@ -2751,6 +2757,7 @@
         "Stu",
         "Surge",
         "Tara",
+        "Thunder Frogs",
         "Tick",
         "Trunk",
         "Vince",
@@ -2994,7 +3001,8 @@
         "Cyclops",
         "Jubilee",
         "The Hood",
-        "Gorr the God Butcher"
+        "Gorr the God Butcher",
+        "Nightcrawler"
       ],
       "roles": {
         "Vanguard": [
@@ -4016,6 +4024,7 @@
         "Pyke",
         "Rakan",
         "Rammus",
+        "Rek'Sai",
         "Rell",
         "Renekton",
         "Rengar",
@@ -4036,6 +4045,7 @@
         "Sona",
         "Soraka",
         "Swain",
+        "Sylas",
         "Syndra",
         "Taliyah",
         "Talon",
